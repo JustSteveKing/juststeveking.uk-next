@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <title>Working with third party services in Laravel</title>
+
+        <script type="module">
+            document.documentElement.classList.remove('no-js');
+            document.documentElement.classList.add('js');
+        </script>
+
+        <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,300i,400,400i,700,700i,800,800i,900,900i" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,700,700i,800,800i,900,900i" rel="stylesheet">
+        <link rel="stylesheet" href="/assets/build/css/main.css?id=1a1396f4c022d69a6250">
+
+        <meta name="description" content="There are many ways to work with 3rd party services in Laravel, here is how I do it. I will walk through setting up a service to connect to the PingPing service">
+
+        <meta property="og:title" content="Working with third party services in Laravel">
+        <meta property="og:description" content="There are many ways to work with 3rd party services in Laravel, here is how I do it. I will walk through setting up a service to connect to the PingPing service">
+        <meta property="og:image" content="/assets/images/uploads/screenshot-2021-04-30-at-12.13.48.png">
+        <meta property="og:image:alt" content="JustSteveKing - Consultant CTO, Freelance Software Engineer, Community Advocate">
+        <meta property="og:locale" content="en_GB">
+        <meta property="og:type" content="article">
+        <meta proporty="og:url" content="/working-with-third-party-services-in-laravel">
+
+        <meta name="twitter:widgets:new-embed-design" content="on">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="Working with third party services in Laravel">
+        <meta name="twitter:description" content="There are many ways to work with 3rd party services in Laravel, here is how I do it. I will walk through setting up a service to connect to the PingPing service">
+        <meta name="twitter:site" content="@JustSteveKing">
+        <meta name="twitter:creator" content="@JustSteveKing">
+        <meta name="twitter:image" content="/assets/images/uploads/screenshot-2021-04-30-at-12.13.48.png">
+        <meta name="twitter:image:alt" content="JustSteveKing - Consultant CTO, Freelance Software Engineer, Community Advocate">
+
+        <link rel="canonical" href="/working-with-third-party-services-in-laravel">
+
+        <link rel="icon" href="/assets/favicon.ico">
+        <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+        <link rel="apple-touch-icon" href="/assets/favicon.png">
+        <link rel="manifest" href="/assets/site.webmanifest">
+        <meta name="theme-color" content="#ffffff">
+        
+        <script src="/assets/build/js/main.js?id=718247a870e5977545e7" defer></script>
+        
+        <script type="application/ld+json">
+        {
+            "@content": "https://schema.org/",
+            "@type": "Person",
+            "name": "Steve McDougall",
+            "url": "https://www.juststeveking.uk/",
+            "image": "https://www.juststeveking.uk/images/avatar.png",
+            "sameAs": [
+                "https://github.com/JustSteveKing",
+                "https://twitter.com/JustSteveKing",
+                "https://www.linkedin.com/in/steve-mcdougall/"
+            ],
+            "jobTitle": "Technical Lead",
+            "worksFor": {
+                "@type": "Organization",
+                "name": "Squarefoot Capital Limited",
+                "url": "https://sqft.capital",
+                "foundingDate": "2019-10-10",
+                "sameAs": [
+                    "https://www.linkedin.com/company/squarefootcapital/"
+                ],
+                "description": "sqft.capital is a platform solely for UK property developers to model deals and raise funding, quickly and consistently." 
+            }
+        }
+        </script>
+
+                    <!-- Fathom - beautiful, simple website analytics -->
+            <script
+                src="https://cdn.usefathom.com/script.js"
+                data-site="SGJKEWOR"
+                defer
+            ></script>
+            <!-- / Fathom -->
+            </head>
+    <body class="antialiased bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-50">
+         <nav class="container mx-auto py-12">
+    <ul class="flex items-center justify-center space-x-6 uppercase">
+                    <li>
+                 <a
+    class="cursor-pointer text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-50" title="Return Home" href="/"
+    title="Return Home" href="/"
+>
+    Home
+</a> 
+            </li>
+                    <li>
+                 <a
+    class="cursor-pointer text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-50" title="Recent Articles" href="/blog"
+    title="Recent Articles" href="/blog"
+>
+    Articles
+</a> 
+            </li>
+                    <li>
+                 <a
+    class="cursor-pointer text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-50" title="Open Source packages I have made" href="/open-source"
+    title="Open Source packages I have made" href="/open-source"
+>
+    Open Source
+</a> 
+            </li>
+            </ul>
+</nav> 
+        
+            <main class="max-w-3xl mx-auto px-4 sm:px-6 xl:max-w-5xl xl:px-0">
+        <article class="xl:divide-y xl:divide-gray-200">
+            <header class="pt-6 xl:pb-10">
+                <div class="space-y-1 text-center">
+                    <dl class="space-y-10">
+                        <div>
+                            <dt class="sr-only">
+                                Published on
+                            </dt>
+                            <dd class="text-base leading-6 font-medium">
+                                <time datetime="2021-04-30">
+                                    Friday, 30th April 2021
+                                </time>
+                            </dd>
+                        </div>
+                    </dl>
+                    <div>
+                        <h1 class="text-3xl leading-9 font-extrabold tracking-wider sm:text-4xl sm:leading-10 md:text-5xl md:leading-14">
+                            Working with third party services in Laravel
+                        </h1>
+                    </div>
+                </div>
+            </header>
+
+        <div class="divide-y xl:divide-y-0 divide-gray-200 xl:grid xl:grid-cols-4 xl:col-gap-6 pb-16 xl:pb-20" style="grid-template-rows: auto 1fr;">
+            <dl class="pt-6 pb-10 xl:pt-11 xl:border-b xl:border-gray-200">
+                <dt class="sr-only">Authors</dt>
+                <dd>
+                    <ul class="flex justify-center xl:block space-x-8 sm:space-x-12 xl:space-x-0 xl:space-y-8">
+                        <li class="flex items-center space-x-2">
+                             <img
+    src="/assets/images/avatar.png"
+    alt="Steve McDougall Avatar"
+    class="object-fit object-center rounded-full w-10 h-10"
+/> 
+                            <dl class="text-sm font-medium leading-5 whitespace-no-wrap">
+                                <dt class="sr-only">Name</dt>
+                                <dd>Steve McDougall</dd>
+                                <dt class="sr-only">Twitter</dt>
+                                <dd>
+                                     <a
+    class="cursor-pointer text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-50" href="https://twitter.com/JustSteveKing" target="__blank" rel="noopener nofollow" title="Follow Steve on twitter"
+    href="https://twitter.com/JustSteveKing" target="__blank" rel="noopener nofollow" title="Follow Steve on twitter"
+>
+    @JustSteveKing
+</a> 
+                                </dd>
+                            </dl>
+                        </li>
+                    </ul>
+                </dd>
+            </dl>
+            <div class="divide-y divide-gray-200 xl:pb-0 xl:col-span-3 xl:row-span-2">
+                <div class="max-w-3xl leading-8 text-lg space-y-3 text-gray-800 dark:text-gray-50 pt-10 pb-8 px-3">
+                    <img src="/assets/images/uploads/screenshot-2021-04-30-at-12.13.48.png"
+                        alt="Working with third party services in Laravel"
+                        class="rounded shadow-md"
+                    />
+                    <p>I have been working with 3rd party APIs for longer than I care to admit, over
+time I have found a few ways that work nicely for me. In particular when
+working with a Laravel application, it is always good to define a standard for
+how you do things. Not only is this good practice in general, but it also
+makes it predictable when you are trying to add or update or debug anything.
+By following a standard, you know how your projects work from one to another.</p>
+
+<p>In this article, I am going to walk through how I connect and work with 3rd party APIs - what has worked for me and how I like to approach this task. I am going to walk through how to connect to the <a href="https://pingping.io/">PingPing</a> API in your Laravel project, and how you can use it to start getting the monitoring information from your websites.</p>
+
+<p>This article is using <strong>Laravel 8</strong> and <strong>PHP 8</strong>, please do not follow this exactly if you are on lower versions - you will have to slightly adapt.</p>
+
+<p>Firstly, set up a new Laravel project, or use an existing one if you want to add a service onto your existing app. What we need to do is create a new namespace for where our 3rd party APIs will live. I typically store these under <code>App\Services</code> as it makes the most sense to me. From there we want to create the namespace for the API we are working with. Create another directory, so it should look like this: <code>app/Services/PingPing</code>.</p>
+
+<p>The first thing we want to do in this directory is to create a Client that we can use to connect to the API, create a class called <code>Client</code> that looks like this:</p>
+
+<pre><code class="language-php"><br />&lt;?php
+
+
+declare(strict_types=1);
+
+
+namespace App\Services\PingPing;
+
+
+class Client
+
+{
+//
+}
+
+</code></pre>
+
+<p>Next, we want to build up our constructor so that it accepts a few default parameters:</p>
+
+<pre><code class="language-php"><br />&lt;?php
+
+
+/* ... */
+
+
+public function __construct(
+protected string $uri,
+protected string $token,
+) {}
+
+</code></pre>
+
+<p>What we are going to do with this part, is use a Laravel Service Provider to pull some configuration options and pass them into the constructor when we resolve this class from the container.</p>
+
+<p>In your terminal, create a new Service Provider like: <code>php artisan make:provider PingPingServiceProvider</code>. If all went well, you should now have a file under <code>app/Providers/PingPingServiceProvider</code>. Now we are going to add our Client into the <code>register</code> method so that we can register our Service into the container. Your Service Provider should now look like this:</p>
+
+<pre><code class="language-php"><br />&lt;?php
+
+
+declare(strict_types=1);
+
+
+namespace App\Providers;
+
+
+use App\Services\PingPing\Client;
+
+use Illuminate\Support\ServiceProvider;
+
+
+class PingPingServiceProvider extends ServiceProvider
+
+{
+public function register()
+{
+$this-&gt;app-&gt;singleton(Client::class, function ($app) {
+    return new Client(
+        uri: config('services.ping-ping.uri'),
+        token: config('services.ping-ping.token'),
+    );
+});
+}
+
+public function boot()
+{
+//
+}
+}
+
+</code></pre>
+
+<p>As you can see from the service provider, we also need to add some config values to our <code>config/services.php</code> file and <code>.env</code> file:</p>
+
+<pre><code class="language-php"><br />&lt;?php
+
+
+return [
+'ping-ping' =&gt; [
+'uri' =&gt; env('PING_PING_API_URI', 'https://pingping.io/webapi'),
+'token' =&gt; env('PING_PING_API_TOKEN'),
+],
+];
+
+</code></pre>
+
+<p>Next we need to register our service into our Laravel application, by adding this Service Provider in <code>config/app.php</code> under 'providers':</p>
+
+<pre><code class="language-php"><br />&lt;?php
+
+
+return [
+'providers' =&gt; [
+/*
+* Application Service Providers...
+*/
+App\Providers\AppServiceProvider::class,
+App\Providers\AuthServiceProvider::class,
+// App\Providers\BroadcastServiceProvider::class,
+App\Providers\EventServiceProvider::class,
+App\Providers\RouteServiceProvider::class,
+App\Providers\PingPingServiceProvider::class,
+],
+];
+
+</code></pre>
+
+<p>So, now we have a basic service set up. We have the environment variables and the config all sorted, we have a Client class which is registered into our container using our Service Provider. We have the beginnings of an API integration.</p>
+
+<p>Our next step is to start working with the API. You can read the PingPing documentation <a href="https://docs.pingping.io/">here</a> if you would like to, but I will walk you through it too.</p>
+
+<p>Firstly, when working with 3rd party APIs, you want to be able to tests working against the API without sending loads of requests. In laravel you can use the Http facade and the <code>fake()</code> method to achieve this which is quite nice. However, I like to add this as a method on my Clients. To do this, I typically create a trait to handle this as I may be working with multiple APIs in an application - all of which need a fake method. I do this by creating a new directory under <code>app/Services/Concerns</code> to follow the Laravel naming convension for traits. Create one that looks like this:</p>
+
+<pre><code class="language-php"><br />&lt;?php
+
+
+declare(strict_types=1);
+
+
+namespace App\Services\Concerns;
+
+
+use Illuminate\Support\Facades\Http;
+
+
+trait HasFake
+
+{
+/**
+ * Proxies a fake call to Illuminate\Http\Client\Factory::fake()
+ * 
+ * @param null|callable|array $callback
+ */
+public static function fake(
+null|callable|array $callback = null,
+): void {
+Http::fake($callback);
+}
+}
+
+</code></pre>
+
+<p>As you can see we are simply proxying the fake call through to the Http facade and forwarding any arguments along with them.</p>
+
+<p>Now we just need to pull this trait into our Client class, and we can start faking requests:</p>
+
+<pre><code class="language-php"><br />&lt;?php
+
+
+declare(strict_types=1);
+
+
+namespace App\Services\PingPing;
+
+
+use App\Services\Concerns\HasFake;
+
+
+class Client
+
+{
+use HasFake;
+
+public function __construct(
+protected string $uri,
+protected string $token,
+) {}
+}
+
+</code></pre>
+
+<p>Now we are set up for testing our API, we can also start building up requests we may want to send. If you look through the documentation for PingPing you will see that you can get a list of monitors stored on your account quite easily. Let's start with this endpoint, and see how we may need to refactor as we go through.</p>
+
+<p>Our first step is to create a new public method on our Client called <code>monitors</code> so that we can hit an API endpoint. Your method should look like this:</p>
+
+<pre><code class="language-php"><br />&lt;?php
+
+
+public function monitors()
+
+{
+$request = Http::withToken(
+token: $this-&gt;token,
+);
+
+$response = $request-&gt;get(
+url: "{$this-&gt;uri}/monitors",
+);
+
+if (! $response-&gt;successful()) {
+return $response-&gt;toException();
+}
+
+return $response;
+}
+
+</code></pre>
+
+<p>As you can see, we are building up our request with our API token that we injected into our constructor. We then create our response. There are a few things we can do to improve this though.</p>
+
+<p>Currently the exception thrown is a HTML exception, which may not be what we want. Also, we have no retry policy or timeouts set. Lets refactor our Client class to implement these things:</p>
+
+<pre><code class="language-php"><br />&lt;?php
+
+
+declare(strict_types=1);
+
+
+namespace App\Services\PingPing;
+
+
+use App\Services\Concerns\HasFake;
+
+use Illuminate\Support\Facades\Http;
+
+
+class Client
+
+{
+use HasFake;
+
+public function __construct(
+protected string $uri,
+protected string $token,
+protected int $timeout = 10,
+protected null|int $retryTimes = null,
+protected null|int $retryMilliseconds = null,
+) {}
+
+public function monitors()
+{
+$request = Http::withToken(
+    token: $this-&gt;token,
+)-&gt;withHeaders([
+    'Accept' =&gt; 'application/json',
+])-&gt;timeout(
+    seconds: $this-&gt;timeout,
+);
+
+if (
+    ! is_null($this-&gt;retryTimes)
+    &amp;&amp; ! is_null($this-&gt;retryMilliseconds)
+) {
+    $request-&gt;retry(
+        times: $this-&gt;retryTimes,
+        sleep: $this-&gt;retryMilliseconds,
+    );
+}
+
+$response = $request-&gt;get(
+    url: "{$this-&gt;uri}/monitors",
+);
+
+if (! $response-&gt;successful()) {
+    return $response-&gt;toException();
+}
+
+return $response;
+}
+}
+
+</code></pre>
+
+<p>What we are doing now is passing some default values into our constructor so that we can set a default timeout, and how we want to handle any retries. We can now extend our service provider and config to include these values.</p>
+
+<p>Extend your configuration to look like this:</p>
+
+<pre><code class="language-php"><br />&lt;?php
+
+
+return [
+'ping-ping' =&gt; [
+'uri' =&gt; env('PING_PING_API_URL', 'https://pingping.io/webapi'),
+'token' =&gt; env('PING_PING_API_TOKEN'),
+'timeout' =&gt; env('PING_PING_TIMEOUT', 10),
+'retry_times' =&gt; env('PING_PING_RETRY_TIMES', null),
+'retry_milliseconds' =&gt; env('PING_PING_RETRY_MILLISECONDS', null),
+],
+];
+
+</code></pre>
+
+<p>Then extend your service provider to look like this:</p>
+
+<pre><code class="language-php"><br />&lt;?php
+
+
+declare(strict_types=1);
+
+
+namespace App\Providers;
+
+
+use App\Services\PingPing\Client;
+
+use Illuminate\Support\ServiceProvider;
+
+
+class PingPingServiceProvider extends ServiceProvider
+
+{
+public function register()
+{
+$this-&gt;app-&gt;singleton(Client::class, function ($app) {
+    return new Client(
+        uri: config('services.ping-ping.uri'),
+        token: config('services.ping-ping.token'),
+        timeout: config('services.ping-ping.timeout'),
+        retryTimes: config('services.ping-ping.retry_times'),
+        retryMilliseconds: config('services.ping-ping.retry_milliseconds'),
+    );
+});
+}
+
+public function boot()
+{
+//
+}
+}
+
+</code></pre>
+
+<p>As you can see we are simply extending how we build our constructor to pull in the new values which we store in out env file - or providing the default NULL if we do not need this.</p>
+
+<p>So back to monitors. We can now confirm we can get a Response back from the API, what can we do with it? This is where we have options, and the one we choose depends on what level of integration we need to build. For example, if we were building an SDK to provide to others we would simply return the Response and let the integrator decide how they want to work with the response in their application. But this is our application, and we are building an integration not an SDK.</p>
+
+<p>What we want to do is using the <a href="https://github.com/spatie/data-transfer-object">Spatie Data Transfer Object Package</a> create a series of Data Transfer Objects so that we can map the API response to Objects that are valuable to our application, and don't include lots of extra stuff that your typical HTTP request would have.</p>
+
+<p>Let's start with an action to create our monitor under <code>app/Services/PingPing/Actions/CreateMonitor.php</code> that should look like this when complete:</p>
+
+<pre><code class="language-php"><br />&lt;?php
+
+
+declare(strict_types=1);
+
+
+namespace App\Services\PingPing\Actions;
+
+
+use Carbon\Carbon;
+
+use App\Services\PingPing\DTO\Checks;
+
+use App\Services\PingPing\DTO\Uptime;
+
+use App\Services\PingPing\DTO\Monitor;
+
+use App\Services\PingPing\DTO\UptimeMeta;
+
+use App\Services\PingPing\DTO\CertificateHealth;
+
+use App\Services\PingPing\DTO\CertificateHealthMeta;
+
+
+class CreateMonitor
+
+{
+public static function handle(array $item): Monitor
+{
+return new Monitor(
+    id: $item['id'],
+    identifier: $item['identifier'],
+    alias: $item['alias'],
+    scheme: $item['scheme'],
+    host: $item['host'],
+    port: $item['port'],
+    url: $item['url'],
+    statusPage: $item['status_page'],
+    checks: new Checks(
+        uptime: new Uptime(
+            id: $item['checks']['uptime']['id'],
+            status: $item['checks']['uptime']['status'],
+            error: $item['checks']['uptime']['error'],
+            interval: $item['checks']['uptime']['interval'],
+            enabled: $item['checks']['uptime']['is_enabled'],
+            notificationThreshold: $item['checks']['uptime']['notification_threshold'],
+            lastCheckAt: Carbon::parse($item['checks']['uptime']['last_check_at']),
+            meta: new UptimeMeta(
+                httpStatusCode: $item['checks']['uptime']['meta']['http_status_code'],
+                averageUptimePercentage: $item['checks']['uptime']['meta']['average_uptime_percentage'],
+                averageResponseTime: $item['checks']['uptime']['meta']['average_response_time'],
+                offlineSince: Carbon::parse($item['checks']['uptime']['meta']['offline_since']),
+            ),
+        ),
+        certificateHealth: new CertificateHealth(
+            id: $item['checks']['certificate_health']['id'],
+            status: $item['checks']['certificate_health']['status'],
+            error: $item['checks']['certificate_health']['error'],
+            interval: $item['checks']['certificate_health']['interval'],
+            enabled: $item['checks']['certificate_health']['is_enabled'],
+            notificationThreshold: $item['checks']['certificate_health']['notification_threshold'],
+            lastCheckAt: Carbon::parse($item['checks']['certificate_health']['last_check_at']),
+            meta: new CertificateHealthMeta(
+                issuer: $item['checks']['certificate_health']['meta']['issuer'],
+                signatureAlgorithm: $item['checks']['certificate_health']['meta']['signature_algorithm'],
+                selfSigned: $item['checks']['certificate_health']['meta']['is_self_signed'],
+                validFrom: Carbon::parse($item['checks']['certificate_health']['meta']['valid_from']),
+                validTo: Carbon::parse($item['checks']['certificate_health']['meta']['valid_to']),
+            ),
+        ),
+    ),
+);
+}
+}
+
+</code></pre>
+
+<p>As you can see from the above we are mapping everything that the API is responding with currently - for your integration you could choose the parts that are important to yourself and expand when needed.</p>
+
+<p>Let's create our Monitor DTO under <code>app/Services/PingPing/DTO/Monitor.php</code> which should look like this:</p>
+
+<pre><code class="language-php"><br />&lt;?php
+
+
+declare(strict_types=1);
+
+
+namespace App\Services\PingPing\DTO;
+
+
+use Spatie\DataTransferObject\DataTransferObject;
+
+
+class Monitor extends DataTransferObject
+
+{
+public int $id;
+public string $identifier;
+public string $alias;
+public string $scheme;
+public string $host;
+public string $port;
+public string $url;
+public string $statusPage;
+public Checks $checks;
+}
+
+</code></pre>
+
+<p>As you can see in this DTO, we are pulling in a different DTO to handle the checks on a monitor, create this under <code>app/Services/PingPing/DTO/Checks.php</code> and it should look like the following:</p>
+
+<pre><code class="language-php"><br />&lt;?php
+
+
+declare(strict_types=1);
+
+
+namespace App\Services\PingPing\DTO;
+
+
+use Spatie\DataTransferObject\DataTransferObject;
+
+
+class Checks extends DataTransferObject
+
+{
+public Uptime $uptime;
+public CertificateHealth $certificateHealth;
+}
+
+</code></pre>
+
+<p>Again as before, we have 2 further DTOs created here that we need to create under the same namespace:</p>
+
+<pre><code class="language-php"><br />&lt;?php
+
+
+declare(strict_types=1);
+
+
+namespace App\Services\PingPing\DTO;
+
+
+class Uptime extends Check
+
+{
+public UptimeMeta $meta;
+}
+
+</code></pre>
+
+<pre><code class="language-php"><br />&lt;?php
+
+
+declare(strict_types=1);
+
+
+namespace App\Services\PingPing\DTO;
+
+
+class CertificateHealth extends Check
+
+{
+public CertificateHealthMeta $meta;
+}
+
+</code></pre>
+
+<p>What you will notice about these two, is that they are extending a completely different class instead of the usual DataTransferObject from Spatie. This is because both have identical fields except their meta information. The Check DTO looks like this:</p>
+
+<pre><code class="language-php"><br />&lt;?php
+
+
+declare(strict_types=1);
+
+
+namespace App\Services\PingPing\DTO;
+
+
+use Carbon\Carbon;
+
+use Spatie\DataTransferObject\DataTransferObject;
+
+
+class Check extends DataTransferObject
+
+{
+public int $id;
+public string $status;
+public null|string $error;
+public int $interval;
+public bool $enabled;
+public int $notificationThreshold;
+public Carbon $lastCheckAt;
+}
+
+</code></pre>
+
+<p>Now let us create the UptimeMeta DTO:</p>
+
+<pre><code class="language-php"><br />&lt;?php
+
+
+declare(strict_types=1);
+
+
+namespace App\Services\PingPing\DTO;
+
+
+use Carbon\Carbon;
+
+use Spatie\DataTransferObject\DataTransferObject;
+
+
+class UptimeMeta extends DataTransferObject
+
+{
+public int $httpStatusCode;
+public int $averageUptimePercentage;
+public int $averageResponseTime;
+public null|Carbon $offlineSince;
+}
+
+</code></pre>
+
+<p>And now for the CertificateHealthMeta DTO:</p>
+
+<pre><code class="language-php"><br />&lt;?php
+
+
+declare(strict_types=1);
+
+
+namespace App\Services\PingPing\DTO;
+
+
+use Carbon\Carbon;
+
+use Spatie\DataTransferObject\DataTransferObject;
+
+
+class CertificateHealthMeta extends DataTransferObject
+
+{
+public string $issuer;
+public string $signatureAlgorithm;
+public bool $selfSigned;
+public null|Carbon $validFrom;
+public null|Carbon $validTo;
+}
+
+</code></pre>
+
+<p>So now we are mapping all of the response to DTOs using our CreateMonitor Action, we just need to create a MonitorCollection under <code>app/Services/PingPing/Collections/MonitorCollection.php</code> which should look like this:</p>
+
+<pre><code class="language-php"><br />&lt;?php
+
+
+declare(strict_types=1);
+
+
+namespace App\Services\PingPing\Collections;
+
+
+use Illuminate\Support\Collection;
+
+
+class MonitorCollection extends Collection
+
+{
+//
+}
+
+</code></pre>
+
+<p>Pretty simple right? All we want to do really is extend the Illuminate standard Collection so it can be extended at a later date.</p>
+
+<p>So we have created all of our DTOs, a Collection, an Action to handle the creation. Now we just need to update our Client itself to make over everything!</p>
+
+<pre><code class="language-php"><br />&lt;?php
+
+
+declare(strict_types=1);
+
+
+namespace App\Services\PingPing;
+
+
+use App\Services\Concerns\HasFake;
+
+use Illuminate\Support\Facades\Http;
+
+use App\Services\PingPing\Actions\CreateMonitor;
+
+use App\Services\PingPing\Collections\MonitorCollection;
+
+
+class Client
+
+{
+use HasFake;
+
+public function __construct(
+protected string $uri,
+protected string $token,
+protected int $timeout = 10,
+protected null|int $retryTimes = null,
+protected null|int $retryMilliseconds = null,
+) {}
+
+public function monitors()
+{
+$request = Http::withToken(
+    token: $this-&gt;token,
+)-&gt;withHeaders([
+    'Accept' =&gt; 'application/json',
+])-&gt;timeout(
+    seconds: $this-&gt;timeout,
+);
+
+if (
+    ! is_null($this-&gt;retryTimes)
+    &amp;&amp; ! is_null($this-&gt;retryMilliseconds)
+) {
+    $request-&gt;retry(
+        times: $this-&gt;retryTimes,
+        sleep: $this-&gt;retryMilliseconds,
+    );
+}
+
+$response = $request-&gt;get(
+    url: "{$this-&gt;uri}/monitors",
+);
+
+if (! $response-&gt;successful()) {
+    return $response-&gt;toException();
+}
+
+$collection = new MonitorCollection();
+
+foreach ($response-&gt;collect('data') as $item) {
+    $monitor = CreateMonitor::handle(
+        item: $item,
+    );
+
+    $collection-&gt;add(
+        item: $monitor,
+    );
+}
+
+return $collection;
+}
+}
+
+</code></pre>
+
+<p>As you can see, we get the response from our API. Then if it wasn't successful we return the response as an exception, then we create our collection - map over the data in our response as a collection. Use our Action to create a full DTO and push this onto our collection, which we finally return.</p>
+
+<p>The result of all of the above is a simple to use, and easy to extend API integration, which returns specific Objects - which you later extend to make requests yourself. During my time writing this article I was writing the code as I went along and testing in <a href="https://tinkerwell.app/">TinkerwellApp</a> which I have found to be super useful for this sort of work. Below is a screenshot of the final working code and output:</p>
+
+<p><img src="/images/uploads/screenshot-2021-04-30-at-14.30.22.png" alt="Tinkerwell Output" title="Tinkerwell showing the final working code" /></p>
+
+<p>If you enjoyed this article, why not let me know on twitter <a href="https://twitter.com/JustSteveKing">@JustSteveKing</a> or checkout the repo for this tutorial on <a href="https://github.com/JustSteveKing/laravel-api-service-tutorial">GitHub</a></p>
+                </div>
+            </div>
+            <footer class="text-sm font-medium leading-5 divide-y divide-gray-200 xl:col-start-1 xl:row-start-2">
+                <div class="space-y-8 py-8">
+                    <div>
+                        <h2 class="text-xs tracking-wide uppercase">
+                            Tags
+                        </h2>
+                        <div class="space-x-2 flex flex-wrap">
+                                                             <a
+    class="cursor-pointer hover:underline text-indigo-500 dark:text-indigo-200 hover:text-indigo-800 dark:hover:text-indigo-50" href="/blog/tags/php" title="View articles in php"
+    href="/blog/tags/php" title="View articles in php"
+>
+    php
+</a> 
+                                                             <a
+    class="cursor-pointer hover:underline text-indigo-500 dark:text-indigo-200 hover:text-indigo-800 dark:hover:text-indigo-50" href="/blog/tags/tutorial" title="View articles in tutorial"
+    href="/blog/tags/tutorial" title="View articles in tutorial"
+>
+    tutorial
+</a> 
+                                                             <a
+    class="cursor-pointer hover:underline text-indigo-500 dark:text-indigo-200 hover:text-indigo-800 dark:hover:text-indigo-50" href="/blog/tags/laravel" title="View articles in laravel"
+    href="/blog/tags/laravel" title="View articles in laravel"
+>
+    laravel
+</a> 
+                                                             <a
+    class="cursor-pointer hover:underline text-indigo-500 dark:text-indigo-200 hover:text-indigo-800 dark:hover:text-indigo-50" href="/blog/tags/apis" title="View articles in apis"
+    href="/blog/tags/apis" title="View articles in apis"
+>
+    apis
+</a> 
+                                                    </div>
+                    </div>
+                </div>
+                <div class="space-y-8 py-8">
+                    <div>
+                        <h2 class="text-xs tracking-wide uppercase">
+                            Reading Time
+                        </h2>
+                        <div class="space-x-2 flex flex-wrap">
+                            <p>13 min read</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="pt-8">
+                    <a class="text-teal-500 hover:text-teal-600" href="/">
+                        ← Back to the blog
+                    </a>
+                </div>
+            </footer>
+        </div>
+        </article>
+    </main>
+        
+         <footer>
+    <div class="max-w-7xl mx-auto py-12 px-4 overflow-hidden sm:px-6 lg:px-8">
+        <nav class="-mx-5 -my-2 flex flex-wrap justify-center" aria-label="Footer">
+                            <div class="px-5 py-2 uppercase">
+                     <a
+    class="cursor-pointer text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-50" title="Return Home" href="/"
+    title="Return Home" href="/"
+>
+    Home
+</a> 
+                </div>
+                            <div class="px-5 py-2 uppercase">
+                     <a
+    class="cursor-pointer text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-50" title="Recent Articles" href="/blog"
+    title="Recent Articles" href="/blog"
+>
+    Articles
+</a> 
+                </div>
+                            <div class="px-5 py-2 uppercase">
+                     <a
+    class="cursor-pointer text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-50" title="Open Source packages I have made" href="/open-source"
+    title="Open Source packages I have made" href="/open-source"
+>
+    Open Source
+</a> 
+                </div>
+                    </nav>
+        <div class="mt-8 flex justify-center space-x-6">
+
+             <a
+    class="cursor-pointer text-gray-400 hover:text-linkedin" title="Visit me on LinkedIn" href="https://www.linkedin.com/in/steve-mcdougall/"
+    title="Visit me on LinkedIn" href="https://www.linkedin.com/in/steve-mcdougall/" class="hover:text-linkedin"
+    target="__blank"
+    rel="noopener nofollow"
+>
+    <span class="sr-only">LinkedIn</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                </svg>
+</a> 
+
+             <a
+    class="cursor-pointer text-gray-400 hover:text-twitter" title="Visit me on twitter" href="https://twitter.com/JustSteveKing"
+    title="Visit me on twitter" href="https://twitter.com/JustSteveKing" class="hover:text-twitter"
+    target="__blank"
+    rel="noopener nofollow"
+>
+    <span class="sr-only">twitter</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                </svg>
+</a> 
+
+             <a
+    class="cursor-pointer text-gray-400 hover:text-github dark:hover:text-white" title="Visit me on GitHub" href="https://github.com/JustSteveKing"
+    title="Visit me on GitHub" href="https://github.com/JustSteveKing" class="hover:text-github dark:hover:text-white"
+    target="__blank"
+    rel="noopener nofollow"
+>
+    <span class="sr-only">GitHub</span>
+                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                </svg>
+</a> 
+
+             <a
+    class="cursor-pointer text-gray-400 hover:text-discord" title="Visit me on Discord" href="https://discordapp.com/users/533726823201243137"
+    title="Visit me on Discord" href="https://discordapp.com/users/533726823201243137" class="hover:text-discord"
+    target="__blank"
+    rel="noopener nofollow"
+>
+    <span class="sr-only">Discord</span>
+                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+                </svg>
+</a> 
+
+             <a
+    class="cursor-pointer text-gray-400 hover:text-telegram" title="Visit me on telegram" href="https://t.me/JustSteveKing"
+    title="Visit me on telegram" href="https://t.me/JustSteveKing" class="hover:text-telegram"
+    target="__blank"
+    rel="noopener nofollow"
+>
+    <span class="sr-only">telegram</span>
+                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                </svg>
+</a> 
+
+        </div>
+        <p class="mt-8 text-center text-base text-gray-400">
+            &copy; 2021 Steve McDougall. All rights reserved.
+        </p>
+    </div>
+</footer> 
+    </body>
+</html>

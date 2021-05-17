@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <title>Embracing The Tall Stack with Event Sourcing, an adventure into the unknown</title>
+
+        <script type="module">
+            document.documentElement.classList.remove('no-js');
+            document.documentElement.classList.add('js');
+        </script>
+
+        <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,300i,400,400i,700,700i,800,800i,900,900i" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,700,700i,800,800i,900,900i" rel="stylesheet">
+        <link rel="stylesheet" href="/assets/build/css/main.css?id=1a1396f4c022d69a6250">
+
+        <meta name="description" content="TALL stack is growing in popularity in the Laravel community, and rightly so. The way in which you can write beautiful code split into reactive components without ever having to leave PHP is a no brainer. Recently the TALL stack preset was released, which on its own is fantastic - but I wanted to take it one step further.">
+
+        <meta property="og:title" content="Embracing The Tall Stack with Event Sourcing, an adventure into the unknown">
+        <meta property="og:description" content="TALL stack is growing in popularity in the Laravel community, and rightly so. The way in which you can write beautiful code split into reactive components without ever having to leave PHP is a no brainer. Recently the TALL stack preset was released, which on its own is fantastic - but I wanted to take it one step further.">
+        <meta property="og:image" content="/assets/images/uploads/terry-vlisidis-wsebnsnkbue-unsplash.jpg">
+        <meta property="og:image:alt" content="JustSteveKing - Consultant CTO, Freelance Software Engineer, Community Advocate">
+        <meta property="og:locale" content="en_GB">
+        <meta property="og:type" content="article">
+        <meta proporty="og:url" content="/embracing-the-tall-stack-with-event-sourcing-an-adventure-into-the-unknown">
+
+        <meta name="twitter:widgets:new-embed-design" content="on">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="Embracing The Tall Stack with Event Sourcing, an adventure into the unknown">
+        <meta name="twitter:description" content="TALL stack is growing in popularity in the Laravel community, and rightly so. The way in which you can write beautiful code split into reactive components without ever having to leave PHP is a no brainer. Recently the TALL stack preset was released, which on its own is fantastic - but I wanted to take it one step further.">
+        <meta name="twitter:site" content="@JustSteveKing">
+        <meta name="twitter:creator" content="@JustSteveKing">
+        <meta name="twitter:image" content="/assets/images/uploads/terry-vlisidis-wsebnsnkbue-unsplash.jpg">
+        <meta name="twitter:image:alt" content="JustSteveKing - Consultant CTO, Freelance Software Engineer, Community Advocate">
+
+        <link rel="canonical" href="/embracing-the-tall-stack-with-event-sourcing-an-adventure-into-the-unknown">
+
+        <link rel="icon" href="/assets/favicon.ico">
+        <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+        <link rel="apple-touch-icon" href="/assets/favicon.png">
+        <link rel="manifest" href="/assets/site.webmanifest">
+        <meta name="theme-color" content="#ffffff">
+        
+        <script src="/assets/build/js/main.js?id=718247a870e5977545e7" defer></script>
+        
+        <script type="application/ld+json">
+        {
+            "@content": "https://schema.org/",
+            "@type": "Person",
+            "name": "Steve McDougall",
+            "url": "https://www.juststeveking.uk/",
+            "image": "https://www.juststeveking.uk/images/avatar.png",
+            "sameAs": [
+                "https://github.com/JustSteveKing",
+                "https://twitter.com/JustSteveKing",
+                "https://www.linkedin.com/in/steve-mcdougall/"
+            ],
+            "jobTitle": "Technical Lead",
+            "worksFor": {
+                "@type": "Organization",
+                "name": "Squarefoot Capital Limited",
+                "url": "https://sqft.capital",
+                "foundingDate": "2019-10-10",
+                "sameAs": [
+                    "https://www.linkedin.com/company/squarefootcapital/"
+                ],
+                "description": "sqft.capital is a platform solely for UK property developers to model deals and raise funding, quickly and consistently." 
+            }
+        }
+        </script>
+
+                    <!-- Fathom - beautiful, simple website analytics -->
+            <script
+                src="https://cdn.usefathom.com/script.js"
+                data-site="SGJKEWOR"
+                defer
+            ></script>
+            <!-- / Fathom -->
+            </head>
+    <body class="antialiased bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-50">
+         <nav class="container mx-auto py-12">
+    <ul class="flex items-center justify-center space-x-6 uppercase">
+                    <li>
+                 <a
+    class="cursor-pointer text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-50" title="Return Home" href="/"
+    title="Return Home" href="/"
+>
+    Home
+</a> 
+            </li>
+                    <li>
+                 <a
+    class="cursor-pointer text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-50" title="Recent Articles" href="/blog"
+    title="Recent Articles" href="/blog"
+>
+    Articles
+</a> 
+            </li>
+                    <li>
+                 <a
+    class="cursor-pointer text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-50" title="Open Source packages I have made" href="/open-source"
+    title="Open Source packages I have made" href="/open-source"
+>
+    Open Source
+</a> 
+            </li>
+            </ul>
+</nav> 
+        
+            <main class="max-w-3xl mx-auto px-4 sm:px-6 xl:max-w-5xl xl:px-0">
+        <article class="xl:divide-y xl:divide-gray-200">
+            <header class="pt-6 xl:pb-10">
+                <div class="space-y-1 text-center">
+                    <dl class="space-y-10">
+                        <div>
+                            <dt class="sr-only">
+                                Published on
+                            </dt>
+                            <dd class="text-base leading-6 font-medium">
+                                <time datetime="2020-06-04">
+                                    Thursday, 4th June 2020
+                                </time>
+                            </dd>
+                        </div>
+                    </dl>
+                    <div>
+                        <h1 class="text-3xl leading-9 font-extrabold tracking-wider sm:text-4xl sm:leading-10 md:text-5xl md:leading-14">
+                            Embracing The Tall Stack with Event Sourcing, an adventure into the unknown
+                        </h1>
+                    </div>
+                </div>
+            </header>
+
+        <div class="divide-y xl:divide-y-0 divide-gray-200 xl:grid xl:grid-cols-4 xl:col-gap-6 pb-16 xl:pb-20" style="grid-template-rows: auto 1fr;">
+            <dl class="pt-6 pb-10 xl:pt-11 xl:border-b xl:border-gray-200">
+                <dt class="sr-only">Authors</dt>
+                <dd>
+                    <ul class="flex justify-center xl:block space-x-8 sm:space-x-12 xl:space-x-0 xl:space-y-8">
+                        <li class="flex items-center space-x-2">
+                             <img
+    src="/assets/images/avatar.png"
+    alt="Steve McDougall Avatar"
+    class="object-fit object-center rounded-full w-10 h-10"
+/> 
+                            <dl class="text-sm font-medium leading-5 whitespace-no-wrap">
+                                <dt class="sr-only">Name</dt>
+                                <dd>Steve McDougall</dd>
+                                <dt class="sr-only">Twitter</dt>
+                                <dd>
+                                     <a
+    class="cursor-pointer text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-50" href="https://twitter.com/JustSteveKing" target="__blank" rel="noopener nofollow" title="Follow Steve on twitter"
+    href="https://twitter.com/JustSteveKing" target="__blank" rel="noopener nofollow" title="Follow Steve on twitter"
+>
+    @JustSteveKing
+</a> 
+                                </dd>
+                            </dl>
+                        </li>
+                    </ul>
+                </dd>
+            </dl>
+            <div class="divide-y divide-gray-200 xl:pb-0 xl:col-span-3 xl:row-span-2">
+                <div class="max-w-3xl leading-8 text-lg space-y-3 text-gray-800 dark:text-gray-50 pt-10 pb-8 px-3">
+                    <img src="/assets/images/uploads/terry-vlisidis-wsebnsnkbue-unsplash.jpg"
+                        alt="Embracing The Tall Stack with Event Sourcing, an adventure into the unknown"
+                        class="rounded shadow-md"
+                    />
+                    <p>TALL stack is growing in popularity in the Laravel community, and rightly so.
+The way in which you can write beautiful code split into reactive components
+without ever having to leave PHP is a no brainer. Recently the TALL stack
+preset was released, which on its own is fantastic - but I wanted to take it
+one step further.</p>
+
+<p>A few days ago I read some absolutely fantstic articles by the people over at <a href="https://spatie.be/">Spatie</a>, specifically <a href="https://freek.dev/">Freek Van Der Herten</a> and <a href="https://stitcher.io/">Brent Roose</a> - but I am sure more of the team were involved.</p>
+
+<p>To summarise these two articles (<a href="https://stitcher.io/blog/combining-event-sourcing-and-stateful-systems">one written by Brent</a>)(<a href="https://freek.dev/1634-mixing-event-sourcing-in-a-traditional-laravel-app">one written by Freek</a>), using a fully event sourced system will add complexities that can get difficult to manage very quickly - especially when not everything really <strong><em>needs</em></strong> to be event sourced. Using a fully stateful application has been the standard for a lot of the industry for many years, and is your typical go to system. Most people want some level of CRUD (create read update delete) behaviour on a set of resources, and the application will just be a database wrapper allowing for manipulation and aggregation of these resources. I would like to stress here, <strong>there is nothing wrong with this approach at all</strong>. In short terms, this article poses the question: Why can these approaches be mixed in the same system?</p>
+
+<p>It sounds obvious right? Why has nobody asked this before? As soon as I read these articles it clicked with me, this is an obvious approach to the event sourcing problem while adding extra business intelligence to a traditional stateful application. So with that in mind I decided to combine the awesome power of the TALL stack with a simple Event Sourced application, so far it doesn't do much - simple user registration and password reset functionality that comes as standard in a Laravel application, but also in the tall stack preset. The purpose of this exercise was to see how well these approaches would work combined.</p>
+
+<p>As with all Laravel projects, the first step is installing, I highly recommend using the Laravel Installer when creating a Laravel project - it gives a nice easy way to bootstrap the application with the auth scaffolding preloaded.</p>
+
+<pre><code class="language-bash"><br />laravel new project-name --auth
+
+</code></pre>
+
+<p>This will give you the default structure you need for any Laravel based project, from here we can start applying changes to the structure to align with the Spatie article - defining our application <a href="https://martinfowler.com/bliki/BoundedContext.html">Contexts</a>. For this application I have 1 context: a User context. Any behaviour to do with users at all will be stored within here. The architecture itself is still a work in progress, and I will most likely expand on this at some point soon.</p>
+
+<p>The next step after installing is to follow the instructions over at the <a href="https://github.com/laravel-frontend-presets/tall">GitHub repo for the TALL stack preset</a>. These are simple enough, just make sure you <strong>follow the setup instructions for with auth.</strong></p>
+
+<p>Our next step is to refactor the application to use these contexts, if you are using <a href="https://www.jetbrains.com/phpstorm/">PHPStorm</a> then this is relatively easy to do, right click the class name -> refactor -> move class. The first step is to refactor the User Model to sit under <code>app/Context/User/Models/User.php</code> and make a few recommended changes:</p>
+
+<pre><code class="language-php"><br />&lt;?php
+
+
+namespace App\Context\User\Models;
+
+
+use Ramsey\Uuid\Uuid;
+
+use App\Context\User\Events\UserCreated;
+
+use Illuminate\Notifications\Notifiable;
+
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Foundation\Auth\User as Authenticatable;
+
+
+class User extends Authenticatable
+
+{
+use Notifiable;
+
+protected $guarded = [];
+
+protected $hidden = [
+'password', 'remember_token',
+];
+
+protected $casts = [
+'email_verified_at' =&gt; 'datetime',
+];
+
+public static function createWithAttributes(array $attributes): User
+{
+$attributes['uuid'] = (string) Uuid::uuid4();
+
+event(new UserCreated($attributes));
+
+return static::uuid($attributes['uuid']);
+}
+
+public static function uuid(string $uuid): ?User
+{
+return static::where('uuid', $uuid)-&gt;first();
+}
+}
+
+</code></pre>
+
+<p>Now we have our User model updated in the right place, we need to make some changes in a few places:</p>
+
+<ul>
+<li><p><code>app/config/auth.php</code> make sure to change the providers model to the new model context</p></li>
+<li><p>next we will have a new set of LiveWire components available under <code>app/Http/Livewire/Auth</code> which we will be working on next.</p></li>
+</ul>
+
+<p>Once you have hooked up the auth correctly, feel free to test from this point to ensure it is working and all function ality works as it is. Our next step is to install the <a href="https://docs.spatie.be/laravel-event-sourcing/v3/installation-setup/">spatie/laravel-event-sourcing package</a> - I would highly recommend have a thorough read through the documentation and watching the introductory videos, they explain things very well.</p>
+
+<p>Once we have the Spatie package installed, we need to start using it! The first step is to create an Event that is going to be triggered and stored. So, let's create our UserCreated event in <code>app/Context/User/Events/UserCreated.php</code> it should look like this:</p>
+
+<pre><code class="language-php"><br />&lt;?php
+
+
+namespace App\Context\User\Events;
+
+
+use Spatie\EventSourcing\ShouldBeStored;
+
+
+class UserCreated implements ShouldBeStored
+
+{
+/**
+ * @var string
+ */
+public string $name;
+
+/**
+ * @var string
+ */
+public string $email;
+
+/**
+ * @var string
+ */
+public string $password;
+
+/**
+ * User Created Constructor
+ * 
+ * @param string $name
+ * @param string $email
+ * @param string $password
+ * 
+ * @return void
+ */
+public function __construct(
+string $name,
+string $email,
+string $password
+) {
+$this-&gt;name = $name;
+$this-&gt;email = $email;
+$this-&gt;password = $password;
+}
+}
+
+</code></pre>
+
+<p>What we are doing here is simple creating the event class with the attributes we would use to create a user normally, nothing out of the ordinary! So we have an event we can use, what we would typically do here is tie this into an <a href="https://martinfowler.com/bliki/DDD_Aggregate.html">Aggregate</a>. So let us create an aggregate in <code>app/Context/User/Aggregates/UserAggregate.php</code> that should look something like the below:</p>
+
+<pre><code class="language-php"><br />&lt;?php
+
+
+namespace App\Context\User\Aggregates;
+
+
+use Spatie\EventSourcing\AggregateRoot;
+
+use App\Context\User\Events\UserCreated;
+
+
+class UserAggregate extends AggregateRoot
+
+{
+
+public function createUser(
+string $name,
+string $email,
+string $password
+) {
+$this-&gt;recordThat(new UserCreated($name, $email, $password));
+
+return $this;
+}
+}
+
+</code></pre>
+
+<p>What this Aggregate will do is record the fact that an event was triggered - the event sourcing part. For our user to actually be persisted into the database however we need to create a Projection - the part that will write data into a database. All we have at the moment is an event being fired and an aggregate that will store an event saying this event was triggered with the attatched properties.</p>
+
+<p>The next part we need to do is not only create a projection, but also we are going to want to have reactors so that we can react when events happen. Let's start with our projection which wil be stored at <code>app/Context/User/Projectors/UserProjector.php</code> and look something like this:</p>
+
+<pre><code class="language-php"><br />&lt;?php
+
+
+namespace App\Context\User\Projectors;
+
+
+use App\Context\User\Models\User;
+
+use App\Context\User\Events\UserCreated;
+
+use Spatie\EventSourcing\Projectors\Projector;
+
+use Spatie\EventSourcing\Projectors\ProjectsEvents;
+
+
+class UserProjector implements Projector
+
+{
+use ProjectsEvents;
+
+/**
+ * Creates a new user
+ * 
+ * @param UserCreated $event
+ * @param string $aggregateUuid
+ * 
+ * @return void
+ */
+public function onUserCreated(UserCreated $event, string $aggregateUuid)
+{
+User::create([
+    'uuid' =&gt; $aggregateUuid,
+    'name' =&gt; $event-&gt;name,
+    'email' =&gt; $event-&gt;email,
+    'password' =&gt; $event-&gt;password
+]);
+}
+}
+
+</code></pre>
+
+<p>What this Projector is doing as you can probably see, is using an Eloquent model writing our user into the database, using the attributes that we attached onto our UserCreated Event. Simple right? We ask our aggreate to send an event with some data, this data is then projected into the database while we store the fact that we just did something. So we have a user, we could stop here and implement the TALL stack element, but I would rather do that after we have set everything up.</p>
+
+<p>Next, our reactor. Typically when a user is created on a system we want to send them an email welcoming them or ask them to confirm their email or anything like that. In this example we are going to ask them to verify their email using a reactor, this will be stored at <code>app/Context/User/Reactors/UserCreatedReactor.php</code> and look like the below:</p>
+
+<pre><code class="language-php"><br />&lt;?php
+
+
+namespace App\Context\User\Reactors;
+
+
+use App\Context\User\Models\User;
+
+use App\Context\User\Events\UserCreated;
+
+use Spatie\EventSourcing\EventHandlers\EventHandler;
+
+use Spatie\EventSourcing\EventHandlers\HandlesEvents;
+
+
+class UserCreatedReactor implements EventHandler
+
+{
+use HandlesEvents;
+
+public function onUserCreated(UserCreated $event)
+{
+$user = User::where('email', $event-&gt;email)-&gt;first();
+
+$user-&gt;sendEmailVerificationNotification();
+}
+}
+
+</code></pre>
+
+<p>Using default Laravel behaviour we can now send an email notification over to the user that was just created asking them to verify their email. We have now come full circle! We will need to create a ServiceProvider in Laravel to tell the framework to listen and how to route these events and aggregates but that is relatively simple, you could either add this to your AppServiceProvider or create a specific service provider - I lean towards the latter:</p>
+
+<pre><code class="language-php"><br />&lt;?php
+
+
+namespace App\Providers;
+
+
+use Illuminate\Support\ServiceProvider;
+
+use Spatie\EventSourcing\Projectionist;
+
+use App\Context\User\Projectors\UserProjector;
+
+use App\Context\User\Reactors\UserRegisteredReactor;
+
+
+class EventSourcingServiceProvider extends ServiceProvider
+
+{
+/**
+ * Register services.
+ *
+ * @return void
+ */
+public function register()
+{
+//
+}
+
+/**
+ * Bootstrap services.
+ *
+ * @return void
+ */
+public function boot()
+{
+Projectionist::addProjector(UserProjector::class);
+Projectionist::addReactor(UserCreatedReactor::class);
+}
+}
+
+</code></pre>
+
+<p>Make sure you add this to the application config file at <code>config/app.php</code> under the providers array.</p>
+
+<p>Now we have all of the main event sourcing aspects put together, it is time to hook up the LiveWire components to actually start triggering these events. Now this part is not perfect, and is only an example, but as a system scales this is where we may start seeing issues. What we do in our LiveWire component is ask our UserAggregate to trigger an event and persist the event however, if our system comes under heavy load this write may take awhile so our user will not be available to be logged in - one option here it to notify the user to verify their email before they can log in (probably a good idea), but what this demo does is simply trigger and log in because I am working locally so there is no load - these events and writes as fast!</p>
+
+<p>So all of the livewire set up would have been done for you by installing and using the TALL preset, which is great, the next step to take is to change the default behaviour in this component found here <code>app/Http/Livewire/Auth/Register.php</code> and update the register method to the following code:</p>
+
+<pre><code class="language-php"><br />&lt;?php
+
+
+namespace App\Http\Livewire\Auth;
+
+
+use Ramsey\Uuid\Uuid;
+
+use Livewire\Component;
+
+use Illuminate\Support\Str;
+
+use App\Context\User\Models\User;
+
+use Illuminate\Support\Facades\Auth;
+
+use Illuminate\Support\Facades\Hash;
+
+use App\Providers\RouteServiceProvider;
+
+use App\Context\User\Aggregates\UserAggregate;
+
+
+class Register extends Component
+
+{
+/* .. rest of the component lives here */
+
+public function register()
+{
+$this-&gt;validate([
+    'name' =&gt; ['required'],
+    'email' =&gt; ['required', 'email', 'unique:users'],
+    'password' =&gt; ['required', 'min:8', 'same:passwordConfirmation'],
+]);
+
+$uuid = Str::uuid()-&gt;toString();
+
+UserAggregate::retrieve($uuid)
+    -&gt;createUser(
+        $this-&gt;name,
+        $this-&gt;email,
+        Hash::make($this-&gt;password)
+    )-&gt;persist();
+
+
+$user = User::uuid($uuid);
+
+Auth::login($user, true);
+
+redirect(route('home'));
+}
+}
+
+</code></pre>
+
+<p>So what we are doing here, when we ask the LiveWire component to register through our front end it will send a request to our back end using the native <code>fetch()</code> API, the library will take care of routing this request to the right place. Our first step of course is to validate the "request" as if it were a typical HTTP request (unfortunately no FormRequets here, which would be amazing), then we need to create a UUID for our aggregate, and we also assign this to our user (I am not sure on this part, if it is a good practice or not - I will let the community decide that one). Once we have our UUId we can tell our Aggregate to (using to UUID we just created) record the fact that we are trigger the UserCreated event we made earlier. We pass through all the data required, <strong>please note that we send over the hashed version of the password!</strong> The last thing we want to do is send over the unencrpyted password to be stored as plain text in out events - it is just as bad as storing a plain text password normally, you wuoldn't do it - so don't do it here! We then persist this aggregate to the database, so we have a rollback point, and an event to replay should we need to. We then fetch the user using their UUID, which is a static method you will remeber adding to your User model. We log this user in and redirect back to our home route.</p>
+
+<p>It is that simple. Now I will be the first to say that this isn't perfect, it is mainly an experiment that I wanted to try after being inspired by a Spatie article and loving the TALL stack. Curiosity is a powerful tool, if you wonder if something should or could be done, try it! Experimentation is what makes technology moving forward. You never know something you try for fun could turn out to be a really good idea, never be scared to try things even if they may not work.</p>
+
+<p>To expand on the above approach, my eventual aim is to have this working across multiple contexts: some stateful and others not so much. Beyond the code you see above, I also managed to get this approach working for password resets, so that we can have rollback points if a users password changes and they dispute it not being them, but also email verification - this last one was more for fun. The code I used for this example is currently in a <a href="https://github.com/JustSteveKing/laravel-tall-eventsourcing-example">GitHub repo</a> should you want to have a look over that instead.</p>
+
+<p>Thanks for reading! Why not drop me a tweet with your thoughts?</p>
+                </div>
+            </div>
+            <footer class="text-sm font-medium leading-5 divide-y divide-gray-200 xl:col-start-1 xl:row-start-2">
+                <div class="space-y-8 py-8">
+                    <div>
+                        <h2 class="text-xs tracking-wide uppercase">
+                            Tags
+                        </h2>
+                        <div class="space-x-2 flex flex-wrap">
+                                                             <a
+    class="cursor-pointer hover:underline text-indigo-500 dark:text-indigo-200 hover:text-indigo-800 dark:hover:text-indigo-50" href="/blog/tags/php" title="View articles in php"
+    href="/blog/tags/php" title="View articles in php"
+>
+    php
+</a> 
+                                                             <a
+    class="cursor-pointer hover:underline text-indigo-500 dark:text-indigo-200 hover:text-indigo-800 dark:hover:text-indigo-50" href="/blog/tags/laravel" title="View articles in laravel"
+    href="/blog/tags/laravel" title="View articles in laravel"
+>
+    laravel
+</a> 
+                                                             <a
+    class="cursor-pointer hover:underline text-indigo-500 dark:text-indigo-200 hover:text-indigo-800 dark:hover:text-indigo-50" href="/blog/tags/tall stack" title="View articles in tall stack"
+    href="/blog/tags/tall stack" title="View articles in tall stack"
+>
+    tall stack
+</a> 
+                                                             <a
+    class="cursor-pointer hover:underline text-indigo-500 dark:text-indigo-200 hover:text-indigo-800 dark:hover:text-indigo-50" href="/blog/tags/event sourcing" title="View articles in event sourcing"
+    href="/blog/tags/event sourcing" title="View articles in event sourcing"
+>
+    event sourcing
+</a> 
+                                                    </div>
+                    </div>
+                </div>
+                <div class="space-y-8 py-8">
+                    <div>
+                        <h2 class="text-xs tracking-wide uppercase">
+                            Reading Time
+                        </h2>
+                        <div class="space-x-2 flex flex-wrap">
+                            <p>12 min read</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="pt-8">
+                    <a class="text-teal-500 hover:text-teal-600" href="/">
+                        ← Back to the blog
+                    </a>
+                </div>
+            </footer>
+        </div>
+        </article>
+    </main>
+        
+         <footer>
+    <div class="max-w-7xl mx-auto py-12 px-4 overflow-hidden sm:px-6 lg:px-8">
+        <nav class="-mx-5 -my-2 flex flex-wrap justify-center" aria-label="Footer">
+                            <div class="px-5 py-2 uppercase">
+                     <a
+    class="cursor-pointer text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-50" title="Return Home" href="/"
+    title="Return Home" href="/"
+>
+    Home
+</a> 
+                </div>
+                            <div class="px-5 py-2 uppercase">
+                     <a
+    class="cursor-pointer text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-50" title="Recent Articles" href="/blog"
+    title="Recent Articles" href="/blog"
+>
+    Articles
+</a> 
+                </div>
+                            <div class="px-5 py-2 uppercase">
+                     <a
+    class="cursor-pointer text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-50" title="Open Source packages I have made" href="/open-source"
+    title="Open Source packages I have made" href="/open-source"
+>
+    Open Source
+</a> 
+                </div>
+                    </nav>
+        <div class="mt-8 flex justify-center space-x-6">
+
+             <a
+    class="cursor-pointer text-gray-400 hover:text-linkedin" title="Visit me on LinkedIn" href="https://www.linkedin.com/in/steve-mcdougall/"
+    title="Visit me on LinkedIn" href="https://www.linkedin.com/in/steve-mcdougall/" class="hover:text-linkedin"
+    target="__blank"
+    rel="noopener nofollow"
+>
+    <span class="sr-only">LinkedIn</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                </svg>
+</a> 
+
+             <a
+    class="cursor-pointer text-gray-400 hover:text-twitter" title="Visit me on twitter" href="https://twitter.com/JustSteveKing"
+    title="Visit me on twitter" href="https://twitter.com/JustSteveKing" class="hover:text-twitter"
+    target="__blank"
+    rel="noopener nofollow"
+>
+    <span class="sr-only">twitter</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                </svg>
+</a> 
+
+             <a
+    class="cursor-pointer text-gray-400 hover:text-github dark:hover:text-white" title="Visit me on GitHub" href="https://github.com/JustSteveKing"
+    title="Visit me on GitHub" href="https://github.com/JustSteveKing" class="hover:text-github dark:hover:text-white"
+    target="__blank"
+    rel="noopener nofollow"
+>
+    <span class="sr-only">GitHub</span>
+                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                </svg>
+</a> 
+
+             <a
+    class="cursor-pointer text-gray-400 hover:text-discord" title="Visit me on Discord" href="https://discordapp.com/users/533726823201243137"
+    title="Visit me on Discord" href="https://discordapp.com/users/533726823201243137" class="hover:text-discord"
+    target="__blank"
+    rel="noopener nofollow"
+>
+    <span class="sr-only">Discord</span>
+                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+                </svg>
+</a> 
+
+             <a
+    class="cursor-pointer text-gray-400 hover:text-telegram" title="Visit me on telegram" href="https://t.me/JustSteveKing"
+    title="Visit me on telegram" href="https://t.me/JustSteveKing" class="hover:text-telegram"
+    target="__blank"
+    rel="noopener nofollow"
+>
+    <span class="sr-only">telegram</span>
+                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                </svg>
+</a> 
+
+        </div>
+        <p class="mt-8 text-center text-base text-gray-400">
+            &copy; 2021 Steve McDougall. All rights reserved.
+        </p>
+    </div>
+</footer> 
+    </body>
+</html>

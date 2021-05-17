@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <title>Adventures in PHP - PHP URI Builder</title>
+
+        <script type="module">
+            document.documentElement.classList.remove('no-js');
+            document.documentElement.classList.add('js');
+        </script>
+
+        <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,300i,400,400i,700,700i,800,800i,900,900i" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,700,700i,800,800i,900,900i" rel="stylesheet">
+        <link rel="stylesheet" href="/assets/build/css/main.css?id=1a1396f4c022d69a6250">
+
+        <meta name="description" content="In PHP you can easily build a URL by concatenating strings, and iterate that process nicely. However, I hate this approach. It doesn&#039;t feel true to OOP, and it definitely isn&#039;t testable">
+
+        <meta property="og:title" content="Adventures in PHP - PHP URI Builder">
+        <meta property="og:description" content="In PHP you can easily build a URL by concatenating strings, and iterate that process nicely. However, I hate this approach. It doesn&#039;t feel true to OOP, and it definitely isn&#039;t testable">
+        <meta property="og:image" content="/assets/images/uploads/uri-builder.png">
+        <meta property="og:image:alt" content="JustSteveKing - Consultant CTO, Freelance Software Engineer, Community Advocate">
+        <meta property="og:locale" content="en_GB">
+        <meta property="og:type" content="article">
+        <meta proporty="og:url" content="/adventures-in-php-php-uri-builder">
+
+        <meta name="twitter:widgets:new-embed-design" content="on">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="Adventures in PHP - PHP URI Builder">
+        <meta name="twitter:description" content="In PHP you can easily build a URL by concatenating strings, and iterate that process nicely. However, I hate this approach. It doesn&#039;t feel true to OOP, and it definitely isn&#039;t testable">
+        <meta name="twitter:site" content="@JustSteveKing">
+        <meta name="twitter:creator" content="@JustSteveKing">
+        <meta name="twitter:image" content="/assets/images/uploads/uri-builder.png">
+        <meta name="twitter:image:alt" content="JustSteveKing - Consultant CTO, Freelance Software Engineer, Community Advocate">
+
+        <link rel="canonical" href="/adventures-in-php-php-uri-builder">
+
+        <link rel="icon" href="/assets/favicon.ico">
+        <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+        <link rel="apple-touch-icon" href="/assets/favicon.png">
+        <link rel="manifest" href="/assets/site.webmanifest">
+        <meta name="theme-color" content="#ffffff">
+        
+        <script src="/assets/build/js/main.js?id=718247a870e5977545e7" defer></script>
+        
+        <script type="application/ld+json">
+        {
+            "@content": "https://schema.org/",
+            "@type": "Person",
+            "name": "Steve McDougall",
+            "url": "https://www.juststeveking.uk/",
+            "image": "https://www.juststeveking.uk/images/avatar.png",
+            "sameAs": [
+                "https://github.com/JustSteveKing",
+                "https://twitter.com/JustSteveKing",
+                "https://www.linkedin.com/in/steve-mcdougall/"
+            ],
+            "jobTitle": "Technical Lead",
+            "worksFor": {
+                "@type": "Organization",
+                "name": "Squarefoot Capital Limited",
+                "url": "https://sqft.capital",
+                "foundingDate": "2019-10-10",
+                "sameAs": [
+                    "https://www.linkedin.com/company/squarefootcapital/"
+                ],
+                "description": "sqft.capital is a platform solely for UK property developers to model deals and raise funding, quickly and consistently." 
+            }
+        }
+        </script>
+
+                    <!-- Fathom - beautiful, simple website analytics -->
+            <script
+                src="https://cdn.usefathom.com/script.js"
+                data-site="SGJKEWOR"
+                defer
+            ></script>
+            <!-- / Fathom -->
+            </head>
+    <body class="antialiased bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-50">
+         <nav class="container mx-auto py-12">
+    <ul class="flex items-center justify-center space-x-6 uppercase">
+                    <li>
+                 <a
+    class="cursor-pointer text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-50" title="Return Home" href="/"
+    title="Return Home" href="/"
+>
+    Home
+</a> 
+            </li>
+                    <li>
+                 <a
+    class="cursor-pointer text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-50" title="Recent Articles" href="/blog"
+    title="Recent Articles" href="/blog"
+>
+    Articles
+</a> 
+            </li>
+                    <li>
+                 <a
+    class="cursor-pointer text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-50" title="Open Source packages I have made" href="/open-source"
+    title="Open Source packages I have made" href="/open-source"
+>
+    Open Source
+</a> 
+            </li>
+            </ul>
+</nav> 
+        
+            <main class="max-w-3xl mx-auto px-4 sm:px-6 xl:max-w-5xl xl:px-0">
+        <article class="xl:divide-y xl:divide-gray-200">
+            <header class="pt-6 xl:pb-10">
+                <div class="space-y-1 text-center">
+                    <dl class="space-y-10">
+                        <div>
+                            <dt class="sr-only">
+                                Published on
+                            </dt>
+                            <dd class="text-base leading-6 font-medium">
+                                <time datetime="2020-10-13">
+                                    Tuesday, 13th October 2020
+                                </time>
+                            </dd>
+                        </div>
+                    </dl>
+                    <div>
+                        <h1 class="text-3xl leading-9 font-extrabold tracking-wider sm:text-4xl sm:leading-10 md:text-5xl md:leading-14">
+                            Adventures in PHP - PHP URI Builder
+                        </h1>
+                    </div>
+                </div>
+            </header>
+
+        <div class="divide-y xl:divide-y-0 divide-gray-200 xl:grid xl:grid-cols-4 xl:col-gap-6 pb-16 xl:pb-20" style="grid-template-rows: auto 1fr;">
+            <dl class="pt-6 pb-10 xl:pt-11 xl:border-b xl:border-gray-200">
+                <dt class="sr-only">Authors</dt>
+                <dd>
+                    <ul class="flex justify-center xl:block space-x-8 sm:space-x-12 xl:space-x-0 xl:space-y-8">
+                        <li class="flex items-center space-x-2">
+                             <img
+    src="/assets/images/avatar.png"
+    alt="Steve McDougall Avatar"
+    class="object-fit object-center rounded-full w-10 h-10"
+/> 
+                            <dl class="text-sm font-medium leading-5 whitespace-no-wrap">
+                                <dt class="sr-only">Name</dt>
+                                <dd>Steve McDougall</dd>
+                                <dt class="sr-only">Twitter</dt>
+                                <dd>
+                                     <a
+    class="cursor-pointer text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-50" href="https://twitter.com/JustSteveKing" target="__blank" rel="noopener nofollow" title="Follow Steve on twitter"
+    href="https://twitter.com/JustSteveKing" target="__blank" rel="noopener nofollow" title="Follow Steve on twitter"
+>
+    @JustSteveKing
+</a> 
+                                </dd>
+                            </dl>
+                        </li>
+                    </ul>
+                </dd>
+            </dl>
+            <div class="divide-y divide-gray-200 xl:pb-0 xl:col-span-3 xl:row-span-2">
+                <div class="max-w-3xl leading-8 text-lg space-y-3 text-gray-800 dark:text-gray-50 pt-10 pb-8 px-3">
+                    <img src="/assets/images/uploads/uri-builder.png"
+                        alt="Adventures in PHP - PHP URI Builder"
+                        class="rounded shadow-md"
+                    />
+                    <p>I would like to announce my latest package &#42;uri-builder&#42; which is a fluent
+interface for building a URI string. Now, it might sound simple - and you
+might wonder why did I build this. So without further ado, let me explain:</p>
+
+<p>A lot of us have been there before; we need to build a URI to call a 3rd party API but juggling things like query parameters and paths can be a pain. In php we have &#96;parse_url&#96; which is &#42;almost&#42; really good for parsing a url. The main problem I have with this function is that you cannot guarantee it's outcome, also there is no reverse of it!</p>
+
+<p>This was the deciding factor for me to build a package to handle this for me. I build quite a few Software Development Kits for clients and for open source, and it is always a bit of a pain not having a clean way to build and pass URLs through to methods, and not having this aspect of our code as testable as it could be.</p>
+
+<p>Anytime I start a new package, it is usually because I am trying to solve a problem I had encountered or one that I know I will encounter before too long. Unlike when building an application or an api, where you start with domain modelling and move onto testing then implementation, building a package I always take a very specific route;</p>
+
+<ul>
+<li><p>Design the package API: How do I want to work with this package, what makes sense, and how many hoops do I have to jump through for simple and more complex functionality.</p></li>
+<li><p>Write tests around the functionality I have planned: This is usually where I take a second pass at how complicated the packages API is.</p></li>
+<li><p>Write implementation code: This is where I put code into action, and where I worry less about how the package API works and more about writing good code that is property Type Hinted.</p></li>
+<li><p>Build a test implementation, aside from code tests: I find this step extremely helpful, I typically have an &#96;examples/test.php&#96; file that I use locally (never commited) where I play with the code I have created. This is aside from any programatic tests I write and any design that I have done. This is usually where I notice potential bugs, and anywhere I feel the package could be improved.</p></li>
+<li><p>Write a well documented README so that I can explain how to install and use the package I am creating.</p></li>
+<li><p>Run static analysis and code checker tools, to make sure that everything is to a quality I am happy to publish.</p></li>
+<li><p>Publish to github and make sure the tests run on more than just my local machine.</p></li>
+<li><p>Submit my package to packagist, and hook up things like Scrutinizer (which even to this day I struggle with consistency).</p></li>
+</ul>
+
+<p>Every package I build takes this approach, and it takes it for a reason.</p>
+
+<p>Enough of that segway, back to the URI Builder package.</p>
+
+<p>So, using the built in &#96;parse_url&#96; you are returned with an array, and you then also have to pass arguments after running if you want additional parts to the URI you just passed it. You also may get an array back, you may get false, oh and the array could &#95;also&#95; be empty.</p>
+
+<p>You can feel the frustration right there in that sentence. In 2020, where we have AI reminding us that we have an appointment at our doctors and that there is light traffic so may need to leave a little earlier than usual - parse_url can't guarantee what it is going to give us.</p>
+
+<p>My first thought on this package, was that I need to guarantee a minimum that can be passed to the class that will alow it to run, otherwise if there is an issue, or we aren't going to get the return we would hope for, or for anything else: throw a &#96;RuntimeException&#96; - halt the process and deal with this issue, because this URL is malformed or missing parts, so a future part of your application that may require this URI is &#42;not&#42; going to function properly.</p>
+
+<p>I added 2 ways to use this package, you can either build this up programatically:</p>
+
+<pre><code class="language-php"><br />use JustSteveKing\UriBuilder\Uri;
+
+
+// Creates a URI for https://www.juststeveking.uk
+
+$uri = Uri::build()
+  -&gt;addScheme('https') // https
+  -&gt;addHost('www.juststeveking.uk') // https://www.juststeveking.uk
+  -&gt;addPath('php-online-the-story-so-far') // https://www.juststeveking.uk/php-online-the-story-so-far
+  -&gt;addFragment('top'); // https://www.juststeveking.uk/php-online-the-story-so-far#top
+
+// Use a magic method to output the URI
+
+echo (string) $uri; // https://www.juststeveking.uk/php-online-the-story-so-far#top
+
+
+// Use the internal function to output the URI
+
+echo $uri-&gt;toString(); // https://www.juststeveking.uk/php-online-the-story-so-far#top
+
+</code></pre>
+
+<p>Alternatively, you can build the object from a string as an alternative to &#96;parse_url&#96;:</p>
+
+<pre><code class="language-php"><br />use JustSteveKing\UriBuilder\Uri;
+
+
+$uri = Uri::fromString("https://www.juststeveking.uk/php-online-the-story-so-far#top");
+
+
+$uri-&gt;scheme(); // https
+
+$uri-&gt;host(); // www.juststeveking.uk
+
+$uri-&gt;path(); // php-online-the-story-so-far
+
+$uri-&gt;fragment(); // top
+
+
+$uri-&gt;addPath('my-first-go-module-go-api-problem');
+
+
+echo $uri-&gt;toString(); // https://www.juststeveking.uk/my-first-go-module-go-api-problem#top
+
+</code></pre>
+
+<p>As you can see these pieces that make up our URI are very easily mutated and changed as needed. There is no need for immutable behaviour here - the purpose of this library is to allow you to build and change URIs as and when you need - even if it is the same instance.</p>
+                </div>
+            </div>
+            <footer class="text-sm font-medium leading-5 divide-y divide-gray-200 xl:col-start-1 xl:row-start-2">
+                <div class="space-y-8 py-8">
+                    <div>
+                        <h2 class="text-xs tracking-wide uppercase">
+                            Tags
+                        </h2>
+                        <div class="space-x-2 flex flex-wrap">
+                                                             <a
+    class="cursor-pointer hover:underline text-indigo-500 dark:text-indigo-200 hover:text-indigo-800 dark:hover:text-indigo-50" href="/blog/tags/php" title="View articles in php"
+    href="/blog/tags/php" title="View articles in php"
+>
+    php
+</a> 
+                                                             <a
+    class="cursor-pointer hover:underline text-indigo-500 dark:text-indigo-200 hover:text-indigo-800 dark:hover:text-indigo-50" href="/blog/tags/package" title="View articles in package"
+    href="/blog/tags/package" title="View articles in package"
+>
+    package
+</a> 
+                                                             <a
+    class="cursor-pointer hover:underline text-indigo-500 dark:text-indigo-200 hover:text-indigo-800 dark:hover:text-indigo-50" href="/blog/tags/http" title="View articles in http"
+    href="/blog/tags/http" title="View articles in http"
+>
+    http
+</a> 
+                                                             <a
+    class="cursor-pointer hover:underline text-indigo-500 dark:text-indigo-200 hover:text-indigo-800 dark:hover:text-indigo-50" href="/blog/tags/uri builder" title="View articles in uri builder"
+    href="/blog/tags/uri builder" title="View articles in uri builder"
+>
+    uri builder
+</a> 
+                                                    </div>
+                    </div>
+                </div>
+                <div class="space-y-8 py-8">
+                    <div>
+                        <h2 class="text-xs tracking-wide uppercase">
+                            Reading Time
+                        </h2>
+                        <div class="space-x-2 flex flex-wrap">
+                            <p>5 min read</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="pt-8">
+                    <a class="text-teal-500 hover:text-teal-600" href="/">
+                        ← Back to the blog
+                    </a>
+                </div>
+            </footer>
+        </div>
+        </article>
+    </main>
+        
+         <footer>
+    <div class="max-w-7xl mx-auto py-12 px-4 overflow-hidden sm:px-6 lg:px-8">
+        <nav class="-mx-5 -my-2 flex flex-wrap justify-center" aria-label="Footer">
+                            <div class="px-5 py-2 uppercase">
+                     <a
+    class="cursor-pointer text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-50" title="Return Home" href="/"
+    title="Return Home" href="/"
+>
+    Home
+</a> 
+                </div>
+                            <div class="px-5 py-2 uppercase">
+                     <a
+    class="cursor-pointer text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-50" title="Recent Articles" href="/blog"
+    title="Recent Articles" href="/blog"
+>
+    Articles
+</a> 
+                </div>
+                            <div class="px-5 py-2 uppercase">
+                     <a
+    class="cursor-pointer text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-50" title="Open Source packages I have made" href="/open-source"
+    title="Open Source packages I have made" href="/open-source"
+>
+    Open Source
+</a> 
+                </div>
+                    </nav>
+        <div class="mt-8 flex justify-center space-x-6">
+
+             <a
+    class="cursor-pointer text-gray-400 hover:text-linkedin" title="Visit me on LinkedIn" href="https://www.linkedin.com/in/steve-mcdougall/"
+    title="Visit me on LinkedIn" href="https://www.linkedin.com/in/steve-mcdougall/" class="hover:text-linkedin"
+    target="__blank"
+    rel="noopener nofollow"
+>
+    <span class="sr-only">LinkedIn</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                </svg>
+</a> 
+
+             <a
+    class="cursor-pointer text-gray-400 hover:text-twitter" title="Visit me on twitter" href="https://twitter.com/JustSteveKing"
+    title="Visit me on twitter" href="https://twitter.com/JustSteveKing" class="hover:text-twitter"
+    target="__blank"
+    rel="noopener nofollow"
+>
+    <span class="sr-only">twitter</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                </svg>
+</a> 
+
+             <a
+    class="cursor-pointer text-gray-400 hover:text-github dark:hover:text-white" title="Visit me on GitHub" href="https://github.com/JustSteveKing"
+    title="Visit me on GitHub" href="https://github.com/JustSteveKing" class="hover:text-github dark:hover:text-white"
+    target="__blank"
+    rel="noopener nofollow"
+>
+    <span class="sr-only">GitHub</span>
+                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                </svg>
+</a> 
+
+             <a
+    class="cursor-pointer text-gray-400 hover:text-discord" title="Visit me on Discord" href="https://discordapp.com/users/533726823201243137"
+    title="Visit me on Discord" href="https://discordapp.com/users/533726823201243137" class="hover:text-discord"
+    target="__blank"
+    rel="noopener nofollow"
+>
+    <span class="sr-only">Discord</span>
+                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+                </svg>
+</a> 
+
+             <a
+    class="cursor-pointer text-gray-400 hover:text-telegram" title="Visit me on telegram" href="https://t.me/JustSteveKing"
+    title="Visit me on telegram" href="https://t.me/JustSteveKing" class="hover:text-telegram"
+    target="__blank"
+    rel="noopener nofollow"
+>
+    <span class="sr-only">telegram</span>
+                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                </svg>
+</a> 
+
+        </div>
+        <p class="mt-8 text-center text-base text-gray-400">
+            &copy; 2021 Steve McDougall. All rights reserved.
+        </p>
+    </div>
+</footer> 
+    </body>
+</html>
