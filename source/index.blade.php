@@ -6,7 +6,7 @@ title: JustSteveKing - Consultant CTO, Software Engineer, Community Advocate | j
 
 @section('body')
     <main class="container mx-auto py-12">
-        <section class="flex items-center justify-center space-x-12">
+        <section class="flex items-center justify-center space-x-12 px-3">
             <picture class="flex">
                 <x-avatar
                     class="h-24 w-24 md:h-32 md:w-32"
@@ -16,7 +16,7 @@ title: JustSteveKing - Consultant CTO, Software Engineer, Community Advocate | j
                 Steve McDougall
             </h1>
         </section>
-        <section class="flex items-center justify-center space-x-6">
+        <section class="flex items-center justify-center space-x-6 px-3">
             <article class="py-12">
                 <div class="max-w-3xl leading-7 text-md space-y-3 text-gray-800 dark:text-gray-50">
                     <p>👋 Hey there, I'm Steve, but you may know me better as 
