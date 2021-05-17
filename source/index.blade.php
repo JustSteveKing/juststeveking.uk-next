@@ -9,7 +9,7 @@ title: JustSteveKing - Consultant CTO, Software Engineer, Community Advocate | j
         <section class="flex items-center justify-center space-x-12 px-3">
             <picture class="flex">
                 <x-avatar
-                    class="h-24 w-24 md:h-32 md:w-32"
+                    class="h-24 w-24"
                 />
             </picture>
             <h1 class="text-5xl font-bold">
