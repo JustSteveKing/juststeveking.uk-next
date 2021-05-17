@@ -16,8 +16,6 @@ class ParsedownParser extends MarkdownParser
 
     public function parse($markdown)
     {
-        return $this->parser->text(
-            text: $markdown,
-        );
+        return $this->parser->text($markdown);
     }
 }

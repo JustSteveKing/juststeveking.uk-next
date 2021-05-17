@@ -20,26 +20,26 @@ class GenerateSitemap
     public function handle(Jigsaw $jigsaw): void
     {
         $baseUrl = $jigsaw->getConfig(
-            key: 'baseUrl',
+            'baseUrl',
         );
 
         if (! $baseUrl) {
             throw new RuntimeException(
-                message: "To generate a sitemap.xml file, please specify a 'baseUrl' in config.php."
+                "To generate a sitemap.xml file, please specify a 'baseUrl' in config.php."
             );
         }
 
         $sitemap = new Sitemap(
-            filePath: $jigsaw->getDestinationPath() . '/sitemap.xml',
+            $jigsaw->getDestinationPath() . '/sitemap.xml',
         );
 
         collect($jigsaw->getOutputPaths())
-        ->reject(fn (string$path): bool => $this->isExcluded(path: $path))
+        ->reject(fn ($path) => $this->isExcluded(path: $path))
         ->each(function (string $path) use ($baseUrl, $sitemap) {
             $sitemap->addItem(
-                location: rtrim($baseUrl, '/') . $path,
-                lastModified: time(),
-                changeFrequency: Sitemap::DAILY,
+                rtrim($baseUrl, '/') . $path,
+                time(),
+                Sitemap::DAILY,
             );
         });
 

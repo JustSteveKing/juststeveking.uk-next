@@ -10,7 +10,7 @@ class GenerateReadingTime
 {
     public function handle(Jigsaw $jigsaw): void
     {
-        $jigsaw->getCollection(collection: 'articles')->map(function ($article): void {
+        $jigsaw->getCollection('articles')->map(function ($article): void {
             $totalWords = str_word_count(strip_tags($article->getContent()));
             $minutesToRead = round($totalWords / 200);
 
