@@ -38,7 +38,7 @@
         <link rel="alternate" type="application/rss+xml" title="{{ $page->title }}" href="{{ $page->baseUrl.'/feed.xml' }}" />
 
         <!-- PHPOnline Domain Verification -->
-        <meta type="phponline:verification" content="phponline:e1wmN0TcK4gr" />
+        <meta name="phponline:verification" content="phponline:e1wmN0TcK4gr" />
 
         <link rel="icon" href="/assets/favicon.ico">
         <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
