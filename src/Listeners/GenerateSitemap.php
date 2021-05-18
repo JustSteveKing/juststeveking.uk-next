@@ -34,8 +34,9 @@ class GenerateSitemap
         );
 
         collect($jigsaw->getOutputPaths())
-        ->reject(fn ($path) => $this->isExcluded(path: $path))
-        ->each(function (string $path) use ($baseUrl, $sitemap) {
+        ->reject(function ($path) {
+            return $this->isExcluded($path);
+        })->each(function (string $path) use ($baseUrl, $sitemap) {
             $sitemap->addItem(
                 rtrim($baseUrl, '/') . $path,
                 time(),

@@ -1,10 +1,19 @@
 <?php
 
+use App\Listeners\GenerateFeed;
 use TightenCo\Jigsaw\Jigsaw;
 use App\Listeners\GenerateIndex;
 use App\Listeners\GenerateSitemap;
 use App\Listeners\GenerateReadingTime;
 
-$events->afterBuild(GenerateIndex::class);
-$events->afterBuild(GenerateSitemap::class);
+// Generate reading time per article
 $events->afterCollections(GenerateReadingTime::class);
+
+// Generate search Index for later use
+$events->afterBuild(GenerateIndex::class);
+
+// Generate a sitemap
+$events->afterBuild(GenerateSitemap::class);
+
+// Generate RSS Feed
+$event->afterBuild(GenerateFeed::class);

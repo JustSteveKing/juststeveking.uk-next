@@ -125,6 +125,11 @@ return [
             'link' => '/open-source',
             'text' => 'Open Source',
             'title' => 'Open Source packages I have made',
-        ]
+        ],
+        [
+            'link' => '/feed.xml',
+            'text' => 'RSS Feed',
+            'title' => 'Subscribe to my RSS feed',
+        ],
     ],   
 ];
