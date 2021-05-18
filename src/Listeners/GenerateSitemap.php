@@ -50,8 +50,8 @@ class GenerateSitemap
     public function isExcluded(string $path): bool
     {
         return Str::is(
-            pattern: $this->exclude,
-            value: $path,
+            $this->exclude,
+            $path,
         );
     }
 }
