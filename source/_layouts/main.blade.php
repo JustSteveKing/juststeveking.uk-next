@@ -35,7 +35,7 @@
         <meta name="twitter:image:alt" content="{{ $page->social_image_alt }}">
 
         <link rel="canonical" href="{{ $page->getUrl() }}">
-        <link rel="alternate" type="application/rss+xml" title="{{ $page->siteName }}" href="{{ $page->baseUrl.'/rss.xml' }}" />
+        <link rel="alternate" type="application/rss+xml" title="{{ $page->siteName }}" href="{{ $page->baseUrl.'/feed.xml' }}" />
 
         <link rel="icon" href="/assets/favicon.ico">
         <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
