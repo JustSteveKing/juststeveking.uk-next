@@ -16,4 +16,4 @@ $events->afterBuild(GenerateIndex::class);
 $events->afterBuild(GenerateSitemap::class);
 
 // Generate RSS Feed
-$event->afterBuild(GenerateFeed::class);
+$events->afterBuild(GenerateFeed::class);

@@ -26,12 +26,12 @@ class GenerateFeed
         $channel = new Channel();
 
         $channel
-            ->title($config['siteName'])
-            ->description($config['siteDescription'])
+            ->title($config['title'])
+            ->description($config['description'])
             ->url($config['baseUrl'])
             ->feedUrl(rtrim($config['baseUrl'], '/') . '/feed.xml')
             ->language('en-GB')
-            ->copyright('Copyright © '. $config['siteName'] . ' ' . (new \DateTime())->format('Y'))
+            ->copyright('Copyright © '. $config['title'] . ' ' . (new \DateTime())->format('Y'))
             ->pubDate((new \DateTime())->getTimestamp())
             ->lastBuildDate((new \DateTime())->getTimestamp())
             ->appendTo($feed);

@@ -1,0 +1,32 @@
+{!! '<'.'?'.'xml version="1.0" encoding="UTF-8" ?>' !!}
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:media="http://search.yahoo.com/mrss/">
+    <channel>
+        <title>{{ $page->title }}</title>
+        <link>{{ $page->baseUrl }}</link>
+        <description><![CDATA[{{ $page->description }}]]></description>
+        <atom:link href="{{ $page->getUrl() }}" rel="self" type="application/rss+xml" />
+        <language>{{ $page->siteLanguage }}</language>
+        <lastBuildDate>{{ $articles->first()->getDate()->format(DateTime::RSS) }}</lastBuildDate>
+
+        @foreach($artiles as $article)
+            <item>
+                <title><![CDATA[{!! $article->title !!}]]></title>
+                <link>{{ $article->getUrl() }}</link>
+                <guid isPermaLink="true">{{ $article->getUrl() }}</guid>
+                <description><![CDATA[{!! $article->description !!}]]></description>
+                <content:encoded><![CDATA[{!! $article->getContent() !!}]]></content:encoded>
+                <dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">{{ $article->author }}</dc:creator>
+                <pubDate>{{ $article->getDate()->format(DateTime::RSS) }}</pubDate>
+
+                @if($article->social_image)
+                <media:content
+                        medium="image"
+                        url="{{ $page->baseUrl . $article->social_image }}"
+                        type="image/jpeg"
+                        width="150"
+                        height="150" />
+                @endif
+            </item>
+        @endforeach
+    </channel>
+</rss>
