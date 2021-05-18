@@ -40,7 +40,7 @@ return [
                 );
 
                 $packages = $packagist->getPackagesNamesByVendor(
-                    vendor: 'juststeveking',
+                    'juststeveking',
                 );
 
                 return collect($packages['packageNames'])->map(function ($package) use($packagist) {
