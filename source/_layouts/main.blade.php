@@ -37,6 +37,9 @@
         <link rel="canonical" href="{{ $page->getUrl() }}">
         <link rel="alternate" type="application/rss+xml" title="{{ $page->title }}" href="{{ $page->baseUrl.'/feed.xml' }}" />
 
+        <!-- PHPOnline Domain Verification -->
+        <meta type="phponline:verification" content="phponline:e1wmN0TcK4gr" />
+
         <link rel="icon" href="/assets/favicon.ico">
         <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
         <link rel="apple-touch-icon" href="/assets/favicon.png">
