@@ -8,7 +8,7 @@ use Spatie\Packagist\PackagistUrlGenerator;
 
 return [
     'production' => false,
-    'baseUrl' => '',
+    'baseUrl' => 'https://www.juststeveking.uk/',
     'title' => 'JustSteveKing',
     'type' => 'website',
     'twitter' => '@JustSteveKing',
@@ -48,13 +48,17 @@ return [
                     $repo = $packagist->getPackage($package);
                     $package = $repo['package'];
 
-                    return [
-                        'title' => $package['name'],
-                        'description' => $package['description'],
-                        'time' => Carbon::parse($package['time']),
-                        'maintainers' => collect($package['maintainers'])->first(),
-                        'versions' => $package['versions'],
-                    ];
+                    if (! isset($package['abandoned']) || $package['abandoned'] !== true) {
+                        return [
+                            'title' => $package['name'],
+                            'description' => $package['description'],
+                            'time' => Carbon::parse($package['time']),
+                            'maintainers' => collect($package['maintainers'])->first(),
+                            'versions' => $package['versions'],
+                        ];
+                    }
+
+                    return;
                 });
             },
         ]
