@@ -35,8 +35,8 @@ return [
             'sort' => '-time',
             'items' => function () {
                 $packagist = new PackagistClient(
-                    client: new Client(),
-                    url: new PackagistUrlGenerator(),
+                    new Client(),
+                    new PackagistUrlGenerator(),
                 );
 
                 $packages = $packagist->getPackagesNamesByVendor(
