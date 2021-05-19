@@ -18,6 +18,7 @@
                 title="Visit me on LinkedIn"
                 href="https://www.linkedin.com/in/steve-mcdougall/"
                 class="hover:text-linkedin"
+                onclick="window.fathom.trackGoal('C6E6URYJ', 0);"
             >
                 <span class="sr-only">LinkedIn</span>
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -29,6 +30,7 @@
                 title="Visit me on twitter"
                 href="https://twitter.com/JustSteveKing"
                 class="hover:text-twitter"
+                onclick="window.fathom.trackGoal('CZEGD7I0', 0);"
             >
                 <span class="sr-only">twitter</span>
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -40,6 +42,7 @@
                 title="Visit me on GitHub"
                 href="https://github.com/JustSteveKing"
                 class="hover:text-github dark:hover:text-white"
+                onclick="window.fathom.trackGoal('Q0HFSPVT', 0);"
             >
                 <span class="sr-only">GitHub</span>
                 <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -51,6 +54,7 @@
                 title="Visit me on Discord"
                 href="https://discordapp.com/users/533726823201243137"
                 class="hover:text-discord"
+                onclick="window.fathom.trackGoal('6TDA1OH6', 0);"
             >
                 <span class="sr-only">Discord</span>
                 <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -62,6 +66,7 @@
                 title="Visit me on telegram"
                 href="https://t.me/JustSteveKing"
                 class="hover:text-telegram"
+                onclick="window.fathom.trackGoal('O0QXMHGN', 0);"
             >
                 <span class="sr-only">telegram</span>
                 <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">

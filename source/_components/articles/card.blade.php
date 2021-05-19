@@ -21,6 +21,7 @@
                     class="text-indigo-500 hover:text-indigo-600"
                     aria-label="Read &quot;{{ $article->title }}&quot;"
                     href="{{ $article->getUrl() }}"
+                    onclick="window.fathom.trackGoal('KSUA7DHV', 0);"
                 >
                     Read more →
                 </a>

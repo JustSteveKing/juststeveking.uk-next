@@ -25,9 +25,10 @@
                     title="Check out &quot;{{ $package->title }}&quot; on packagist"
                     href="https://packagist.org/packages/{{ $package->title }}"
                     target="__blank"
+                    onclick="window.fathom.trackGoal('8YXQNRIR', 0);"
                     rel="noopener nofollow"
                 >
-                    Check out the package →
+                    Check out this package →
                 </a>
             </div>
         </div>

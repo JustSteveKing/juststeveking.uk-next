@@ -21,6 +21,7 @@ title: JustSteveKing - Consultant CTO, Software Engineer, Community Advocate | j
                         <a
                             href="https://twitter.com/JustSteveKing"
                             target="_blank"
+                            onclick="window.fathom.trackGoal('CZEGD7I0', 0);"
                             rel="noopener nofollow"
                             class="font-semibold hover:underline text-gray-800 dark:text-gray-50"
                         >
