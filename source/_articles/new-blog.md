@@ -14,5 +14,4 @@ blog is specific to what I do as a company; less broad articles about services
 and topics we cover as a company. While this is ok, and it works, it leaves me
 quite constrained in what I can write about.
 
-
 So this blog is about all the things I wish to write about, mostly technical, and gives me a channel to get some thoughts out of my head and onto a markdown file that I can revisit later on.

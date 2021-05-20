@@ -64,12 +64,9 @@ I added 2 ways to use this package, you can either build this up programatically
 
 
 ```php
-
 use JustSteveKing\UriBuilder\Uri;
 
-
 // Creates a URI for https://www.juststeveking.uk
-
 $uri = Uri::build()
   ->addScheme('https') // https
   ->addHost('www.juststeveking.uk') // https://www.juststeveking.uk
@@ -77,14 +74,10 @@ $uri = Uri::build()
   ->addFragment('top'); // https://www.juststeveking.uk/php-online-the-story-so-far#top
 
 // Use a magic method to output the URI
-
 echo (string) $uri; // https://www.juststeveking.uk/php-online-the-story-so-far#top
 
-
 // Use the internal function to output the URI
-
 echo $uri->toString(); // https://www.juststeveking.uk/php-online-the-story-so-far#top
-
 ```
 
 
@@ -92,28 +85,17 @@ Alternatively, you can build the object from a string as an alternative to \`par
 
 
 ```php
-
 use JustSteveKing\UriBuilder\Uri;
-
 
 $uri = Uri::fromString("https://www.juststeveking.uk/php-online-the-story-so-far#top");
 
-
 $uri->scheme(); // https
-
 $uri->host(); // www.juststeveking.uk
-
 $uri->path(); // php-online-the-story-so-far
-
 $uri->fragment(); // top
-
-
 $uri->addPath('my-first-go-module-go-api-problem');
 
-
 echo $uri->toString(); // https://www.juststeveking.uk/my-first-go-module-go-api-problem#top
-
 ```
-
 
 As you can see these pieces that make up our URI are very easily mutated and changed as needed. There is no need for immutable behaviour here - the purpose of this library is to allow you to build and change URIs as and when you need - even if it is the same instance.
