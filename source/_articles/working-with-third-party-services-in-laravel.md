@@ -30,11 +30,15 @@ Firstly, set up a new Laravel project, or use an existing one if you want to add
 The first thing we want to do in this directory is to create a Client that we can use to connect to the API, create a class called `Client` that looks like this:
 
 ```php
+
 namespace App\Services\PingPing;
+
 
 class Client
 {
+
     //
+
 }
 ```
 

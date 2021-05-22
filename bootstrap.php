@@ -19,5 +19,3 @@ $events->afterBuild(GenerateSitemap::class);
 
 // Generate RSS Feed
 $events->afterBuild(GenerateFeed::class);
-
-$container->bind(MarkdownParser::class, ParsedownParser::class);

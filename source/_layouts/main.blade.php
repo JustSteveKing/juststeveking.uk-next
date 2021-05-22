@@ -94,5 +94,6 @@
         <x-footer
             :page="$page"
         />
+
     </body>
 </html>

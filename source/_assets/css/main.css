@@ -2,6 +2,20 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+pre {
+  @apply w-full;
+  @apply whitespace-normal;
+}
+
+code {
+  @apply bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-white px-2 py-1;
+}
+
+code.hljs {
+  @apply bg-transparent;
+  @apply p-0;
+}
+
 .hljs-comment,
 .hljs-quote {
   color: #B6B18B;

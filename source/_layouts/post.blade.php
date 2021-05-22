@@ -58,7 +58,7 @@
                 </dd>
             </dl>
             <div class="divide-y divide-gray-200 xl:pb-0 xl:col-span-3 xl:row-span-2">
-                <div class="max-w-3xl leading-8 text-lg space-y-3 text-gray-800 dark:text-gray-50 pt-10 pb-8 px-3">
+                <div class="prose prose-indigo prose-lg text-gray-800 dark:text-gray-50 pt-10 pb-8 px-3">
                     <img src="{{ $page->social_image }}"
                         alt="{{ $page->title }}"
                         class="rounded shadow-md"
