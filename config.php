@@ -101,11 +101,6 @@ return [
         return (int) max(1, $minutesToRead);
     },
     'navigation' => [
-        [
-            'link' => '/',
-            'text' => 'Home',
-            'title' => 'Return Home',
-        ],
         // [
         //     'link' => '/uses',
         //     'text' => 'Uses',
@@ -123,13 +118,35 @@ return [
         // ],
         [
             'link' => '/open-source',
-            'text' => 'Open Source',
+            'text' => 'Packages',
             'title' => 'Open Source packages I have made',
         ],
+    ],
+    'footerNavigation' => [
+        [
+            'link' => '/blog',
+            'text' => 'Articles',
+            'title' => 'Recent Articles',
+        ],
+        [
+            'link' => '/open-source',
+            'text' => 'Packages',
+            'title' => 'Open Source packages I have made',
+        ],
+        // [
+        //     'link' => '/uses',
+        //     'text' => 'Uses',
+        //     'title' => 'Technology I use',
+        // ],
+        // [
+        //     'link' => '/projects',
+        //     'text' => 'Projects',
+        //     'title' => 'Projects I am working on',
+        // ],
         [
             'link' => '/feed.xml',
-            'text' => 'RSS Feed',
+            'text' => 'Feed',
             'title' => 'Subscribe to my RSS feed',
         ],
-    ],   
+    ]
 ];

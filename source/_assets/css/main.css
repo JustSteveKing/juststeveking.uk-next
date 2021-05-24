@@ -2,9 +2,8 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-pre {
-  @apply w-full;
-  @apply whitespace-normal;
+.prose pre code {
+  @apply whitespace-pre;
 }
 
 code {

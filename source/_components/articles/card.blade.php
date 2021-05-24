@@ -1,14 +1,16 @@
-<li class="py-12">
+<li class="py-6">
     <article class="space-y-2 xl:grid xl:grid-cols-4 xl:space-y-0 xl:items-baseline">
         <div class="space-y-5 xl:col-span-3">
             <div class="space-y-6">
-                <h2 class="text-2xl leading-8 font-bold tracking-tight">
-                    <x-link
+                <h2 class="text-3xl leading-8 font-bold tracking-tight">
+                    <a
+                        class="cursor-pointer hover:underline text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-white text-xl md:text-2xl"
                         aria-label="Read &quot;{{ $article->title }}&quot;"
+                        title="Read &quot;{{ $article->title }}&quot;"
                         href="{{ $article->getUrl() }}"
                     >
                         {{ $article->title }}
-                    </x-link>
+                    </a>
                 </h2>
                 <div class="max-w-3xl leading-7 text-md space-y-3 text-gray-800 dark:text-gray-50">
                     <p>
@@ -20,6 +22,7 @@
                 <a
                     class="text-indigo-500 hover:text-indigo-600"
                     aria-label="Read &quot;{{ $article->title }}&quot;"
+                    title="Read &quot;{{ $article->title }}&quot;"
                     href="{{ $article->getUrl() }}"
                     onclick="window.fathom.trackGoal('KSUA7DHV', 0);"
                 >

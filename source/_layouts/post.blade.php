@@ -5,7 +5,7 @@
 @endphp
 
 @section('body')
-    <main class="max-w-3xl mx-auto px-4 sm:px-6 xl:max-w-5xl xl:px-0">
+    <main itemscope itemtype="https://schema.org/Article" class="max-w-3xl mx-auto px-4 sm:px-6 xl:max-w-5xl xl:px-0">
         <article class="xl:divide-y xl:divide-gray-200">
             <header class="pt-6 xl:pb-10">
                 <div class="space-y-1 text-center">
@@ -15,14 +15,18 @@
                                 Published on
                             </dt>
                             <dd class="text-base leading-6 font-medium">
-                                <time datetime="{{ $page->getDate()->toDateString() }}">
+                                <time
+                                    itemProp="datePublished"
+                                    content="{{ $page->getDate()->toDateString() }}"
+                                    datetime="{{ $page->getDate()->toDateString() }}"
+                                >
                                     {{ $page->getDate()->format('l, jS F Y') }}
                                 </time>
                             </dd>
                         </div>
                     </dl>
                     <div>
-                        <h1 class="text-3xl leading-9 font-extrabold tracking-wider sm:text-4xl sm:leading-10 md:text-5xl md:leading-14">
+                        <h1 itemprop="name" class="text-3xl leading-9 font-extrabold tracking-wider sm:text-4xl sm:leading-10 md:text-5xl md:leading-14">
                             {{ $page->title }}
                         </h1>
                     </div>
@@ -40,7 +44,7 @@
                             />
                             <dl class="text-sm font-medium leading-5 whitespace-no-wrap">
                                 <dt class="sr-only">Name</dt>
-                                <dd>Steve McDougall</dd>
+                                <dd itemprop="publisher">Steve McDougall</dd>
                                 <dt class="sr-only">Twitter</dt>
                                 <dd>
                                     <x-link
@@ -59,11 +63,15 @@
             </dl>
             <div class="divide-y divide-gray-200 xl:pb-0 xl:col-span-3 xl:row-span-2">
                 <div class="prose prose-indigo prose-lg text-gray-800 dark:text-gray-50 pt-10 pb-8 px-3">
-                    <img src="{{ $page->social_image }}"
+                    <img
+                        itemprop="image"
+                        src="{{ $page->social_image }}"
                         alt="{{ $page->title }}"
                         class="rounded shadow-md"
                     />
-                    @yield('content')
+                    <div itemprop="articleBody">
+                        @yield('content')
+                    </div>
                 </div>
             </div>
             <footer class="text-sm font-medium leading-5 divide-y divide-gray-200 xl:col-start-1 xl:row-start-2">
@@ -77,6 +85,9 @@
                                 <x-tag-link
                                     href="{{ '/blog/tags/' . $tag }}"
                                     title="View articles in {{ $tag }}"
+                                    itemscope
+                                    itemtype="https://schema.org/DefinedTerm"
+                                    itemprop="name"
                                 >
                                     {{ $tag }}
                                 </x-tag-link>

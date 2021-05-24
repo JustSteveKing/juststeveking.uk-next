@@ -19,7 +19,7 @@
 
         <meta property="og:title" content="{{ $page->title }}">
         <meta property="og:description" content="{{ $page->description }}">
-        <meta property="og:image" content="{{ {{ $page->baseUrl . $page->social_image }}">
+        <meta property="og:image" content="{{ $page->baseUrl . $page->social_image }}">
         <meta property="og:image:alt" content="{{ $page->social_image_alt }}">
         <meta property="og:locale" content="en_GB">
         <meta property="og:type" content="{{ $page->type ?? 'website' }}">
@@ -31,7 +31,7 @@
         <meta name="twitter:description" content="{{ $page->description }}">
         <meta name="twitter:site" content="{{ $page->twitter }}">
         <meta name="twitter:creator" content="{{ $page->twitter }}">
-        <meta name="twitter:image" content="{{ {{ $page->baseUrl . $page->social_image }}">
+        <meta name="twitter:image" content="{{ $page->baseUrl . $page->social_image }}">
         <meta name="twitter:image:alt" content="{{ $page->social_image_alt }}">
 
         <link rel="canonical" href="{{ $page->getUrl() }}">
@@ -84,12 +84,15 @@
             <!-- / Fathom -->
         @endif
     </head>
-    <body class="antialiased bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-50">
+    <body class="antialiased bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-50">
+        
         <x-navigation
             :page="$page"
         />
         
-        @yield('body')
+        <main class="flex-1 max-w-3xl mx-auto">
+            @yield('body')
+        </main>
         
         <x-footer
             :page="$page"

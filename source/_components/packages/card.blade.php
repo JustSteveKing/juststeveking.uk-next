@@ -3,7 +3,8 @@
         <div class="space-y-5 xl:col-span-3">
             <div class="space-y-6">
                 <h2 class="text-2xl leading-8 font-bold tracking-tight">
-                    <x-link
+                    <a
+                        class="cursor-pointer hover:underline text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-white text-xl md:text-2xl"
                         aria-label="Check out &quot;{{ $package->title }}&quot;"
                         title="Check out &quot;{{ $package->title }}&quot; on packagist"
                         href="https://packagist.org/packages/{{ $package->title }}"
@@ -11,7 +12,7 @@
                         rel="noopener nofollow"
                     >
                         {{ $package->title }}
-                    </x-link>
+                    </a>
                 </h2>
                 <div class="max-w-3xl leading-7 text-md space-y-3 text-gray-800 dark:text-gray-50">
                     <p>
@@ -27,6 +28,7 @@
                     target="__blank"
                     onclick="window.fathom.trackGoal('8YXQNRIR', 0);"
                     rel="noopener nofollow"
+                    class="text-indigo-500 hover:text-indigo-600"
                 >
                     Check out this package →
                 </a>
