@@ -101,11 +101,11 @@ return [
         return (int) max(1, $minutesToRead);
     },
     'navigation' => [
-        // [
-        //     'link' => '/uses',
-        //     'text' => 'Uses',
-        //     'title' => 'Technology I use',
-        // ],
+        [
+            'link' => '/uses',
+            'text' => 'Uses',
+            'title' => 'Technology I use',
+        ],
         [
             'link' => '/blog',
             'text' => 'Articles',
@@ -133,11 +133,11 @@ return [
             'text' => 'Packages',
             'title' => 'Open Source packages I have made',
         ],
-        // [
-        //     'link' => '/uses',
-        //     'text' => 'Uses',
-        //     'title' => 'Technology I use',
-        // ],
+        [
+            'link' => '/uses',
+            'text' => 'Uses',
+            'title' => 'Technology I use',
+        ],
         // [
         //     'link' => '/projects',
         //     'text' => 'Projects',
