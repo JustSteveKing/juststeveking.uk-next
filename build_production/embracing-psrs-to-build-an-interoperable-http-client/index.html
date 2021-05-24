@@ -13,7 +13,7 @@
 
         <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,300i,400,400i,700,700i,800,800i,900,900i" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,700,700i,800,800i,900,900i" rel="stylesheet">
-        <link rel="stylesheet" href="/assets/build/css/main.css?id=1a1396f4c022d69a6250">
+        <link rel="stylesheet" href="/assets/build/css/main.css?id=97d16da7b8a7104e6fd6">
 
         <meta name="description" content="Recently I have been scratching my head over PSR-18. As a new PSR there isn&#039;t a lot of information around it, but I saw that as a challenge. I decided to accept this challenge and build a compliant HTTP client to embrace the future of interoperability.">
 
@@ -23,7 +23,7 @@
         <meta property="og:image:alt" content="JustSteveKing - Consultant CTO, Freelance Software Engineer, Community Advocate">
         <meta property="og:locale" content="en_GB">
         <meta property="og:type" content="article">
-        <meta proporty="og:url" content="/embracing-psrs-to-build-an-interoperable-http-client">
+        <meta proporty="og:url" content="https://www.juststeveking.uk/embracing-psrs-to-build-an-interoperable-http-client">
 
         <meta name="twitter:widgets:new-embed-design" content="on">
         <meta name="twitter:card" content="summary_large_image">
@@ -34,7 +34,11 @@
         <meta name="twitter:image" content="/assets/images/uploads/christian-fregnan-tavkurx-xlw-unsplash.jpg">
         <meta name="twitter:image:alt" content="JustSteveKing - Consultant CTO, Freelance Software Engineer, Community Advocate">
 
-        <link rel="canonical" href="/embracing-psrs-to-build-an-interoperable-http-client">
+        <link rel="canonical" href="https://www.juststeveking.uk/embracing-psrs-to-build-an-interoperable-http-client">
+        <link rel="alternate" type="application/rss+xml" title="Embracing PSRs to build an interoperable Http Client" href="https://www.juststeveking.uk//feed.xml" />
+
+        <!-- PHPOnline Domain Verification -->
+        <meta name="phponline:verification" content="phponline:e1wmN0TcK4gr" />
 
         <link rel="icon" href="/assets/favicon.ico">
         <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
@@ -42,7 +46,7 @@
         <link rel="manifest" href="/assets/site.webmanifest">
         <meta name="theme-color" content="#ffffff">
         
-        <script src="/assets/build/js/main.js?id=718247a870e5977545e7" defer></script>
+        <script src="/assets/build/js/main.js?id=3adf2f0e4ec657222174" defer></script>
         
         <script type="application/ld+json">
         {
@@ -105,6 +109,14 @@
     Open Source
 </a> 
             </li>
+                    <li>
+                 <a
+    class="cursor-pointer text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-50" title="Subscribe to my RSS feed" href="/feed.xml"
+    title="Subscribe to my RSS feed" href="/feed.xml"
+>
+    RSS Feed
+</a> 
+            </li>
             </ul>
 </nav> 
         
@@ -161,7 +173,7 @@
                 </dd>
             </dl>
             <div class="divide-y divide-gray-200 xl:pb-0 xl:col-span-3 xl:row-span-2">
-                <div class="max-w-3xl leading-8 text-lg space-y-3 text-gray-800 dark:text-gray-50 pt-10 pb-8 px-3">
+                <div class="prose prose-indigo prose-lg text-gray-800 dark:text-gray-50 pt-10 pb-8 px-3">
                     <img src="/assets/images/uploads/christian-fregnan-tavkurx-xlw-unsplash.jpg"
                         alt="Embracing PSRs to build an interoperable Http Client"
                         class="rounded shadow-md"
@@ -173,97 +185,67 @@ of interoperability.</p>
 
 <p>If you look at the specifications for <a href="https://www.php-fig.org/psr/psr-18/">PSR-18 on PHP-FIG</a> they are typically pretty confusing, but I read between the lines a little. The first step was to build a class that would accept all the necessary components to bootstrap the client.</p>
 
-<pre><code class="language-php"><br />&lt;?php
-
-
-declare(strict_types=1);
-
-
-namespace JustSteveKing\HttpSlim;
-
+<pre><code class="language-php">namespace JustSteveKing\HttpSlim;
 
 use Psr\Http\Message\StreamFactoryInterface;
-
 use Psr\Http\Message\RequestFactoryInterface;
-
 use Psr\Http\Client\ClientExceptionInterface;
 
-
 class HttpClient implements HttpClientInterface
-
 {
-protected ClientInterface $client;
-
-protected StreamFactoryInterface $streamFactory;
-
-protected RequestFactoryInterface $requestFactory;
+  protected ClientInterface $client;
+  protected StreamFactoryInterface $streamFactory;
+  protected RequestFactoryInterface $requestFactory;
 }
-
 </code></pre>
 
 <p>Now if you have read any of my other posts, or used any of my packages, or seen my posts on twitter, you will know I am a huge fan of named constructors.</p>
 
-<pre><code class="language-php"><br />&lt;?php
-
-
-final protected function __construct(
-ClientInterface $client,
-RequestFactoryInterface $requestFactory,
-StreamFactoryInterface $streamFactory
+<pre><code class="language-php">final protected function __construct(
+  ClientInterface $client,
+  RequestFactoryInterface $requestFactory,
+  StreamFactoryInterface $streamFactory
 ) {
-$this-&gt;client = $client;
-$this-&gt;requestFactory = $requestFactory;
-$this-&gt;streamFactory = $streamFactory;
+  $this-&gt;client = $client;
+  $this-&gt;requestFactory = $requestFactory;
+  $this-&gt;streamFactory = $streamFactory;
 }
-
 
 public static function build(
-ClientInterface $client,
-RequestFactoryInterface $requestFactory,
-StreamFactoryInterface $streamFactory
+  ClientInterface $client,
+  RequestFactoryInterface $requestFactory,
+  StreamFactoryInterface $streamFactory
 ): self {
-return new static(
-$client,
-$requestFactory,
-$streamFactory
-);
+  return new static(
+    $client,
+    $requestFactory,
+    $streamFactory
+  );
 }
-
 </code></pre>
 
 <p>This gives us a good starting point to begin with, from here we can implement our helper methods for making requests and encoding json. Our helper methods follow a typical pattern of, take a URL and an optional body as an array - making sure that we return a PSR-7 compliant Response (but that it typically down to the client library we inject). Here is an example of the post request:</p>
 
-<pre><code class="language-php"><br />&lt;?php
-
-
-...
-
-use \JsonException;
-
+<pre><code class="language-php">use \JsonException;
 use Psr\Http\Message\ResponseInterface;
-
 use JustSteveKing\HttpSlim\Exceptions\RequestError;
 
-...
-
-
 public function post(string $uri, array $body): ResponseInterface
-
 {
-// build out json body content
-try {
-$content = $this-&gt;encodeJson($body);
-} catch (JsonException $exception) {
-throw RequestError::invalidJson($exception); 
-}
+  // build out json body content
+  try {
+    $content = $this-&gt;encodeJson($body);
+  } catch (JsonException $exception) {
+    throw RequestError::invalidJson($exception); 
+  }
 
-$request = $this-&gt;requestFactory-&gt;createRequest('POST', $uri)
+  $request = $this-&gt;requestFactory
+    -&gt;createRequest('POST', $uri)
     -&gt;withAddedHeader('Content-Type', 'application/json')
     -&gt;withBody($this-&gt;streamFactory-&gt;createStream($content));
 
-return $this-&gt;client-&gt;sendRequest($request);
+  return $this-&gt;client-&gt;sendRequest($request);
 }
-
 </code></pre>
 
 <p>Our encodeJson method simply returns a json encoded version of the passed through array.</p>
@@ -352,12 +334,20 @@ return $this-&gt;client-&gt;sendRequest($request);
     Open Source
 </a> 
                 </div>
+                            <div class="px-5 py-2 uppercase">
+                     <a
+    class="cursor-pointer text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-50" title="Subscribe to my RSS feed" href="/feed.xml"
+    title="Subscribe to my RSS feed" href="/feed.xml"
+>
+    RSS Feed
+</a> 
+                </div>
                     </nav>
         <div class="mt-8 flex justify-center space-x-6">
 
              <a
-    class="cursor-pointer text-gray-400 hover:text-linkedin" title="Visit me on LinkedIn" href="https://www.linkedin.com/in/steve-mcdougall/"
-    title="Visit me on LinkedIn" href="https://www.linkedin.com/in/steve-mcdougall/" class="hover:text-linkedin"
+    class="cursor-pointer text-gray-400 hover:text-linkedin" title="Visit me on LinkedIn" href="https://www.linkedin.com/in/steve-mcdougall/" onclick="window.fathom.trackGoal('C6E6URYJ', 0);"
+    title="Visit me on LinkedIn" href="https://www.linkedin.com/in/steve-mcdougall/" class="hover:text-linkedin" onclick="window.fathom.trackGoal('C6E6URYJ', 0);"
     target="__blank"
     rel="noopener nofollow"
 >
@@ -368,8 +358,8 @@ return $this-&gt;client-&gt;sendRequest($request);
 </a> 
 
              <a
-    class="cursor-pointer text-gray-400 hover:text-twitter" title="Visit me on twitter" href="https://twitter.com/JustSteveKing"
-    title="Visit me on twitter" href="https://twitter.com/JustSteveKing" class="hover:text-twitter"
+    class="cursor-pointer text-gray-400 hover:text-twitter" title="Visit me on twitter" href="https://twitter.com/JustSteveKing" onclick="window.fathom.trackGoal('CZEGD7I0', 0);"
+    title="Visit me on twitter" href="https://twitter.com/JustSteveKing" class="hover:text-twitter" onclick="window.fathom.trackGoal('CZEGD7I0', 0);"
     target="__blank"
     rel="noopener nofollow"
 >
@@ -380,8 +370,8 @@ return $this-&gt;client-&gt;sendRequest($request);
 </a> 
 
              <a
-    class="cursor-pointer text-gray-400 hover:text-github dark:hover:text-white" title="Visit me on GitHub" href="https://github.com/JustSteveKing"
-    title="Visit me on GitHub" href="https://github.com/JustSteveKing" class="hover:text-github dark:hover:text-white"
+    class="cursor-pointer text-gray-400 hover:text-github dark:hover:text-white" title="Visit me on GitHub" href="https://github.com/JustSteveKing" onclick="window.fathom.trackGoal('Q0HFSPVT', 0);"
+    title="Visit me on GitHub" href="https://github.com/JustSteveKing" class="hover:text-github dark:hover:text-white" onclick="window.fathom.trackGoal('Q0HFSPVT', 0);"
     target="__blank"
     rel="noopener nofollow"
 >
@@ -392,8 +382,8 @@ return $this-&gt;client-&gt;sendRequest($request);
 </a> 
 
              <a
-    class="cursor-pointer text-gray-400 hover:text-discord" title="Visit me on Discord" href="https://discordapp.com/users/533726823201243137"
-    title="Visit me on Discord" href="https://discordapp.com/users/533726823201243137" class="hover:text-discord"
+    class="cursor-pointer text-gray-400 hover:text-discord" title="Visit me on Discord" href="https://discordapp.com/users/533726823201243137" onclick="window.fathom.trackGoal('6TDA1OH6', 0);"
+    title="Visit me on Discord" href="https://discordapp.com/users/533726823201243137" class="hover:text-discord" onclick="window.fathom.trackGoal('6TDA1OH6', 0);"
     target="__blank"
     rel="noopener nofollow"
 >
@@ -404,8 +394,8 @@ return $this-&gt;client-&gt;sendRequest($request);
 </a> 
 
              <a
-    class="cursor-pointer text-gray-400 hover:text-telegram" title="Visit me on telegram" href="https://t.me/JustSteveKing"
-    title="Visit me on telegram" href="https://t.me/JustSteveKing" class="hover:text-telegram"
+    class="cursor-pointer text-gray-400 hover:text-telegram" title="Visit me on telegram" href="https://t.me/JustSteveKing" onclick="window.fathom.trackGoal('O0QXMHGN', 0);"
+    title="Visit me on telegram" href="https://t.me/JustSteveKing" class="hover:text-telegram" onclick="window.fathom.trackGoal('O0QXMHGN', 0);"
     target="__blank"
     rel="noopener nofollow"
 >
@@ -421,5 +411,6 @@ return $this-&gt;client-&gt;sendRequest($request);
         </p>
     </div>
 </footer> 
+
     </body>
 </html>

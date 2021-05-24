@@ -1,0 +1,1836 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>JustSteveKing</title>
+    <link>https://www.juststeveking.uk/</link>
+    <description>Steve is an experienced CTO with scaling products and development teams. He is a massive advocate for the PHP language, community organiser, open source enthusiast and conference organiser.</description>
+    <atom:link xmlns:atom="http://www.w3.org/2005/Atom" href="https://www.juststeveking.uk/feed.xml" type="application/rss+xml" rel="self"/>
+    <language>en-GB</language>
+    <copyright>Copyright © JustSteveKing 2021</copyright>
+    <pubDate>Sat, 22 May 2021 21:22:14 +0000</pubDate>
+    <lastBuildDate>Sat, 22 May 2021 21:22:14 +0000</lastBuildDate>
+    <item>
+      <title><![CDATA[Working with third party services in Laravel]]></title>
+      <link>https://www.juststeveking.uk/working-with-third-party-services-in-laravel</link>
+      <description><![CDATA[There are many ways to work with 3rd party services in Laravel, here is how I do it. I will walk through setting up a service to connect to the PingPing service]]></description>
+      <content:encoded><![CDATA[<p>I have been working with 3rd party APIs for longer than I care to admit, over
+time I have found a few ways that work nicely for me. In particular when
+working with a Laravel application, it is always good to define a standard for
+how you do things. Not only is this good practice in general, but it also
+makes it predictable when you are trying to add or update or debug anything.
+By following a standard, you know how your projects work from one to another.</p>
+
+<p>In this article, I am going to walk through how I connect and work with 3rd party APIs - what has worked for me and how I like to approach this task. I am going to walk through how to connect to the <a href="https://pingping.io/">PingPing</a> API in your Laravel project, and how you can use it to start getting the monitoring information from your websites.</p>
+
+<p>This article is using <strong>Laravel 8</strong> and <strong>PHP 8</strong>, please do not follow this exactly if you are on lower versions - you will have to slightly adapt.</p>
+
+<p>Firstly, set up a new Laravel project, or use an existing one if you want to add a service onto your existing app. What we need to do is create a new namespace for where our 3rd party APIs will live. I typically store these under <code>App\Services</code> as it makes the most sense to me. From there we want to create the namespace for the API we are working with. Create another directory, so it should look like this: <code>app/Services/PingPing</code>.</p>
+
+<p>The first thing we want to do in this directory is to create a Client that we can use to connect to the API, create a class called <code>Client</code> that looks like this:</p>
+
+<pre><code class="language-php"><br />namespace App\Services\PingPing;
+
+
+class Client
+{
+
+    //
+
+}
+</code></pre>
+
+<p>Next, we want to build up our constructor so that it accepts a few default parameters:</p>
+
+<pre><code class="language-php">public function __construct(
+    protected string $uri,
+    protected string $token,
+) {}
+</code></pre>
+
+<p>What we are going to do with this part, is use a Laravel Service Provider to pull some configuration options and pass them into the constructor when we resolve this class from the container.</p>
+
+<p>In your terminal, create a new Service Provider like: <code>php artisan make:provider PingPingServiceProvider</code>. If all went well, you should now have a file under <code>app/Providers/PingPingServiceProvider</code>. Now we are going to add our Client into the <code>register</code> method so that we can register our Service into the container. Your Service Provider should now look like this:</p>
+
+<pre><code class="language-php">namespace App\Providers;
+
+use App\Services\PingPing\Client;
+use Illuminate\Support\ServiceProvider;
+
+class PingPingServiceProvider extends ServiceProvider
+{
+    public function register()
+    {
+        $this-&gt;app-&gt;singleton(Client::class, function ($app) {
+            return new Client(
+                uri: config('services.ping-ping.uri'),
+                token: config('services.ping-ping.token'),
+            );
+        });
+    }
+
+    public function boot()
+    {
+        //
+    }
+}
+</code></pre>
+
+<p>As you can see from the service provider, we also need to add some config values to our <code>config/services.php</code> file and <code>.env</code> file:</p>
+
+<pre><code class="language-php">return [
+    'ping-ping' =&gt; [
+        'uri' =&gt; env('PING_PING_API_URI', 'https://pingping.io/webapi'),
+        'token' =&gt; env('PING_PING_API_TOKEN'),
+    ],
+];
+</code></pre>
+
+<p>Next we need to register our service into our Laravel application, by adding this Service Provider in <code>config/app.php</code> under 'providers':</p>
+
+<pre><code class="language-php">return [
+    'providers' =&gt; [
+        /*
+        * Application Service Providers...
+        */
+        App\Providers\AppServiceProvider::class,
+        App\Providers\AuthServiceProvider::class,
+        // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\EventServiceProvider::class,
+        App\Providers\RouteServiceProvider::class,
+        App\Providers\PingPingServiceProvider::class,
+    ],
+];
+</code></pre>
+
+<p>So, now we have a basic service set up. We have the environment variables and the config all sorted, we have a Client class which is registered into our container using our Service Provider. We have the beginnings of an API integration.</p>
+
+<p>Our next step is to start working with the API. You can read the PingPing documentation <a href="https://docs.pingping.io/">here</a> if you would like to, but I will walk you through it too.</p>
+
+<p>Firstly, when working with 3rd party APIs, you want to be able to tests working against the API without sending loads of requests. In laravel you can use the Http facade and the <code>fake()</code> method to achieve this which is quite nice. However, I like to add this as a method on my Clients. To do this, I typically create a trait to handle this as I may be working with multiple APIs in an application - all of which need a fake method. I do this by creating a new directory under <code>app/Services/Concerns</code> to follow the Laravel naming convension for traits. Create one that looks like this:</p>
+
+<pre><code class="language-php">namespace App\Services\Concerns;
+
+use Illuminate\Support\Facades\Http;
+
+trait HasFake
+{
+    /**
+    * Proxies a fake call to Illuminate\Http\Client\Factory::fake()
+    * 
+    * @param null|callable|array $callback
+    */
+    public static function fake(
+        null|callable|array $callback = null,
+    ): void {
+        Http::fake($callback);
+    }
+}
+</code></pre>
+
+<p>As you can see we are simply proxying the fake call through to the Http facade and forwarding any arguments along with them.</p>
+
+<p>Now we just need to pull this trait into our Client class, and we can start faking requests:</p>
+
+<pre><code class="language-php">namespace App\Services\PingPing;
+
+use App\Services\Concerns\HasFake;
+
+class Client
+{
+    use HasFake;
+
+    public function __construct(
+        protected string $uri,
+        protected string $token,
+    ) {}
+}
+</code></pre>
+
+<p>Now we are set up for testing our API, we can also start building up requests we may want to send. If you look through the documentation for PingPing you will see that you can get a list of monitors stored on your account quite easily. Let's start with this endpoint, and see how we may need to refactor as we go through.</p>
+
+<p>Our first step is to create a new public method on our Client called <code>monitors</code> so that we can hit an API endpoint. Your method should look like this:</p>
+
+<pre><code class="language-php">public function monitors()
+{
+    $request = Http::withToken(
+        token: $this-&gt;token,
+    );
+
+    $response = $request-&gt;get(
+        url: "{$this-&gt;uri}/monitors",
+    );
+
+    if (! $response-&gt;successful()) {
+        return $response-&gt;toException();
+    }
+
+    return $response;
+}
+</code></pre>
+
+<p>As you can see, we are building up our request with our API token that we injected into our constructor. We then create our response. There are a few things we can do to improve this though.</p>
+
+<p>Currently the exception thrown is a HTML exception, which may not be what we want. Also, we have no retry policy or timeouts set. Lets refactor our Client class to implement these things:</p>
+
+<pre><code class="language-php">namespace App\Services\PingPing;
+
+use App\Services\Concerns\HasFake;
+use Illuminate\Support\Facades\Http;
+
+class Client
+{
+    use HasFake;
+
+    public function __construct(
+        protected string $uri,
+        protected string $token,
+        protected int $timeout = 10,
+        protected null|int $retryTimes = null,
+        protected null|int $retryMilliseconds = null,
+    ) {}
+
+    public function monitors()
+    {
+        $request = Http::withToken(
+            token: $this-&gt;token,
+        )-&gt;withHeaders([
+            'Accept' =&gt; 'application/json',
+        ])-&gt;timeout(
+            seconds: $this-&gt;timeout,
+        );
+
+        if (
+            ! is_null($this-&gt;retryTimes)
+            &amp;&amp; ! is_null($this-&gt;retryMilliseconds)
+        ) {
+            $request-&gt;retry(
+                times: $this-&gt;retryTimes,
+                sleep: $this-&gt;retryMilliseconds,
+            );
+        }
+
+        $response = $request-&gt;get(
+            url: "{$this-&gt;uri}/monitors",
+        );
+
+        if (! $response-&gt;successful()) {
+            return $response-&gt;toException();
+        }
+
+        return $response;
+    }
+}
+</code></pre>
+
+<p>What we are doing now is passing some default values into our constructor so that we can set a default timeout, and how we want to handle any retries. We can now extend our service provider and config to include these values.</p>
+
+<p>Extend your configuration to look like this:</p>
+
+<pre><code class="language-php">return [
+    'ping-ping' =&gt; [
+        'uri' =&gt; env('PING_PING_API_URL', 'https://pingping.io/webapi'),
+        'token' =&gt; env('PING_PING_API_TOKEN'),
+        'timeout' =&gt; env('PING_PING_TIMEOUT', 10),
+        'retry_times' =&gt; env('PING_PING_RETRY_TIMES', null),
+        'retry_milliseconds' =&gt; env('PING_PING_RETRY_MILLISECONDS', null),
+    ],
+];
+</code></pre>
+
+<p>Then extend your service provider to look like this:</p>
+
+<pre><code class="language-php">namespace App\Providers;
+
+use App\Services\PingPing\Client;
+use Illuminate\Support\ServiceProvider;
+
+class PingPingServiceProvider extends ServiceProvider
+{
+    public function register()
+    {
+        $this-&gt;app-&gt;singleton(Client::class, function ($app) {
+            return new Client(
+                uri: config('services.ping-ping.uri'),
+                token: config('services.ping-ping.token'),
+                timeout: config('services.ping-ping.timeout'),
+                retryTimes: config('services.ping-ping.retry_times'),
+                retryMilliseconds: config('services.ping-ping.retry_milliseconds'),
+            );
+        });
+    }
+
+    public function boot()
+    {
+        //
+    }
+}
+</code></pre>
+
+<p>As you can see we are simply extending how we build our constructor to pull in the new values which we store in out env file - or providing the default NULL if we do not need this.</p>
+
+<p>So back to monitors. We can now confirm we can get a Response back from the API, what can we do with it? This is where we have options, and the one we choose depends on what level of integration we need to build. For example, if we were building an SDK to provide to others we would simply return the Response and let the integrator decide how they want to work with the response in their application. But this is our application, and we are building an integration not an SDK.</p>
+
+<p>What we want to do is using the <a href="https://github.com/spatie/data-transfer-object">Spatie Data Transfer Object Package</a> create a series of Data Transfer Objects so that we can map the API response to Objects that are valuable to our application, and don't include lots of extra stuff that your typical HTTP request would have.</p>
+
+<p>Let's start with an action to create our monitor under <code>app/Services/PingPing/Actions/CreateMonitor.php</code> that should look like this when complete:</p>
+
+<pre><code class="language-php">namespace App\Services\PingPing\Actions;
+
+use Carbon\Carbon;
+use App\Services\PingPing\DTO\Checks;
+use App\Services\PingPing\DTO\Uptime;
+use App\Services\PingPing\DTO\Monitor;
+use App\Services\PingPing\DTO\UptimeMeta;
+use App\Services\PingPing\DTO\CertificateHealth;
+use App\Services\PingPing\DTO\CertificateHealthMeta;
+
+class CreateMonitor
+{
+    public static function handle(array $item): Monitor
+    {
+        return new Monitor(
+            id: $item['id'],
+            identifier: $item['identifier'],
+            alias: $item['alias'],
+            scheme: $item['scheme'],
+            host: $item['host'],
+            port: $item['port'],
+            url: $item['url'],
+            statusPage: $item['status_page'],
+            checks: new Checks(
+                uptime: new Uptime(
+                    id: $item['checks']['uptime']['id'],
+                    status: $item['checks']['uptime']['status'],
+                    error: $item['checks']['uptime']['error'],
+                    interval: $item['checks']['uptime']['interval'],
+                    enabled: $item['checks']['uptime']['is_enabled'],
+                    notificationThreshold: $item['checks']['uptime']['notification_threshold'],
+                    lastCheckAt: Carbon::parse($item['checks']['uptime']['last_check_at']),
+                    meta: new UptimeMeta(
+                        httpStatusCode: $item['checks']['uptime']['meta']['http_status_code'],
+                        averageUptimePercentage: $item['checks']['uptime']['meta']['average_uptime_percentage'],
+                        averageResponseTime: $item['checks']['uptime']['meta']['average_response_time'],
+                        offlineSince: Carbon::parse($item['checks']['uptime']['meta']['offline_since']),
+                    ),
+                ),
+                certificateHealth: new CertificateHealth(
+                    id: $item['checks']['certificate_health']['id'],
+                    status: $item['checks']['certificate_health']['status'],
+                    error: $item['checks']['certificate_health']['error'],
+                    interval: $item['checks']['certificate_health']['interval'],
+                    enabled: $item['checks']['certificate_health']['is_enabled'],
+                    notificationThreshold: $item['checks']['certificate_health']['notification_threshold'],
+                    lastCheckAt: Carbon::parse($item['checks']['certificate_health']['last_check_at']),
+                    meta: new CertificateHealthMeta(
+                        issuer: $item['checks']['certificate_health']['meta']['issuer'],
+                        signatureAlgorithm: $item['checks']['certificate_health']['meta']['signature_algorithm'],
+                        selfSigned: $item['checks']['certificate_health']['meta']['is_self_signed'],
+                        validFrom: Carbon::parse($item['checks']['certificate_health']['meta']['valid_from']),
+                        validTo: Carbon::parse($item['checks']['certificate_health']['meta']['valid_to']),
+                    ),
+                ),
+            ),
+        );
+    }
+}
+</code></pre>
+
+<p>As you can see from the above we are mapping everything that the API is responding with currently - for your integration you could choose the parts that are important to yourself and expand when needed.</p>
+
+<p>Let's create our Monitor DTO under <code>app/Services/PingPing/DTO/Monitor.php</code> which should look like this:</p>
+
+<pre><code class="language-php">namespace App\Services\PingPing\DTO;
+
+use Spatie\DataTransferObject\DataTransferObject;
+
+class Monitor extends DataTransferObject
+{
+    public int $id;
+    public string $identifier;
+    public string $alias;
+    public string $scheme;
+    public string $host;
+    public string $port;
+    public string $url;
+    public string $statusPage;
+    public Checks $checks;
+}
+</code></pre>
+
+<p>As you can see in this DTO, we are pulling in a different DTO to handle the checks on a monitor, create this under <code>app/Services/PingPing/DTO/Checks.php</code> and it should look like the following:</p>
+
+<pre><code class="language-php">namespace App\Services\PingPing\DTO;
+
+use Spatie\DataTransferObject\DataTransferObject;
+
+class Checks extends DataTransferObject
+{
+    public Uptime $uptime;
+    public CertificateHealth $certificateHealth;
+}
+</code></pre>
+
+<p>Again as before, we have 2 further DTOs created here that we need to create under the same namespace:</p>
+
+<pre><code class="language-php">namespace App\Services\PingPing\DTO;
+
+class Uptime extends Check
+{
+    public UptimeMeta $meta;
+}
+</code></pre>
+
+<pre><code class="language-php">namespace App\Services\PingPing\DTO;
+
+class CertificateHealth extends Check
+{
+    public CertificateHealthMeta $meta;
+}
+</code></pre>
+
+<p>What you will notice about these two, is that they are extending a completely different class instead of the usual DataTransferObject from Spatie. This is because both have identical fields except their meta information. The Check DTO looks like this:</p>
+
+<pre><code class="language-php">namespace App\Services\PingPing\DTO;
+
+use Carbon\Carbon;
+use Spatie\DataTransferObject\DataTransferObject;
+
+class Check extends DataTransferObject
+{
+    public int $id;
+    public string $status;
+    public null|string $error;
+    public int $interval;
+    public bool $enabled;
+    public int $notificationThreshold;
+    public Carbon $lastCheckAt;
+}
+</code></pre>
+
+<p>Now let us create the UptimeMeta DTO:</p>
+
+<pre><code class="language-php">namespace App\Services\PingPing\DTO;
+
+use Carbon\Carbon;
+use Spatie\DataTransferObject\DataTransferObject;
+
+class UptimeMeta extends DataTransferObject
+{
+    public int $httpStatusCode;
+    public int $averageUptimePercentage;
+    public int $averageResponseTime;
+    public null|Carbon $offlineSince;
+}
+</code></pre>
+
+<p>And now for the CertificateHealthMeta DTO:</p>
+
+<pre><code class="language-php">namespace App\Services\PingPing\DTO;
+
+use Carbon\Carbon;
+use Spatie\DataTransferObject\DataTransferObject;
+
+class CertificateHealthMeta extends DataTransferObject
+{
+    public string $issuer;
+    public string $signatureAlgorithm;
+    public bool $selfSigned;
+    public null|Carbon $validFrom;
+    public null|Carbon $validTo;
+}
+</code></pre>
+
+<p>So now we are mapping all of the response to DTOs using our CreateMonitor Action, we just need to create a MonitorCollection under <code>app/Services/PingPing/Collections/MonitorCollection.php</code> which should look like this:</p>
+
+<pre><code class="language-php">namespace App\Services\PingPing\Collections;
+
+use Illuminate\Support\Collection;
+
+class MonitorCollection extends Collection
+{
+    //
+}
+</code></pre>
+
+<p>Pretty simple right? All we want to do really is extend the Illuminate standard Collection so it can be extended at a later date.</p>
+
+<p>So we have created all of our DTOs, a Collection, an Action to handle the creation. Now we just need to update our Client itself to make over everything!</p>
+
+<pre><code class="language-php">namespace App\Services\PingPing;
+
+use App\Services\Concerns\HasFake;
+use Illuminate\Support\Facades\Http;
+use App\Services\PingPing\Actions\CreateMonitor;
+use App\Services\PingPing\Collections\MonitorCollection;
+
+class Client
+{
+    use HasFake;
+
+    public function __construct(
+        protected string $uri,
+        protected string $token,
+        protected int $timeout = 10,
+        protected null|int $retryTimes = null,
+        protected null|int $retryMilliseconds = null,
+    ) {}
+
+    public function monitors()
+    {
+        $request = Http::withToken(
+            token: $this-&gt;token,
+        )-&gt;withHeaders([
+            'Accept' =&gt; 'application/json',
+        ])-&gt;timeout(
+            seconds: $this-&gt;timeout,
+        );
+
+        if (
+            ! is_null($this-&gt;retryTimes)
+            &amp;&amp; ! is_null($this-&gt;retryMilliseconds)
+        ) {
+            $request-&gt;retry(
+                times: $this-&gt;retryTimes,
+                sleep: $this-&gt;retryMilliseconds,
+            );
+        }
+
+        $response = $request-&gt;get(
+            url: "{$this-&gt;uri}/monitors",
+        );
+
+        if (! $response-&gt;successful()) {
+            return $response-&gt;toException();
+        }
+
+        $collection = new MonitorCollection();
+
+        foreach ($response-&gt;collect('data') as $item) {
+            $monitor = CreateMonitor::handle(
+                item: $item,
+            );
+
+            $collection-&gt;add(
+                item: $monitor,
+            );
+        }
+
+        return $collection;
+    }
+}
+</code></pre>
+
+<p>As you can see, we get the response from our API. Then if it wasn't successful we return the response as an exception, then we create our collection - map over the data in our response as a collection. Use our Action to create a full DTO and push this onto our collection, which we finally return.</p>
+
+<p>The result of all of the above is a simple to use, and easy to extend API integration, which returns specific Objects - which you later extend to make requests yourself. During my time writing this article I was writing the code as I went along and testing in <a href="https://tinkerwell.app/">TinkerwellApp</a> which I have found to be super useful for this sort of work. Below is a screenshot of the final working code and output:</p>
+
+<p><img src="/assets/images/uploads/screenshot-2021-04-30-at-14.30.22.png" alt="Tinkerwell Output" title="Tinkerwell showing the final working code" /></p>
+
+<p>If you enjoyed this article, why not let me know on twitter <a href="https://twitter.com/JustSteveKing">@JustSteveKing</a> or checkout the repo for this tutorial on <a href="https://github.com/JustSteveKing/laravel-api-service-tutorial">GitHub</a></p>
+]]></content:encoded>
+      <guid>https://www.juststeveking.uk/working-with-third-party-services-in-laravel</guid>
+      <pubDate>Fri, 30 Apr 2021 11:13:54 +0000</pubDate>
+      <author>Steve McDougall</author>
+    </item>
+    <item>
+      <title><![CDATA[Adventures in PHP - PHP SDK Builder]]></title>
+      <link>https://www.juststeveking.uk/adventures-in-php-php-sdk-builder</link>
+      <description><![CDATA[Over the years I have built a lot of SDKs to work with 3rd party APIs. Each time I require the same components, so I decided to create a way to bootstrap this process while still allowing flexibility]]></description>
+      <content:encoded><![CDATA[<p>I have been working with 3rd party APIs for a very long time. Each time I
+usually either pull in their SDK, if there is one available, or I build a
+wrapper around their API and work from there. This has been useful and a
+relatively standard way to do this. I have also built a handful of PHP SDKs
+for APIs that do not have SDKs in PHP, or the ones provided were somewhat sub
+par - or I simple wanted to do it my way.</p>
+
+<p>One thing that I have noticed supporting SDKs that I have built, is that there is a tendency to pull in a dependency to handle the Http transport layer. This is common across most SDKs that you will use in PHP.</p>
+
+<p>Herein lies the problem. Let's take an example of building an SDK, and you pull in Guzzle at a specific version. You build the package, release, and install within an application. The application you are building is also using the same version of Guzzle - great! A few months go by, and you need to upgrade your application to the latest version. Suddenly the updated application is using a new version of guzzle, meaning to run your application requires 2 different versions of Guzzle to run. Not cool.</p>
+
+<p>This is where PSR-18 comes in, if you have followed my blog before you would have seen my <a href="https://www.juststeveking.uk/embracing-ps-rs-to-build-an-interoperable-http-client/">article on using PSR-18</a> which explains how you can avoid this situation by following a newer PSR and adding the interoperability. How can we apply this to an SDK? It sounds like there is a lot to juggle. What if we could just use the one dependency that handles the bootstrapping of an SDK, and just focus on adding the implementation we actually care about?</p>
+
+<p>This was my motivation behind my latest open source package, quite simply called <strong>php-sdk,</strong> which aims to handle the underlaying components that you will find in most PHP SDKs. I am not saying this is a one size fits all, I am saying that this is lycra, it will stretch and fit to a point and if you can't quite make it fit perhaps you need something else.</p>
+
+<p>To illustrate how this package works, I am going to walk through building an SDK for the popular Laravel service called <a href="https://forge.laravel.com/">Laravel Forge</a>. To start with you need to sign up for an account, go to the account part of the site, and create an API Key - take note of this as it will not be displayed again.</p>
+
+<p>Next we want to create our initial Forge Client:</p>
+
+<pre><code class="language-php">namespace Demo;
+
+use DI\Container;
+use Demo\Resources\Server;
+use JustSteveKing\PhpSdk\Client;
+use JustSteveKing\UriBuilder\Uri;
+use JustSteveKing\HttpSlim\HttpClient;
+use JustSteveKing\PhpSdk\ClientBuilder;
+use Symfony\Component\HttpClient\Psr18Client;
+use JustSteveKing\HttpAuth\Strategies\BasicStrategy;
+
+class Forge extends Client
+{
+    /**
+     * Forge constructor.
+     * @param string $apikey
+     */
+    public function __construct(string $apikey)
+    {
+        parent::__construct(new ClientBuilder(
+            Uri::fromString('https://forge.laravel.com'),
+            HttpClient::build(
+                new Psr18Client(), // http client (psr-18)
+                new Psr18Client(), // request factory (psr-17)
+                new Psr18Client() // stream factory (psr-17)
+            ),
+            new BasicStrategy(
+                $apikey
+            ),
+            new Container()
+        ));
+    }
+
+    /**
+     * @param string $apikey
+     * @return static
+     */
+    public static function illuminate(string $apikey): self
+    {
+        $client = new self($apikey);
+
+        // Add Resources
+        $client-&gt;addResource('servers', new Server());
+
+        return $client;
+    }
+}
+</code></pre>
+
+<p>Let's walk through what we are doing here. Firstly we are extending &#96;Client&#96; which is part of the php-sdk package. What this does is bootstrap the vast majority of the components required in our SDK, it will also handle the communication between these components. If we have a look at the constructor for &#96;Forge&#96; we see that we are simply passing an API Key, which is the authentication mechanism for the<a href="https://forge.laravel.com/api-documentation"> Laravel Forge API</a>. From here we will simple construct our parent class, but passing in a <a href="https://en.wikipedia.org/wiki/Builder_pattern">Builder Object</a> (BO) called &#96;ClientBuilder&#96;. The purpose of this BO is to build a configuration object that can be validated and reduce the cognitive load of passing in loads of parameters into a constructor.</p>
+
+<p>The ClientBuilder expects a certain amount of parameters, so we will pass through a built Uri using my own <a href="https://packagist.org/packages/juststeveking/uri-builder">Uri builder package</a>, meaning that formatting and manipulating this Uri isn't a worry at all, and we can focus on domain code. We then pass through my own <a href="https://packagist.org/packages/juststeveking/http-slim">HttpClient</a> which is a PSR-18 wrapper, allowing the simple approach to adopting the PSR. Then we pass through something new. I have recently built a new package called <a href="https://github.com/JustSteveKing/http-auth-strategies">http-auth-strategies</a> which is simple and tested way to build authentication headers for API calls. This currently has 2 options of BasicStrategy which is a simple Authorization header, and NullStrategy which is an empty header for those scenrios where authenorization is not required. This package doesn't care about your implementation, how you want to encode this header, the form of it beyond how to build a correct Http header as per specifications.  Lastly we pass through a container, this container <strong>must</strong> follow PSR-11, so that again we can obtain a level of interoperability. Then we have a client. From here we can do a multitude of things. Our static &#96;illuminate&#96; method is a shortcut to the underlying code allowing us to build and register our SDK client all in one, and it also feels familiar from a Laravel perspective.</p>
+
+<p>You will probably notice I am adding a resource in the &#96;illuminate&#96; method, for servers. Here is the code for the server object:</p>
+
+<pre><code class="language-php">namespace Demo\Resources;
+
+use JustSteveKing\PhpSdk\Resources\AbstractResource;
+
+class Server extends AbstractResource
+{
+    /**
+     * @var string
+     */
+    protected string $path = 'api/v1/servers';
+
+    /**
+     * @param null $identifier
+     * @return $this
+     */
+    public function databases($identifier = null): self
+    {
+        $this-&gt;with = ['databases'];
+
+        if (!is_null($identifier)) {
+            $this-&gt;load = $identifier;
+        }
+
+        return $this;
+    }
+}
+</code></pre>
+
+<p>As you can see again we are extending an &#96;AbstractResource&#96;. What this means is that if we did not need to add any other relations or anything to this resource, all we have to do is reference the URI part that this resource related to, and we can start working with them. As you can also see the path for this resource is versioned to a specific part of the API, meaning you can start to version your SDK using namespaces going forward should you wish to. The &#96;databases method&#96;, is a way to build up sub-resources allowing you to select a specific or all databases on a server resource. What this will do under the hood is set the parameters on the resource and allow you to carry on the chain to fullfill your request.</p>
+
+<p>So how do we actually use this code? Here is a simple example:</p>
+
+<pre><code class="language-php">use Demo\Forge;
+
+$key = "api-key-here";
+
+$forge = Forge::illuminate($key);
+
+// Get all Servers
+$servers = $forge-&gt;servers-&gt;get();
+
+// Get a sinle server with an ID of 1234
+$server = $forge-&gt;servers-&gt;find(1234);
+
+// Create a new server
+$newServer = $forge-&gt;servers-&gt;create([/* array of data */]);
+
+// Update a server, an optional 3rd parameter to send the Http Method, defaults to PATCH
+$updated = $forge-&gt;servers-&gt;update(1234, [/* array of data*/]);
+
+// Delete a server
+$deleted = $forge-&gt;servers-&gt;delete(1234);
+
+// Fetch databases from a server
+$databases = $forge-&gt;servers-&gt;databases()-&gt;find(1234);
+
+// Fetch a single database
+$database = $forge-&gt;servers-&gt;databases(4321)-&gt;find(1234);
+</code></pre>
+
+<p>So as you can see, we create a new Forge instance using an API key which would usually be loaded through environment variables. We can then access all methods from the AbstractResource allowing us to fluently build our API calls, in a structured and clean way. All of these methods will return a PSR-7 response meaning that there is consistency.</p>
+
+<p>The key takeaway from this library that I am building, is standards and interoperability. When building a library that will allow others to integrate with your API or service, you do not want to enforce anything beyond what you absolitely have to. The only requirements for using this package is PHP7.4, then PSR implementation libraries. Meaning that if you use this library to create your own SDK, you can either define what implementations you want to use or allow the person using your SDK to provide their own.</p>
+]]></content:encoded>
+      <guid>https://www.juststeveking.uk/adventures-in-php-php-sdk-builder</guid>
+      <pubDate>Mon, 26 Oct 2020 11:59:40 +0000</pubDate>
+      <author>Steve McDougall</author>
+    </item>
+    <item>
+      <title><![CDATA[Adventures in PHP - PHP URI Builder]]></title>
+      <link>https://www.juststeveking.uk/adventures-in-php-php-uri-builder</link>
+      <description><![CDATA[In PHP you can easily build a URL by concatenating strings, and iterate that process nicely. However, I hate this approach. It doesn't feel true to OOP, and it definitely isn't testable]]></description>
+      <content:encoded><![CDATA[<p>I would like to announce my latest package &#42;uri-builder&#42; which is a fluent
+interface for building a URI string. Now, it might sound simple - and you
+might wonder why did I build this. So without further ado, let me explain:</p>
+
+<p>A lot of us have been there before; we need to build a URI to call a 3rd party API but juggling things like query parameters and paths can be a pain. In php we have &#96;parse_url&#96; which is &#42;almost&#42; really good for parsing a url. The main problem I have with this function is that you cannot guarantee it's outcome, also there is no reverse of it!</p>
+
+<p>This was the deciding factor for me to build a package to handle this for me. I build quite a few Software Development Kits for clients and for open source, and it is always a bit of a pain not having a clean way to build and pass URLs through to methods, and not having this aspect of our code as testable as it could be.</p>
+
+<p>Anytime I start a new package, it is usually because I am trying to solve a problem I had encountered or one that I know I will encounter before too long. Unlike when building an application or an api, where you start with domain modelling and move onto testing then implementation, building a package I always take a very specific route;</p>
+
+<ul>
+<li><p>Design the package API: How do I want to work with this package, what makes sense, and how many hoops do I have to jump through for simple and more complex functionality.</p></li>
+<li><p>Write tests around the functionality I have planned: This is usually where I take a second pass at how complicated the packages API is.</p></li>
+<li><p>Write implementation code: This is where I put code into action, and where I worry less about how the package API works and more about writing good code that is property Type Hinted.</p></li>
+<li><p>Build a test implementation, aside from code tests: I find this step extremely helpful, I typically have an &#96;examples/test.php&#96; file that I use locally (never commited) where I play with the code I have created. This is aside from any programatic tests I write and any design that I have done. This is usually where I notice potential bugs, and anywhere I feel the package could be improved.</p></li>
+<li><p>Write a well documented README so that I can explain how to install and use the package I am creating.</p></li>
+<li><p>Run static analysis and code checker tools, to make sure that everything is to a quality I am happy to publish.</p></li>
+<li><p>Publish to github and make sure the tests run on more than just my local machine.</p></li>
+<li><p>Submit my package to packagist, and hook up things like Scrutinizer (which even to this day I struggle with consistency).</p></li>
+</ul>
+
+<p>Every package I build takes this approach, and it takes it for a reason.</p>
+
+<p>Enough of that segway, back to the URI Builder package.</p>
+
+<p>So, using the built in &#96;parse_url&#96; you are returned with an array, and you then also have to pass arguments after running if you want additional parts to the URI you just passed it. You also may get an array back, you may get false, oh and the array could &#95;also&#95; be empty.</p>
+
+<p>You can feel the frustration right there in that sentence. In 2020, where we have AI reminding us that we have an appointment at our doctors and that there is light traffic so may need to leave a little earlier than usual - parse_url can't guarantee what it is going to give us.</p>
+
+<p>My first thought on this package, was that I need to guarantee a minimum that can be passed to the class that will alow it to run, otherwise if there is an issue, or we aren't going to get the return we would hope for, or for anything else: throw a &#96;RuntimeException&#96; - halt the process and deal with this issue, because this URL is malformed or missing parts, so a future part of your application that may require this URI is &#42;not&#42; going to function properly.</p>
+
+<p>I added 2 ways to use this package, you can either build this up programatically:</p>
+
+<pre><code class="language-php">use JustSteveKing\UriBuilder\Uri;
+
+// Creates a URI for https://www.juststeveking.uk
+$uri = Uri::build()
+  -&gt;addScheme('https') // https
+  -&gt;addHost('www.juststeveking.uk') // https://www.juststeveking.uk
+  -&gt;addPath('php-online-the-story-so-far') // https://www.juststeveking.uk/php-online-the-story-so-far
+  -&gt;addFragment('top'); // https://www.juststeveking.uk/php-online-the-story-so-far#top
+
+// Use a magic method to output the URI
+echo (string) $uri; // https://www.juststeveking.uk/php-online-the-story-so-far#top
+
+// Use the internal function to output the URI
+echo $uri-&gt;toString(); // https://www.juststeveking.uk/php-online-the-story-so-far#top
+</code></pre>
+
+<p>Alternatively, you can build the object from a string as an alternative to &#96;parse_url&#96;:</p>
+
+<pre><code class="language-php">use JustSteveKing\UriBuilder\Uri;
+
+$uri = Uri::fromString("https://www.juststeveking.uk/php-online-the-story-so-far#top");
+
+$uri-&gt;scheme(); // https
+$uri-&gt;host(); // www.juststeveking.uk
+$uri-&gt;path(); // php-online-the-story-so-far
+$uri-&gt;fragment(); // top
+$uri-&gt;addPath('my-first-go-module-go-api-problem');
+
+echo $uri-&gt;toString(); // https://www.juststeveking.uk/my-first-go-module-go-api-problem#top
+</code></pre>
+
+<p>As you can see these pieces that make up our URI are very easily mutated and changed as needed. There is no need for immutable behaviour here - the purpose of this library is to allow you to build and change URIs as and when you need - even if it is the same instance.</p>
+]]></content:encoded>
+      <guid>https://www.juststeveking.uk/adventures-in-php-php-uri-builder</guid>
+      <pubDate>Tue, 13 Oct 2020 07:31:36 +0000</pubDate>
+      <author>Steve McDougall</author>
+    </item>
+    <item>
+      <title><![CDATA[PHP Online - The Story So Far]]></title>
+      <link>https://www.juststeveking.uk/phponline-the-story-so-far</link>
+      <description><![CDATA[I have been working on community projects now for the past 3-4 years, and in that time I have noticed something. PHP Online is my answer to what I think the community needs.]]></description>
+      <content:encoded><![CDATA[<p>PHP Online started as an idea, an inspiration, a way to give back. For years now I have been involved in the community: contributing to open source, mentoring others, starting user groups, organising conferences, speaking at events. All of these things are extremely rewarding, and I would recommend it to anybody looking to get involved more in the community.</p>
+
+<p>Recently there has been a lot of talk about how we might improve the PHP community as a whole. With PHP 8 in beta stage right now, and new initiatives appearing almost every day - right now is a great time to be involved with PHP and the community. In days of old organisations such as <a href="https://thephpleague.com/">The PHP League</a> and <a href="https://www.php-fig.org/">PHP FIG</a> have been a central place to document standards and the way forward. However new initiatives are trying to pull this closer into the core of the language as it should be.</p>
+
+<p>What I am doing now, with PHP Online, is providing a tool. A tool that will enable and aid community growth, a place for community members to come and learn past what the documentation gives you. A place to find things that will help you with your career, and eventually a place to progress in your career by finding relevant jobs to you.</p>
+
+<p>Over the years I have been involved with quite a number of industries and projects, and none have been as rewarding as working in the community for the community. My aim for PHP Online is to serve as a central place in the PHP community where you can go to read the latest tutorials, share links to work you have been working on, write guest blog posts, share links to any packages you might have created, find local user groups and events, and even see what podcasts are relevant to our community. All in all, my vision and aims for PHP Online is to create an inclusive online community that will allow anyone and everyone to get the spotlight they deserve. No more news websites that restrict who can post to it.</p>
+
+<p>While there will be no restrictions on who can create content on PHP Online, I will be running an editorial service on all posts. Making sure that content is valid and relevant for the community. As long as it meets the community guidelines and code of conduct - it will be published.</p>
+
+<p>So far the project is going well, and is well under way. The majority of the functionality is built and tested, I am now on the hardest part for me - how it looks and feels. Making it appealing enough without it feeling overcrowded is going to be a balance that will need to be adjusted over time.</p>
+
+<p>If you are reading this, and it interests you - I would love to hear your thoughts on the project! Feel free to reach out on <a href="https://twitter.com/JustSteveKing">twitter</a> or join us on the <a href="https://discord.gg/gfvuH9B">community discord</a>!</p>
+]]></content:encoded>
+      <guid>https://www.juststeveking.uk/phponline-the-story-so-far</guid>
+      <pubDate>Wed, 07 Oct 2020 10:00:00 +0000</pubDate>
+      <author>Steve McDougall</author>
+    </item>
+    <item>
+      <title><![CDATA[Building a REST API in GoLang - Part 1]]></title>
+      <link>https://www.juststeveking.uk/building-a-rest-api-in-golang-part-1</link>
+      <description><![CDATA[I have been building APIs for production environments for many years now, predominently in PHP. The last 3 years however, I have been hard at work getting to grips with GoLang - so I thought I would change the pace and share a post on GoLang]]></description>
+      <content:encoded><![CDATA[<p>I have been building APIs for production environments for many years now,
+predominently in PHP. The last 3 years however, I have been hard at work
+getting to grips with GoLang - so I thought I would change the pace and share
+a post on GoLang.</p>
+
+<p>For the past 4 weeks I have been using GoLang as my primary language with one of my clients, after an initial consultation on their requirements and talking about where they were seeing botlenecks in their business - some modernisation was needed. I initially went through an Event Storming session to see the sort of business events that were common in their business, to see if it would highlight any additional (hidden) issues. After a successful session it was clear that their systems were no cohesive enough, and speed was a major issue. This seemed like a perfect opportunity to use GoLang to help solve their problems.</p>
+
+<p>This post will walk through an approach I have taken to build a REST API in GoLang, and why I do things a certain way. I am not saying this is <em>the</em> way to build REST APIs in the language, but coming from other languages this way made the most sense after some trial and error. For the purpose of being to the point, I will not be following how I would usually build an API. I would usually take the Design first API approach - using openapi specifications to design my API before writting code, and I also will not be writting tests because there are 100s of examples of writting tests out there. This is a concise post about how I go about building APIs in GoLang.</p>
+
+<p>My first step in any API build, is to create a Docker container to run my API on. I love docker for many reasons, but that is another blog post. When building docker containers I tend to stick to the rule of one service per container - meaning if you have a cache layer, database layer, and an application layer you should have 3 containers running together. Here is the base <strong>Dockerfile</strong> that I use for my GoLang service:</p>
+
+<pre><code class="language-dockerfile"># Create our container from a very lightweight image
+FROM golang:alpine
+
+# Set our working directory for the container
+WORKDIR /app
+
+# Copy our entire application into the Working Directory
+COPY ./ /app
+
+# Install our Go Modules
+RUN go mod download
+
+# Set the entry point for our application
+ENTRYPOINT go run cmd/rest-api/server.go
+</code></pre>
+
+<p>What we have here is a nice lightweight GoLang container for us to inject our API into. The next step is to create our <strong>docker-compose.yml</strong> file to define our services, I prefer using the docker-compose approach while building applications. Here is an example of my docker-compose file:</p>
+
+<pre><code class="language-yaml">version: "3"
+
+networks:
+api:
+
+services:
+go_api:
+    build:
+    context: .
+    dockerfile: Dockerfile
+    container_name: go_rest_api
+    networks:
+    - api
+    ports:
+    - 8080:8080
+    volumes:
+    - ./:/app
+</code></pre>
+
+<p>What we are doing here is creating a network for our REST API, creating a container and giving it a name, giving the container build instructions from our Dockerfile, and setting the container post and mounting volumes. I won't go into too much detail here, as this is a tutorial on GoLang not docker.</p>
+
+<p>Our next step once we have docker ready to go, is to start our project with Go! My first step is to alsways start by initialising go modules:</p>
+
+<pre><code class="language-bash">go mod init github.com/JustSteveKing/go-rest-api
+</code></pre>
+
+<p>This step sets your working directory are the root for a Go module at the specified URL. Our next step is to look at the directory structure. There are many approaches to how you could do this, a lot of developers will tell you for something simple you should just use the flat structure where everything is in one root directory. <strong>I do not like this approach</strong>. I come from other programming languages where separation of concerns is often done through namespacing and directory separation. As you can probably already guess from my Dockerfile - I have a <strong>cmd</strong> directory as my entrypoint. Let me explain.</p>
+
+<p>A Go program needs an entry script to run, you don't want one really big file called <strong>main.go</strong> where all you application code lives - this like any other language would be difficult to manage. My approach is to have 2 root directories: <strong>cmd</strong> and <strong>pkg</strong>. My CMD directory is the entrypoint to the application, I would usually structure it using: <code>cmd/{ project-name }/server.go</code> so I have a command to run, inside of a project, which runs a server. If this was a CLI application I would change <strong>server.go</strong> to <strong>cli.go</strong> so it makes sense to any develop looking at the code.</p>
+
+<p>Our <strong>pkg</strong> directory is where we keep all the code for this package. This is a relatively common concept in the Go world, as each application is a package. From this point, the application code lives inside pkg. Some developers will repeat the project name approach inside the pkg directory, but I am not a fan of that. I am not deploying multiple packages in this project - just the one. The same could be said for the <strong>cmd</strong> directory - but I digress. I like what I like.</p>
+
+<p>When building my entry point code in server.go I want it to remain relatively clean. I dont't want my main running to be full of set up code and declarations! This to me doesn't feel like a good developer experience. I have used frameworks such as Laravel in the past, and my favourite thing about the framework is the attention to detail and the quality of developer experience. You can achieve a lot and the code remains clean and readable. In Go this is even more true, as you would typically build this application into an executable program for your environment.</p>
+
+<p>Let me show you an example of my <strong>server.go</strong> file and then I can walk through what is going on:</p>
+
+<pre><code class="language-go">// cmd/rest-api/server.go
+package main
+
+import (
+    "github.com/joho/godotenv"
+    "github.com/JustSteveKing/go-rest-api/pkg/infrastructure/kernel"
+)
+
+func init() {
+    if err := godotenv.Load(); err != nil {
+        panic("No .env file found")
+    }
+}
+
+func main() {
+    // Boot our application
+    app := kernel.Boot()
+
+    // Build our application services, passing in our application itself
+    // We will add our services here later
+
+    // Run our application
+    go func () {
+        app.Run()
+    }()
+
+    // Wait for termination signals
+    app.WaitForShutdown()
+}
+</code></pre>
+
+<p>So what we have here is a simple entrypoint to our application, we load out environment variables before we run the application itself - we won't want to panic and crash our application halfway through processing because we didn't load our environement. The next step is to tell our application kernal to boot, basically create all relevant services that are needed to run the application and create and return the application itself. We the start a goroutine to run our application in, so that our main thread is responsible for starting and closing our application, but we have a separate thread for our application to run in. We then tell our application to listen for any termination signals that may occur. As you can see from our import statements, we are pulling in 2 new files from our application. Our <strong>kernel</strong> and our <strong>manager</strong> - what I am doing here is separating how the application is loaded and following some relatively basic Domain Driven Design principles.</p>
+
+<p>Our next step in building this application out is going to be creating our application kernel itself, as this is the first thing to load:</p>
+
+<pre><code class="language-go">// pkg/infrastructure/kernel/app-kernel.go
+package kernel
+
+import (
+    gohandlers "github.com/gorilla/handlers"
+    "github.com/JustSteveKing/go-rest-api/pkg/infrastructure/factories"
+    "github.com/JustSteveKing/go-rest-api/pkg/infrastructure/providers"
+)
+
+// Boot our application and it's services
+func Boot() *factories.Application {
+    // Build our configration
+    config := providers.ConfigProvider()
+
+    // Build our router
+    router := providers.RouteProvider()
+
+    // Build our application logger
+    logger := providers.LoggerProvider()
+
+    // Set up CORS protection
+    corsHandler := gohandlers.CORS(gohandlers.AllowedOrigins([]string{"*"}))
+
+    // return a built application
+    return &amp;factories.Application{
+        Server: &amp;http.Server{
+        Addr:              ":" + config.App.Port,
+        Handler:           corsHandler(router),
+        ReadTimeout:       1 * time.Second,
+        WriteTimeout:      1 * time.Second,
+        IdleTimeout:       120 * time.Second,
+        },
+        Router: router,
+        Logger: logger,
+        Config: config,
+    }
+}
+</code></pre>
+
+<p>So what we are doing here is booting our application, and returning a built Application. To start with, we create our configuration, routing and logging from our service providers - which we will build shortly. We then use gorilla/mux to add CORS protection around our routing. You might ask why are we adding all of this here, but this will become clear when we start adding application services to our domain/context. One of the key things here is to add sensible defaults to our http Server itself, this could be config/environment driven if you wanted to - but these are relatively sensible defaults so I tend to hard code these.</p>
+
+<p>Service Providers? This is a well known approach to scale in an application that uses dependency injection. I am not using DI in this example however, these providers are responsible for building and returning specific structures for our application. This could be seen as early over engineering - but it isn't many lines of code, and I like to start as I mean to go on when writting code.</p>
+
+<p>Our configuration provider looks like this:</p>
+
+<pre><code class="language-go">// pkg/infrastructure/providers/config-provider.go
+package providers
+
+import "github.com/JustSteveKing/go-rest-api/pkg/infrastructure/factories"
+
+// ConfigProvider will run and create a new Config struct from the Config Factory
+func ConfigProvider() *factories.Config {
+    return factories.ConfigFactory()
+}
+</code></pre>
+
+<p>As you can see the only job of this provider is to create our Config struct from our configuration factory. What this allows us to do, should we need to, is add extra configuratino options to inject into our factory when we are creating it. So it is flexible and extendable to a point.</p>
+
+<p>Let's take a quick moment to look at our Config Factory to see what it is:</p>
+
+<pre><code class="language-go">// pkg/infrastructure/factories/config-factory.go
+package factories
+
+import "os"
+
+// AppConfig is the Application configuration struct
+type AppConfig struct {
+    Name    string
+    Version string
+    Port    string
+}
+
+// HTTPConfig is the Application HTTP configuration
+type HTTPConfig struct {
+    Content string
+    Problem string
+}
+
+// Config is the Configuration struct
+type Config struct {
+    App  AppConfig
+    HTTP HTTPConfig
+}
+
+// ConfigFactory returns a new Config Struct
+func ConfigFactory() *Config {
+    return &amp;Config{
+        App: AppConfig{
+            Name:    env("APP_NAME", "Go App"),
+            Version: env("APP_VERSION", "v1.0"),
+            Port:    env("APP_PORT", ":8080"),
+        },
+        HTTP: HTTPConfig{
+            Content: env("HTTP_CONTENT_TYPE", "application/json"),
+            Problem: env("HTTP_PROBLEM", "application/problem+json"),
+        },
+    }
+}
+
+// env is a simple helper function to read an environment variable or return a default value
+func env(key string, defaultValue string) string {
+    if value, exists := os.LookupEnv(key); exists {
+        return value
+    }
+
+    return defaultValue
+}
+</code></pre>
+
+<p>This is a simple struct building factory, which will give us our applications configuration, it also has the helper functino <strong>env</strong> for nicer loading and providing a default when there isn't an entry in our <strong>env</strong> file - this was inspired by Laravel.</p>
+
+<p>Back to the application. We have seen how we use providers, and how our factories work and why. This is basically just a nice way to work. Eventually I would like to move some of this basic code out of the project and into go modules that I can centrally manage and pull into applications when I need them. But that is a task for another day.</p>
+
+<p>Moving back to our Application and the application factory we have seen mentioned. This is a simple and easy way to build the application we want to be running:</p>
+
+<pre><code class="language-go">// pkg/infrastructure/factories/application-factory.go
+package factories
+
+import (
+    "context"
+    "github.com/gorilla/mux"
+    "go.uber.org/zap"
+    "net/http"
+    "os"
+    "os/signal"
+    "syscall"
+    "time"
+)
+
+// Application is out general purpose Application struct which contains a link through to the main services connected
+type Application struct {
+    Server *http.Server
+    Router *mux.Router
+    Logger *zap.Logger
+    Config *Config
+}
+
+// Run will start the application as required
+func (app *Application) Run() {
+    err := app.Server.ListenAndServe()
+
+    if err != nil {
+        panic(err)
+    }
+}
+
+// WaitForShutdown is a graceful way to handle server shutdown events
+func (app *Application) WaitForShutdown() {
+    // Create a channel to listen for OS signals
+    interruptChan := make(chan os.Signal, 1)
+    signal.Notify(interruptChan, os.Interrupt, os.Kill, syscall.SIGINT, syscall.SIGTERM)
+
+    // Block until we receive a signal to our channel
+    &lt;-interruptChan
+
+    app.Logger.Info("Received shutdown signal, gracefully terminating")
+
+    ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+    defer cancel()
+    app.Server.Shutdown(ctx)
+    os.Exit(0)
+}
+</code></pre>
+
+<p>So to start with, we define a struct for our application, what do we want our application to be built with? What are the core components in the Application itself outside our domain code. We need a server, a router, a logger and some configuration. So back in our kernel we saw that we run this application. This simple tells our configured application server to listen and serve. We then wait to see if this returns an error for any reason, and if it does - we panic with the error.  This is to code that we run in our goroutine, on the separate thread.</p>
+
+<p>The next thing you will notice is the WaitForShutdown function, which is a graceful way of listening for any interuption signals, and then we can close the application down and exit out program. This code was something that I was advised on by several other developers. I wondered if there was an efficient and "nice" way to exit a program, and this is the end result. I cannot take full credit for this beautiful looking code.</p>
+
+<p>So we have the basics. We have something that will run in our Docker container and listen on a port. The next step is to start looking at our actual application code, not the set up. This could have been majorly simplified to a few functions in a main.go file, but then it would be scalable and we would be blurring the boundaries between infrastructure/application and domain - which is always messy as more hands work on a single code base.</p>
+
+<p>So previously we saw in out server command that we would be adding things to it. The approach I take, is to have basic setup of the application and then service registration in the command itself. After playing with several approaches this is the one that made the most sense to me. This may not work for everyone, but I found it is a nice way to manage features inside an API and from asingle glance you can see what is going on.</p>
+
+<p>So let's take a look at the server.go file again, and see it in a more full form:</p>
+
+<pre><code class="language-go">// cmd/rest-api/server.go
+package main
+
+import (
+    "github.com/joho/godotenv"
+    "github.com/JustSteveKing/go-rest-api/pkg/application/manager"
+    "github.com/JustSteveKing/go-rest-api/pkg/infrastructure/kernel"
+)
+
+func init() {
+    if err := godotenv.Load(); err != nil {
+        panic("No .env file found")
+    }
+}
+
+func main() {
+    app := kernel.Boot()
+
+    // Specific Application Services
+    manager.BootPingService(app)
+    manager.BootUserServce(app)
+
+    go func() {
+        app.Run()
+    }()
+
+    app.WaitForShutdown()
+}
+</code></pre>
+
+<p>So you can see the new additions of <strong>manager.Boot - something - Service(app)</strong> which is how I do my service registration. For each context/domain I create a new method inside the application manager to boot this service and pass through anything that may be needed.</p>
+
+<p>Let's take a look at one of these Service managers and I will explain what is happening.</p>
+
+<pre><code class="language-go">// pkg/application/manager/ping-service.go
+package manager
+
+import(
+    "github.com/JustSteveKing/go-rest-api/pkg/domain/ping"
+)
+
+// BootPingService is responsible for setting up all the dependencies for ping
+func BootPingService(app *factories.Application) {
+    // Create a new Ping Service
+    service := ping.NewService(app)
+
+    // Create a new http.Handler
+    handler := ping.NewHandler(app, service)
+
+    // Create a service level router
+    router := app.Router.Methods(http.MethodGet).PathPrefix("/ping").Subrouter()
+
+    // Register our service level router
+    router.HandleFunc("/", handler.Handle).Name("ping:handle")
+}
+</code></pre>
+
+<p>So, what we have done here is create a service, which we will see next. We then create our request handler, a service level sub router restructing this to a certain part prefix, and only accepting certain HTTP methods. We then define our first route of: <strong>/ping/</strong></p>
+
+<p>Our service is a simple gateway to a Repository. In this specific example it wouldn't be needed as there is no real data that needs retrieving - but I will set it up as an example so that the concept is understood.</p>
+
+<pre><code class="language-go">// pkg/domain/ping/service.go
+package ping
+
+import (
+    "github.com/JustSteveKing/go-rest-api/pkg/infrastructure/factories"
+    "net/http"
+    "sync"
+    "time"
+)
+
+// Service is the gateway to the Repository that is used to access data
+type Service struct {
+    Repository *PingRepository
+}
+
+// NewService will build and return a new Service
+func NewService(app *factories.Application) *Service {
+    return &amp;Service{
+        Repository: NewRepository(app)
+    }
+}
+</code></pre>
+
+<p>So what we are doing here is simply creating a new service, with an implementation of a specific repositoy. This could be swapped out for a different repository at any time as and when required. I won't go too far down this route - maybe I will do a second blog post about bits I have skipped over here.</p>
+
+<p>Routing in GoLang is nice, it's clean and it makes sense. I have build 2 go modules for this next part:</p>
+
+<ul>
+<li><a href="https://github.com/JustSteveKing/go-api-problem">Go API Problem</a> - for when you want consistent API error responses.</li>
+<li><a href="https://github.com/JustSteveKing/go-http-response">Go HTTP Response</a> - for building API responses in a very specific format.</li>
+</ul>
+
+<p>To start with let's look at the first part, creating a handler</p>
+
+<pre><code class="language-go">// pkg/domain/ping/endpoints.go
+package ping
+
+import(
+    "github.com/JustSteveKing/go-rest-api/pkg/infrastructure/factories"
+)
+
+// Handler is the http.Handler for this service
+type Handler struct {
+    App *factories.Application
+    Service *Service
+}
+
+// NewHandler will create a new Handler to handle any requests
+func NewHandler(app *factories.Application, service *Service) *Handler {
+    return &amp;Handler{
+        App: app,
+        Service: service,
+    }
+}
+</code></pre>
+
+<p>Here we are creating a new http.Handler and passing in both our Application and our specific Service for this Domain. What this allows us to do, is in each route, access our repository through the passed in service to our handler, alternatively you could also access the general application that is also being passed in - should you need to access configuration or any other struct or interface that you add to it.</p>
+
+<p>Now only actually handling a route. This is a typical approach to handling requests in GoLang in most of the router modules available, but this is what I like to do:</p>
+
+<pre><code class="language-go">// pkg/domain/ping/endpoints.go
+
+/** The other code from above has been omitted here **/
+
+// Handle will handle the /ping route in our application
+func (handler *Handler) Handle(response http.ResponseWritter, request *http.Request) {
+    // Log the request - add any useful information you want here
+    handler.App.Logger.Info("Route Dispatched. Ping service triggered.")
+
+    data, err := doSomthingCool()
+    if err != nil {
+        responseFactory.Send(
+        response,
+        http.StatusBadRequest,
+        &amp;problem.APIProblem{
+            Title:  "Error Message",
+            Detail: "Detail on the error",
+            Status: strconv.Itoa(http.StatusBadRequest),
+            Code:   "ERROR-001-001",
+        },
+        handler.App.Config.HTTP.Problem,
+        )
+
+        return
+    }
+
+    responseFactory.Send(
+        response,
+        http.StatusOK,
+        &amp;Response{
+        Message: "Ping Service Online",
+        },
+        handler.App.Config.HTTP.Content,
+    )
+
+    return
+}
+</code></pre>
+
+<p>So now we have some content being returned through our API. It isn't anthing exciting - a simple health check endpoint. However, what this is showing you is an easy to use pattern. When we first hit our endpoint, we log that request - in any way you want to, do any logical processing through the service into the repository that you might need to do, then build up a response and send it back. Sending a response here what we do is pass through the response writter from the current request, pass through the relevant HTTP status code, any sort of interface to be marshalled into an encoding, and we pass through the content type we want to send across. I like to keep the content type in configuration so that I have an application standard response content type (usually <strong>application/vnd.api+json</strong>) I also keep this very similar to any error responses (usually <strong>application/problem+json</strong>).</p>
+
+<p>For now that is all I will be going through, I believe it is a general introduction into REST APIs in GoLang showing how I have approached certain problems and what I have done to make extending and scaling a little easier.</p>
+
+<p>I'd love some feedback, or even recommendations! You can reach out to me on twitter at <strong>@JustSteveKing</strong> where I am always happy to take some constructive feedback. This will eventually be pushed up to GitHub also (same handle as twitter) so please feel free to follow me on there also, if you would like to see the finished code.</p>
+]]></content:encoded>
+      <guid>https://www.juststeveking.uk/building-a-rest-api-in-golang-part-1</guid>
+      <pubDate>Fri, 24 Jul 2020 10:15:22 +0000</pubDate>
+      <author>Steve McDougall</author>
+    </item>
+    <item>
+      <title><![CDATA[My First Go Module - go api problem]]></title>
+      <link>https://www.juststeveking.uk/my-first-go-module-go-api-problem</link>
+      <description><![CDATA[Recently I have been playing with GoLang quite a lot, so I decided to try my hand at publishing my first Go Module to handle errors nicely in an API.]]></description>
+      <content:encoded><![CDATA[<p>I have been playing with GoLang on and off now for around 3 years, but never
+really had chance to use it the way I wanted to. However, recently with a new
+client we needed to start building high throughput microservices for their
+distributed warehouse system. This was the moment I was waiting for.</p>
+
+<p>I spent a little time designing the architecture for how we were going to achieve the scale and load needed to achieve their goals, a nice mixture of gRPC services with sensibly placed REST APIs for the client facing interfaces. One thing that was obviously clear, was that we would need to find a nice way to handle, track and explain errors that may occur in the system. In PHP I typically use a fantastic package called <a href="https://github.com/Crell/ApiProblem">API Problem</a> which is RFC compliant and handles errors very nicely.</p>
+
+<p>While getting my initial Go service up and running I had a google around to try and find something similar enough to the PHP package I like so much, but struggled to find anything close enough. So I decided it was time to build my first Go Module. Exciting news for me, not only was I finally getting stuck in with building Go services, but I was also already contributing to the open source community for GoLang!</p>
+
+<p>The basis of the module was quite simple, unlike PHP - there are no classes or objects, so all I really needed was a way to build an API problem message and return this as a response from the API. The things that were going to be useful here were:</p>
+
+<ul>
+<li>Title: A short human readable error to explain what went wrong</li>
+<li>Detail: A longer form explanation of the error</li>
+<li>Status: The HTTP Status Code for the error</li>
+<li>Code: An internal reference Code that we could document and track through API logs to understand failure points.</li>
+<li>Meta: A simple key value map that could help further explain the problems going on.</li>
+</ul>
+
+<p>So this didn't need to be complicated, but I needed to build something as all of my services would need this functionality if they were public facing APIs.</p>
+
+<pre><code class="language-go">type APIProblem struct {
+  Title string `json:"title,omitempty"`
+  Detail string `json:"detail,omitempty"`
+  Status string `json:"status,omitempty"`
+  Code string `json:"code,omitempty"`
+  Meta *map[string]interface{} `json:"meta,omitempty"`
+}
+</code></pre>
+
+<p>In essence there was nothing more to do! I had a struct I could build when my API hit an error, and all I needed to do was marshal this into JSON and return response to any client interfaces.</p>
+
+<p>Using this struct was as simple to use as it was to write:</p>
+
+<pre><code class="language-go">type server struct{}
+
+func main() {
+  s := &amp;server{}
+  http.Handle("/", func(rw http.ResponseWriter, r *http.Request) {
+    if dbc := db.Where("email = ?", "user@email.com").First(&amp;user); dbc.Error != nil {
+      respondWithJSON(
+        rw,
+        http.StatusBadRequest,
+        &amp;APIProblem{
+          Title:  "Invalid Credentials",
+          Detail: "Unable to verify user credentials",
+          Status: strconv.Itoa(http.StatusBadRequest),
+          Code:   "USER-001-001",
+        },
+        "application/problem+json",
+      )
+      return
+    }
+  })
+
+  log.Fatal(http.ListenAndServe(":8080", nil))
+}
+
+func respondWithJSON(rw http.ResponseWriter, code int, payload interface{}, contentType string) {
+  response, _ := json.Marshal(payload)
+  rw.Header().Set("Content-Type", contentType)
+  rw.WriteHeader(code)
+  rw.Write(response)
+}
+</code></pre>
+
+<p>A quick note on APIProblem Codes, these are built in a nice and searchable way:</p>
+
+<p><img src="/assets/images/uploads/image.svg" alt="" /></p>
+
+<p>So for my first Go Module, it was pretty simple - but it solved a problem I knew I was going to face! Feel free to check out the source code and install instructions on the <a href="https://github.com/JustSteveKing/go-api-problem">GitHub Repository</a></p>
+]]></content:encoded>
+      <guid>https://www.juststeveking.uk/my-first-go-module-go-api-problem</guid>
+      <pubDate>Thu, 09 Jul 2020 12:44:44 +0000</pubDate>
+      <author>Steve McDougall</author>
+    </item>
+    <item>
+      <title><![CDATA[Embracing The Tall Stack with Event Sourcing, an adventure into the unknown]]></title>
+      <link>https://www.juststeveking.uk/embracing-the-tall-stack-with-event-sourcing-an-adventure-into-the-unknown</link>
+      <description><![CDATA[TALL stack is growing in popularity in the Laravel community, and rightly so. The way in which you can write beautiful code split into reactive components without ever having to leave PHP is a no brainer. Recently the TALL stack preset was released, which on its own is fantastic - but I wanted to take it one step further.]]></description>
+      <content:encoded><![CDATA[<p>TALL stack is growing in popularity in the Laravel community, and rightly so.
+The way in which you can write beautiful code split into reactive components
+without ever having to leave PHP is a no brainer. Recently the TALL stack
+preset was released, which on its own is fantastic - but I wanted to take it
+one step further.</p>
+
+<p>A few days ago I read some absolutely fantstic articles by the people over at <a href="https://spatie.be/">Spatie</a>, specifically <a href="https://freek.dev/">Freek Van Der Herten</a> and <a href="https://stitcher.io/">Brent Roose</a> - but I am sure more of the team were involved.</p>
+
+<p>To summarise these two articles (<a href="https://stitcher.io/blog/combining-event-sourcing-and-stateful-systems">one written by Brent</a>)(<a href="https://freek.dev/1634-mixing-event-sourcing-in-a-traditional-laravel-app">one written by Freek</a>), using a fully event sourced system will add complexities that can get difficult to manage very quickly - especially when not everything really <strong><em>needs</em></strong> to be event sourced. Using a fully stateful application has been the standard for a lot of the industry for many years, and is your typical go to system. Most people want some level of CRUD (create read update delete) behaviour on a set of resources, and the application will just be a database wrapper allowing for manipulation and aggregation of these resources. I would like to stress here, <strong>there is nothing wrong with this approach at all</strong>. In short terms, this article poses the question: Why can these approaches be mixed in the same system?</p>
+
+<p>It sounds obvious right? Why has nobody asked this before? As soon as I read these articles it clicked with me, this is an obvious approach to the event sourcing problem while adding extra business intelligence to a traditional stateful application. So with that in mind I decided to combine the awesome power of the TALL stack with a simple Event Sourced application, so far it doesn't do much - simple user registration and password reset functionality that comes as standard in a Laravel application, but also in the tall stack preset. The purpose of this exercise was to see how well these approaches would work combined.</p>
+
+<p>As with all Laravel projects, the first step is installing, I highly recommend using the Laravel Installer when creating a Laravel project - it gives a nice easy way to bootstrap the application with the auth scaffolding preloaded.</p>
+
+<pre><code class="language-bash">laravel new project-name --auth
+</code></pre>
+
+<p>This will give you the default structure you need for any Laravel based project, from here we can start applying changes to the structure to align with the Spatie article - defining our application <a href="https://martinfowler.com/bliki/BoundedContext.html">Contexts</a>. For this application I have 1 context: a User context. Any behaviour to do with users at all will be stored within here. The architecture itself is still a work in progress, and I will most likely expand on this at some point soon.</p>
+
+<p>The next step after installing is to follow the instructions over at the <a href="https://github.com/laravel-frontend-presets/tall">GitHub repo for the TALL stack preset</a>. These are simple enough, just make sure you <strong>follow the setup instructions for with auth.</strong></p>
+
+<p>Our next step is to refactor the application to use these contexts, if you are using <a href="https://www.jetbrains.com/phpstorm/">PHPStorm</a> then this is relatively easy to do, right click the class name -> refactor -> move class. The first step is to refactor the User Model to sit under <code>app/Context/User/Models/User.php</code> and make a few recommended changes:</p>
+
+<pre><code class="language-php">namespace App\Context\User\Models;
+
+use Ramsey\Uuid\Uuid;
+use App\Context\User\Events\UserCreated;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+
+class User extends Authenticatable
+{
+  use Notifiable;
+
+  protected $guarded = [];
+
+  protected $hidden = [
+    'password', 'remember_token',
+  ];
+
+  protected $casts = [
+    'email_verified_at' =&gt; 'datetime',
+  ];
+
+  public static function createWithAttributes(array $attributes): User
+  {
+    $attributes['uuid'] = (string) Uuid::uuid4();
+    event(new UserCreated($attributes));
+
+    return static::uuid($attributes['uuid']);
+  }
+
+  public static function uuid(string $uuid): ?User
+  {
+    return static::where('uuid', $uuid)-&gt;first();
+  }
+}
+</code></pre>
+
+<p>Now we have our User model updated in the right place, we need to make some changes in a few places:</p>
+
+<ul>
+<li><code>app/config/auth.php</code> make sure to change the providers model to the new model context</li>
+<li>next we will have a new set of LiveWire components available under <code>app/Http/Livewire/Auth</code> which we will be working on next.</li>
+</ul>
+
+<p>Once you have hooked up the auth correctly, feel free to test from this point to ensure it is working and all function ality works as it is. Our next step is to install the <a href="https://docs.spatie.be/laravel-event-sourcing/v3/installation-setup/">spatie/laravel-event-sourcing package</a> - I would highly recommend have a thorough read through the documentation and watching the introductory videos, they explain things very well.</p>
+
+<p>Once we have the Spatie package installed, we need to start using it! The first step is to create an Event that is going to be triggered and stored. So, let's create our UserCreated event in <code>app/Context/User/Events/UserCreated.php</code> it should look like this:</p>
+
+<pre><code class="language-php">namespace App\Context\User\Events;
+
+use Spatie\EventSourcing\ShouldBeStored;
+
+class UserCreated implements ShouldBeStored
+{
+  /**
+  * @var string
+  */
+  public string $name;
+
+  /**
+  * @var string
+  */
+  public string $email;
+
+  /**
+  * @var string
+  */
+  public string $password;
+
+  /**
+  * User Created Constructor
+  * 
+  * @param string $name
+  * @param string $email
+  * @param string $password
+  * 
+  * @return void
+  */
+  public function __construct(
+    string $name,
+    string $email,
+    string $password
+  ) {
+    $this-&gt;name = $name;
+    $this-&gt;email = $email;
+    $this-&gt;password = $password;
+  }
+}
+</code></pre>
+
+<p>What we are doing here is simple creating the event class with the attributes we would use to create a user normally, nothing out of the ordinary! So we have an event we can use, what we would typically do here is tie this into an <a href="https://martinfowler.com/bliki/DDD_Aggregate.html">Aggregate</a>. So let us create an aggregate in <code>app/Context/User/Aggregates/UserAggregate.php</code> that should look something like the below:</p>
+
+<pre><code class="language-php">namespace App\Context\User\Aggregates;
+
+use Spatie\EventSourcing\AggregateRoot;
+use App\Context\User\Events\UserCreated;
+
+class UserAggregate extends AggregateRoot
+{
+  public function createUser(
+    string $name,
+    string $email,
+    string $password
+  ) {
+    $this-&gt;recordThat(new UserCreated($name, $email, $password));
+
+    return $this;
+  }
+}
+</code></pre>
+
+<p>What this Aggregate will do is record the fact that an event was triggered - the event sourcing part. For our user to actually be persisted into the database however we need to create a Projection - the part that will write data into a database. All we have at the moment is an event being fired and an aggregate that will store an event saying this event was triggered with the attatched properties.</p>
+
+<p>The next part we need to do is not only create a projection, but also we are going to want to have reactors so that we can react when events happen. Let's start with our projection which wil be stored at <code>app/Context/User/Projectors/UserProjector.php</code> and look something like this:</p>
+
+<pre><code class="language-php">namespace App\Context\User\Projectors;
+
+use App\Context\User\Models\User;
+use App\Context\User\Events\UserCreated;
+use Spatie\EventSourcing\Projectors\Projector;
+use Spatie\EventSourcing\Projectors\ProjectsEvents;
+
+class UserProjector implements Projector
+{
+  use ProjectsEvents;
+
+  /**
+  * Creates a new user
+  * 
+  * @param UserCreated $event
+  * @param string $aggregateUuid
+  * 
+  * @return void
+  */
+  public function onUserCreated(UserCreated $event, string $aggregateUuid)
+  {
+    User::create([
+      'uuid' =&gt; $aggregateUuid,
+      'name' =&gt; $event-&gt;name,
+      'email' =&gt; $event-&gt;email,
+      'password' =&gt; $event-&gt;password
+    ]);
+  }
+}
+</code></pre>
+
+<p>What this Projector is doing as you can probably see, is using an Eloquent model writing our user into the database, using the attributes that we attached onto our UserCreated Event. Simple right? We ask our aggreate to send an event with some data, this data is then projected into the database while we store the fact that we just did something. So we have a user, we could stop here and implement the TALL stack element, but I would rather do that after we have set everything up.</p>
+
+<p>Next, our reactor. Typically when a user is created on a system we want to send them an email welcoming them or ask them to confirm their email or anything like that. In this example we are going to ask them to verify their email using a reactor, this will be stored at <code>app/Context/User/Reactors/UserCreatedReactor.php</code> and look like the below:</p>
+
+<pre><code class="language-php">namespace App\Context\User\Reactors;
+
+use App\Context\User\Models\User;
+use App\Context\User\Events\UserCreated;
+use Spatie\EventSourcing\EventHandlers\EventHandler;
+use Spatie\EventSourcing\EventHandlers\HandlesEvents;
+
+class UserCreatedReactor implements EventHandler
+{
+  use HandlesEvents;
+
+  public function onUserCreated(UserCreated $event)
+  {
+    $user = User::where('email', $event-&gt;email)-&gt;first();
+    $user-&gt;sendEmailVerificationNotification();
+  }
+}
+</code></pre>
+
+<p>Using default Laravel behaviour we can now send an email notification over to the user that was just created asking them to verify their email. We have now come full circle! We will need to create a ServiceProvider in Laravel to tell the framework to listen and how to route these events and aggregates but that is relatively simple, you could either add this to your AppServiceProvider or create a specific service provider - I lean towards the latter:</p>
+
+<pre><code class="language-php">namespace App\Providers;
+
+use Illuminate\Support\ServiceProvider;
+use Spatie\EventSourcing\Projectionist;
+use App\Context\User\Projectors\UserProjector;
+use App\Context\User\Reactors\UserRegisteredReactor;
+
+class EventSourcingServiceProvider extends ServiceProvider
+{
+  /**
+  * Register services.
+  *
+  * @return void
+  */
+  public function register()
+  {
+    //
+  }
+
+  /**
+  * Bootstrap services.
+  *
+  * @return void
+  */
+  public function boot()
+  {
+    Projectionist::addProjector(UserProjector::class);
+    Projectionist::addReactor(UserCreatedReactor::class);
+  }
+}
+</code></pre>
+
+<p>Make sure you add this to the application config file at <code>config/app.php</code> under the providers array.</p>
+
+<p>Now we have all of the main event sourcing aspects put together, it is time to hook up the LiveWire components to actually start triggering these events. Now this part is not perfect, and is only an example, but as a system scales this is where we may start seeing issues. What we do in our LiveWire component is ask our UserAggregate to trigger an event and persist the event however, if our system comes under heavy load this write may take awhile so our user will not be available to be logged in - one option here it to notify the user to verify their email before they can log in (probably a good idea), but what this demo does is simply trigger and log in because I am working locally so there is no load - these events and writes as fast!</p>
+
+<p>So all of the livewire set up would have been done for you by installing and using the TALL preset, which is great, the next step to take is to change the default behaviour in this component found here <code>app/Http/Livewire/Auth/Register.php</code> and update the register method to the following code:</p>
+
+<pre><code class="language-php">namespace App\Http\Livewire\Auth;
+
+use Ramsey\Uuid\Uuid;
+use Livewire\Component;
+use Illuminate\Support\Str;
+use App\Context\User\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Providers\RouteServiceProvider;
+use App\Context\User\Aggregates\UserAggregate;
+
+class Register extends Component
+{
+  /* .. rest of the component lives here */
+  public function register()
+  {
+    $this-&gt;validate([
+      'name' =&gt; ['required'],
+      'email' =&gt; ['required', 'email', 'unique:users'],
+      'password' =&gt; ['required', 'min:8', 'same:passwordConfirmation'],
+    ]);
+
+    $uuid = Str::uuid()-&gt;toString();
+
+    UserAggregate::retrieve($uuid)
+    -&gt;createUser(
+      $this-&gt;name,
+      $this-&gt;email,
+      Hash::make($this-&gt;password)
+    )-&gt;persist();
+
+    $user = User::uuid($uuid);
+    Auth::login($user, true);
+    redirect(route('home'));
+  }
+}
+</code></pre>
+
+<p>So what we are doing here, when we ask the LiveWire component to register through our front end it will send a request to our back end using the native <code>fetch()</code> API, the library will take care of routing this request to the right place. Our first step of course is to validate the "request" as if it were a typical HTTP request (unfortunately no FormRequets here, which would be amazing), then we need to create a UUID for our aggregate, and we also assign this to our user (I am not sure on this part, if it is a good practice or not - I will let the community decide that one). Once we have our UUId we can tell our Aggregate to (using to UUID we just created) record the fact that we are trigger the UserCreated event we made earlier. We pass through all the data required, <strong>please note that we send over the hashed version of the password!</strong> The last thing we want to do is send over the unencrpyted password to be stored as plain text in out events - it is just as bad as storing a plain text password normally, you wuoldn't do it - so don't do it here! We then persist this aggregate to the database, so we have a rollback point, and an event to replay should we need to. We then fetch the user using their UUID, which is a static method you will remeber adding to your User model. We log this user in and redirect back to our home route.</p>
+
+<p>It is that simple. Now I will be the first to say that this isn't perfect, it is mainly an experiment that I wanted to try after being inspired by a Spatie article and loving the TALL stack. Curiosity is a powerful tool, if you wonder if something should or could be done, try it! Experimentation is what makes technology moving forward. You never know something you try for fun could turn out to be a really good idea, never be scared to try things even if they may not work.</p>
+
+<p>To expand on the above approach, my eventual aim is to have this working across multiple contexts: some stateful and others not so much. Beyond the code you see above, I also managed to get this approach working for password resets, so that we can have rollback points if a users password changes and they dispute it not being them, but also email verification - this last one was more for fun. The code I used for this example is currently in a <a href="https://github.com/JustSteveKing/laravel-tall-eventsourcing-example">GitHub repo</a> should you want to have a look over that instead.</p>
+
+<p>Thanks for reading! Why not drop me a tweet with your thoughts?</p>
+]]></content:encoded>
+      <guid>https://www.juststeveking.uk/embracing-the-tall-stack-with-event-sourcing-an-adventure-into-the-unknown</guid>
+      <pubDate>Thu, 04 Jun 2020 08:54:08 +0000</pubDate>
+      <author>Steve McDougall</author>
+    </item>
+    <item>
+      <title><![CDATA[Embracing PSRs to build an interoperable Http Client]]></title>
+      <link>https://www.juststeveking.uk/embracing-psrs-to-build-an-interoperable-http-client</link>
+      <description><![CDATA[Recently I have been scratching my head over PSR-18. As a new PSR there isn't a lot of information around it, but I saw that as a challenge. I decided to accept this challenge and build a compliant HTTP client to embrace the future of interoperability.]]></description>
+      <content:encoded><![CDATA[<p>Recently I have been scratching my head over PSR-18. As a new PSR there isn't
+a lot of information around it, but I saw that as a challenge. I decided to
+accept this challenge and build a compliant HTTP client to embrace the future
+of interoperability.</p>
+
+<p>If you look at the specifications for <a href="https://www.php-fig.org/psr/psr-18/">PSR-18 on PHP-FIG</a> they are typically pretty confusing, but I read between the lines a little. The first step was to build a class that would accept all the necessary components to bootstrap the client.</p>
+
+<pre><code class="language-php">namespace JustSteveKing\HttpSlim;
+
+use Psr\Http\Message\StreamFactoryInterface;
+use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Client\ClientExceptionInterface;
+
+class HttpClient implements HttpClientInterface
+{
+  protected ClientInterface $client;
+  protected StreamFactoryInterface $streamFactory;
+  protected RequestFactoryInterface $requestFactory;
+}
+</code></pre>
+
+<p>Now if you have read any of my other posts, or used any of my packages, or seen my posts on twitter, you will know I am a huge fan of named constructors.</p>
+
+<pre><code class="language-php">final protected function __construct(
+  ClientInterface $client,
+  RequestFactoryInterface $requestFactory,
+  StreamFactoryInterface $streamFactory
+) {
+  $this-&gt;client = $client;
+  $this-&gt;requestFactory = $requestFactory;
+  $this-&gt;streamFactory = $streamFactory;
+}
+
+public static function build(
+  ClientInterface $client,
+  RequestFactoryInterface $requestFactory,
+  StreamFactoryInterface $streamFactory
+): self {
+  return new static(
+    $client,
+    $requestFactory,
+    $streamFactory
+  );
+}
+</code></pre>
+
+<p>This gives us a good starting point to begin with, from here we can implement our helper methods for making requests and encoding json. Our helper methods follow a typical pattern of, take a URL and an optional body as an array - making sure that we return a PSR-7 compliant Response (but that it typically down to the client library we inject). Here is an example of the post request:</p>
+
+<pre><code class="language-php">use \JsonException;
+use Psr\Http\Message\ResponseInterface;
+use JustSteveKing\HttpSlim\Exceptions\RequestError;
+
+public function post(string $uri, array $body): ResponseInterface
+{
+  // build out json body content
+  try {
+    $content = $this-&gt;encodeJson($body);
+  } catch (JsonException $exception) {
+    throw RequestError::invalidJson($exception); 
+  }
+
+  $request = $this-&gt;requestFactory
+    -&gt;createRequest('POST', $uri)
+    -&gt;withAddedHeader('Content-Type', 'application/json')
+    -&gt;withBody($this-&gt;streamFactory-&gt;createStream($content));
+
+  return $this-&gt;client-&gt;sendRequest($request);
+}
+</code></pre>
+
+<p>Our encodeJson method simply returns a json encoded version of the passed through array.</p>
+
+<p>This is just one adventure into embracing PSRs, but I have thoroughly enjoyed it so far! Please drop me a tweet if you have found this useful at all, or if you find an issue - feel free to drop an issue on the <a href="https://github.com/JustSteveKing/http-slim">GitHub repo</a></p>
+]]></content:encoded>
+      <guid>https://www.juststeveking.uk/embracing-psrs-to-build-an-interoperable-http-client</guid>
+      <pubDate>Fri, 29 May 2020 20:57:45 +0000</pubDate>
+      <author>Steve McDougall</author>
+    </item>
+    <item>
+      <title><![CDATA[An adventure with Graph Databases]]></title>
+      <link>https://www.juststeveking.uk/an-adventure-with-graph-databases</link>
+      <description><![CDATA[Recently I have been super interested in graph databases, most specifically neo4j. However, there was no official packages for PHP that were still active. I decided to change that.]]></description>
+      <content:encoded><![CDATA[<p>From code to node, was the idea I wanted to accomplish when I first started
+designing some open source packages 4 days ago. <a href="https://neo4j.com/">neo4j</a> is
+a fantastic graph database, and their query language
+<a href="https://neo4j.com/developer/cypher-query-language/">Cypher</a> is really nice to
+work with! Unfortunately all of the official packages and the packages I could
+find were either super out of data, or had been completely abandoned. This
+frustrated me! How are us PHP developers meant to work with this amazing
+database, if there is no package available!</p>
+
+<p>So, I wanted to solve this problem for the collective herd. How would I go about doing it is another story competely. To start with I knew that using the neo4j bolt protocol would be quite a hard win, so I concentrated on their <a href="https://neo4j.com/docs/http-api/current/">HTTP API</a>.</p>
+
+<p>To split this out, I started with a <strong><a href="https://packagist.org/packages/juststeveking/graph-connection">Connection Manager</a></strong> which would allow me to register connection to work with in a single place - all which follow a specific interface to control and protect access. The connection manager itself is a relative simple container style class with stores all adapters inside a class called <strong><a href="https://packagist.org/packages/juststeveking/parameterbag">ParameterBag</a></strong> which I have previously blogged about <a href="https://www.juststeveking.uk/parameter-bag-my-latest-open-source-package/">here</a>. You can specify which connection you want to use and then you are down to other vendor specific code.</p>
+
+<p>I knew that to go alongside the connection manager, I will need an adapter to connect to and use. This is where the original idea of a <strong><a href="https://packagist.org/packages/juststeveking/neo4j-http-adapter">HTTP API Adapter</a></strong> came from. This package will allow you to pass in all the specific around your database, from connection string to database name. From there it is as simple as adding queries onto the pipeline to send over in one transaction. This is one of the more complicated packages, but all the work is done under the hood. All the separate methods used to build up this functionality has been left as <em>public</em> so that behaviour can be customised where needed.</p>
+
+<p>To send queries across to the database server itself through the adapter, no matter if it were the bolt or HTTP API, I knew I would need to be able to create queries. Now I could write these queries by hand, but why? This is 2020 - we can build things that build things for us! So I decided to build a <strong><a href="https://packagist.org/packages/juststeveking/cypher-query-builder">Cypher Query Builder</a></strong> which in simple terms is a string builder. You can build up you query (although limited) and perform operations such as <em>MATCH</em>, <em>SET</em>, <em>CREATE</em>, <em>DELETE</em>, <em>REMOVE</em>, and <em>WHERE</em>,</p>
+
+<p>The completed packages combine, or don't, to create a simple way to work with the neo4j http API v4. What I wanted to do was create a way so that all the components were opt-in. If all you need to do is work with the HTTP API, you need one package. If you want to also build up your queries using a fluent builder, you use 2 packages. If you start to scale and have multiple neo4j databases - or want to communicate in different ways depending on the work needed - you can use all 3. Eventually I will be expanding this past just neo4j and the http API - but for now I am content having solved a problem I found.</p>
+
+<p>Please see below for a complete working version of how these packages all work in tandem:</p>
+
+<p><img src="/assets/images/uploads/neo4j-querying.png" alt="please see the http adapter README, which has a full example" title="All the packages!" /></p>
+]]></content:encoded>
+      <guid>https://www.juststeveking.uk/an-adventure-with-graph-databases</guid>
+      <pubDate>Thu, 28 May 2020 14:27:16 +0000</pubDate>
+      <author>Steve McDougall</author>
+    </item>
+    <item>
+      <title><![CDATA[ParameterBag - My latest open source package]]></title>
+      <link>https://www.juststeveking.uk/parameterbag-my-latest-open-source-package</link>
+      <description><![CDATA[Introducing my latest PHP Package: ParamterBag - A flexible parameter bag in place of standard arrays on PHP classes]]></description>
+      <content:encoded><![CDATA[<p>Every now and then you find youself writing the same bit of code in many
+places, sometimes it's a simple trait or even an interface. For me it is a way
+to replace standard arrays on PHP classes. In many of my projects and packages
+I typically have something I would call a container object, something that's
+main purpose is to hold items passed to it and allow easy interaction with
+those items. An array would allow for this, but it always feel combersome
+having to dive into the <code>array_</code> functions when writing PHP. One of my more
+recent projects was an API SDK builder called <a href="https://packagist.org/packages/suitcasephp/builder">SuitcasePHP
+Builder</a> which I built
+because I found myeslf writing the same code over and over again for APIs that
+either didn't have a PHP SDK, or their SDK was nont a quality I would like to
+use (aka not updated in over 3 years).</p>
+
+<p>While building this package, I had to find a nice way to handle query string parameters being passed through and store them before appending them onto the end of the endpoint we would be calliing. Those who have been in this situation before have probably reached for the trusty PHP <a href="https://www.php.net/manual/en/function.http-build-query.php">http_build_query</a> before, most likely on more than one occasion. The main problem that I had with this native function, and a lot of the native PHP functions is that, well the documentation is not good. A lot of the more helpful parts are typically from comments and suggestions about how other people have used it - not a great way to figure out what all the different options are. So I decided instead I would build my own mechanism of achieving something of a similar nature.</p>
+
+<p>I introduce <a href="https://packagist.org/packages/juststeveking/parameterbag">ParameterBag</a> which does what it says on the tin, it is a flexible class that is aimed at replacing arrays on objects. After using this several times in projects and packages, including a new one I am building to work with <a href="https://neo4j.com/">neo4j in PHP</a>, I decided it was about time to promote this to a first party package in itself. The concept of the package is relatively straight forward, instead of paying <code>protected array $items</code> when adding a class attribute you type cast <code>protected ParameterBag $items</code> instead.</p>
+
+<p>From here you can add a class method to simply return the items, and away you go. While it may not be the most ground breaking package to be released I have already found it very useful. Below is a simple example of using the package:</p>
+
+<pre><code class="language-php">namespace App\Support;
+
+use JustSteveKing\ParameterBag\ParameterBag;
+
+class Config
+{
+  protected ParameterBag $items;
+
+  private function __construct(array $items)
+  {
+    $this-&gt;items = new ParameterBag($items);
+  }
+
+  public static function create(array $items)
+  {
+    return new self($items);
+  }
+
+  public function getItems() : ParameterBag
+  {
+    return $this-&gt;items;
+  }
+}
+</code></pre>
+
+<p>Now we have a simple config class we can start to work with it:</p>
+
+<pre><code class="language-php">$settings = require __DIR__ . '/../config/settings.php';
+
+$config = App\Support\Config::create($settings);
+
+if ($config-&gt;getItems()-&gt;has('database')) {
+  // do something with our database here .....
+}
+// We can even accept some information through a HTTP request to change our config settings
+// although not 100% recommended due to security implications
+$queryParameters = $request-&gt;getQuery();
+
+if (in_array($queryParameters, 'tenant_id')) {
+  $config-&gt;getItems()-&gt;set('tenant_id', $queryParameters['tenant_id']);
+}
+</code></pre>
+
+<p>In the example of an SDK builder we could even create a something like the following:</p>
+
+<pre><code class="language-php">namespace Acme\SDK;
+
+use JustSteveKing\ParameterBag\ParameterBag;
+
+class QueryParameters
+{
+  protected ParameterBag $parameters;
+
+  public function __construct(string $queryString)
+  {
+    $this-&gt;parameters = ParameterBag::fromString($queryString);
+  }
+}
+</code></pre>
+
+<p>What the <code>ParameterBag::fromString()</code> allows us to do is pass in a string for example: <code>foo=bar&amp;a=b</code> and turn this into an associative array in our bag. The fromString method allows for a seecond optional parameter to define the delimiter. What this meant while building my SDK package is that I could follow JSON:API spec nicely with a little extra processing and allow a string like <code>filter[name]=Jim&amp;include=posts,profile&amp;sort=-id</code> and not have to worry about the string encoding while building up my query at all.</p>
+
+<p>As I said, this isn't the most ground breaking package to be published - but it has already proven itself useful in my day to day - and it has already saved me time in writing this logic in any project again. Hooray for open source!</p>
+]]></content:encoded>
+      <guid>https://www.juststeveking.uk/parameterbag-my-latest-open-source-package</guid>
+      <pubDate>Sat, 23 May 2020 20:16:20 +0000</pubDate>
+      <author>Steve McDougall</author>
+    </item>
+    <item>
+      <title><![CDATA[Slim4 - A lightweight breath of fresh air]]></title>
+      <link>https://www.juststeveking.uk/slim4-a-lightweight-breath-of-fresh-air</link>
+      <description><![CDATA[As a PHP developer I use Laravel quite heavily, but I have been a long time user of SlimPHP. The latest version of Slim has inspired me to use it more often.]]></description>
+      <content:encoded><![CDATA[<p>My first introduction into frameworks in the PHP world started with the <a href="http://www.slimframework.com/">Slim
+Framework</a> and I fell in love instantly, this
+was nearing the end of Slim version 1. The freedom it gave it defining my
+application architecture and the possibilities ahead of me were very
+appealing.</p>
+
+<p>Since then I have spent a lot of time in a lot of different frameworks and languages, most recently <a href="https://laravel.com/">Laravel</a> for the past 4-5 years or so. Laravel is a fantastic framework, it allows you to create almost anything in a short space of time. For a developer who has been under pressure in a start up that is racing to the go live date to secure investment so the team can get paid - the appeal was obviously there. Laravel is a fantastic framework, and I often recommend it to developers looking to get started with being "better" at PHP. With that being said, I find that the framework does a lot of the heavy lifting for you and you lose full control - at least easily. Obviously you can override a lot of Laravel, given enough time and inclination - the question becomes should you.</p>
+
+<p>This is why every now and then I like to deviate from the usual Laravel work I tend to do with a lot of my clients. Sometimes I write pure PHP - like when creating a new package. Other times I dive into languages like GoLang or nodeJS, or maybe a framework like <a href="https://feathersjs.com/">feathersJS</a> (which is a fantastic framework). No matter what I do I always circle back to Slim PHP, the sense of freedom I get using it, and the enjoyment of building all the behind the scenes magic.</p>
+
+<p>So, Slim framework version 4. The key concept seems to be create a fantastic HTTP messaging application which fully supports the major PSRs and leave the other decisions to the implementation. A lot of people struggle with this part of it, especially if they come from a framework like Yii, Laravel, Symfony, Cake, etc etc. A lot of developers will instantly reach for the Model View Controller (MVC) design pattern because it is what they know and what they are used to - plus the fact it seems to be the industry standard right now.</p>
+
+<p>When Slim 4 was released it came with a new and updated version of the <a href="https://github.com/slimphp/Slim-Skeleton">slim skeleton</a> which had a few people confused, as the new project lead showed the power and flexibility of the framework by opting for a Domain Driven Design example for people to use. In the community and slack channels there were many questions about doing things using this skeleton project, as they weren't completely familiar with some of the concepts or how to extend it into something more useable.</p>
+
+<p>In future articles I will be building up a new Slim application using Slim 4, using something other than MVC - stay tuned for more!</p>
+]]></content:encoded>
+      <guid>https://www.juststeveking.uk/slim4-a-lightweight-breath-of-fresh-air</guid>
+      <pubDate>Sat, 23 May 2020 19:21:01 +0000</pubDate>
+      <author>Steve McDougall</author>
+    </item>
+    <item>
+      <title><![CDATA[New Blog]]></title>
+      <link>https://www.juststeveking.uk/new-blog</link>
+      <description><![CDATA[New year new blog, concentrating on my personal blog.]]></description>
+      <content:encoded><![CDATA[<p>So I have decided that I will be concentrating my blogging time to a personal
+blog instead of my company blog this year, for several reasons. My company
+blog is specific to what I do as a company; less broad articles about services
+and topics we cover as a company. While this is ok, and it works, it leaves me
+quite constrained in what I can write about.</p>
+
+<p>So this blog is about all the things I wish to write about, mostly technical, and gives me a channel to get some thoughts out of my head and onto a markdown file that I can revisit later on.</p>
+]]></content:encoded>
+      <guid>https://www.juststeveking.uk/new-blog</guid>
+      <pubDate>Mon, 27 Jan 2020 10:10:11 +0000</pubDate>
+      <author>Steve McDougall</author>
+    </item>
+  </channel>
+</rss>

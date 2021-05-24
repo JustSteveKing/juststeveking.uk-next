@@ -13,7 +13,7 @@
 
         <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,300i,400,400i,700,700i,800,800i,900,900i" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,700,700i,800,800i,900,900i" rel="stylesheet">
-        <link rel="stylesheet" href="/assets/build/css/main.css?id=1a1396f4c022d69a6250">
+        <link rel="stylesheet" href="/assets/build/css/main.css?id=97d16da7b8a7104e6fd6">
 
         <meta name="description" content="TALL stack is growing in popularity in the Laravel community, and rightly so. The way in which you can write beautiful code split into reactive components without ever having to leave PHP is a no brainer. Recently the TALL stack preset was released, which on its own is fantastic - but I wanted to take it one step further.">
 
@@ -23,7 +23,7 @@
         <meta property="og:image:alt" content="JustSteveKing - Consultant CTO, Freelance Software Engineer, Community Advocate">
         <meta property="og:locale" content="en_GB">
         <meta property="og:type" content="article">
-        <meta proporty="og:url" content="/embracing-the-tall-stack-with-event-sourcing-an-adventure-into-the-unknown">
+        <meta proporty="og:url" content="https://www.juststeveking.uk/embracing-the-tall-stack-with-event-sourcing-an-adventure-into-the-unknown">
 
         <meta name="twitter:widgets:new-embed-design" content="on">
         <meta name="twitter:card" content="summary_large_image">
@@ -34,7 +34,11 @@
         <meta name="twitter:image" content="/assets/images/uploads/terry-vlisidis-wsebnsnkbue-unsplash.jpg">
         <meta name="twitter:image:alt" content="JustSteveKing - Consultant CTO, Freelance Software Engineer, Community Advocate">
 
-        <link rel="canonical" href="/embracing-the-tall-stack-with-event-sourcing-an-adventure-into-the-unknown">
+        <link rel="canonical" href="https://www.juststeveking.uk/embracing-the-tall-stack-with-event-sourcing-an-adventure-into-the-unknown">
+        <link rel="alternate" type="application/rss+xml" title="Embracing The Tall Stack with Event Sourcing, an adventure into the unknown" href="https://www.juststeveking.uk//feed.xml" />
+
+        <!-- PHPOnline Domain Verification -->
+        <meta name="phponline:verification" content="phponline:e1wmN0TcK4gr" />
 
         <link rel="icon" href="/assets/favicon.ico">
         <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
@@ -42,7 +46,7 @@
         <link rel="manifest" href="/assets/site.webmanifest">
         <meta name="theme-color" content="#ffffff">
         
-        <script src="/assets/build/js/main.js?id=718247a870e5977545e7" defer></script>
+        <script src="/assets/build/js/main.js?id=3adf2f0e4ec657222174" defer></script>
         
         <script type="application/ld+json">
         {
@@ -105,6 +109,14 @@
     Open Source
 </a> 
             </li>
+                    <li>
+                 <a
+    class="cursor-pointer text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-50" title="Subscribe to my RSS feed" href="/feed.xml"
+    title="Subscribe to my RSS feed" href="/feed.xml"
+>
+    RSS Feed
+</a> 
+            </li>
             </ul>
 </nav> 
         
@@ -161,7 +173,7 @@
                 </dd>
             </dl>
             <div class="divide-y divide-gray-200 xl:pb-0 xl:col-span-3 xl:row-span-2">
-                <div class="max-w-3xl leading-8 text-lg space-y-3 text-gray-800 dark:text-gray-50 pt-10 pb-8 px-3">
+                <div class="prose prose-indigo prose-lg text-gray-800 dark:text-gray-50 pt-10 pb-8 px-3">
                     <img src="/assets/images/uploads/terry-vlisidis-wsebnsnkbue-unsplash.jpg"
                         alt="Embracing The Tall Stack with Event Sourcing, an adventure into the unknown"
                         class="rounded shadow-md"
@@ -180,8 +192,7 @@ one step further.</p>
 
 <p>As with all Laravel projects, the first step is installing, I highly recommend using the Laravel Installer when creating a Laravel project - it gives a nice easy way to bootstrap the application with the auth scaffolding preloaded.</p>
 
-<pre><code class="language-bash"><br />laravel new project-name --auth
-
+<pre><code class="language-bash">laravel new project-name --auth
 </code></pre>
 
 <p>This will give you the default structure you need for any Laravel based project, from here we can start applying changes to the structure to align with the Spatie article - defining our application <a href="https://martinfowler.com/bliki/BoundedContext.html">Contexts</a>. For this application I have 1 context: a User context. Any behaviour to do with users at all will be stored within here. The architecture itself is still a work in progress, and I will most likely expand on this at some point soon.</p>
@@ -190,266 +201,207 @@ one step further.</p>
 
 <p>Our next step is to refactor the application to use these contexts, if you are using <a href="https://www.jetbrains.com/phpstorm/">PHPStorm</a> then this is relatively easy to do, right click the class name -> refactor -> move class. The first step is to refactor the User Model to sit under <code>app/Context/User/Models/User.php</code> and make a few recommended changes:</p>
 
-<pre><code class="language-php"><br />&lt;?php
-
-
-namespace App\Context\User\Models;
-
+<pre><code class="language-php">namespace App\Context\User\Models;
 
 use Ramsey\Uuid\Uuid;
-
 use App\Context\User\Events\UserCreated;
-
 use Illuminate\Notifications\Notifiable;
-
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-
 class User extends Authenticatable
-
 {
-use Notifiable;
+  use Notifiable;
 
-protected $guarded = [];
+  protected $guarded = [];
 
-protected $hidden = [
-'password', 'remember_token',
-];
+  protected $hidden = [
+    'password', 'remember_token',
+  ];
 
-protected $casts = [
-'email_verified_at' =&gt; 'datetime',
-];
+  protected $casts = [
+    'email_verified_at' =&gt; 'datetime',
+  ];
 
-public static function createWithAttributes(array $attributes): User
-{
-$attributes['uuid'] = (string) Uuid::uuid4();
+  public static function createWithAttributes(array $attributes): User
+  {
+    $attributes['uuid'] = (string) Uuid::uuid4();
+    event(new UserCreated($attributes));
 
-event(new UserCreated($attributes));
+    return static::uuid($attributes['uuid']);
+  }
 
-return static::uuid($attributes['uuid']);
+  public static function uuid(string $uuid): ?User
+  {
+    return static::where('uuid', $uuid)-&gt;first();
+  }
 }
-
-public static function uuid(string $uuid): ?User
-{
-return static::where('uuid', $uuid)-&gt;first();
-}
-}
-
 </code></pre>
 
 <p>Now we have our User model updated in the right place, we need to make some changes in a few places:</p>
 
 <ul>
-<li><p><code>app/config/auth.php</code> make sure to change the providers model to the new model context</p></li>
-<li><p>next we will have a new set of LiveWire components available under <code>app/Http/Livewire/Auth</code> which we will be working on next.</p></li>
+<li><code>app/config/auth.php</code> make sure to change the providers model to the new model context</li>
+<li>next we will have a new set of LiveWire components available under <code>app/Http/Livewire/Auth</code> which we will be working on next.</li>
 </ul>
 
 <p>Once you have hooked up the auth correctly, feel free to test from this point to ensure it is working and all function ality works as it is. Our next step is to install the <a href="https://docs.spatie.be/laravel-event-sourcing/v3/installation-setup/">spatie/laravel-event-sourcing package</a> - I would highly recommend have a thorough read through the documentation and watching the introductory videos, they explain things very well.</p>
 
 <p>Once we have the Spatie package installed, we need to start using it! The first step is to create an Event that is going to be triggered and stored. So, let's create our UserCreated event in <code>app/Context/User/Events/UserCreated.php</code> it should look like this:</p>
 
-<pre><code class="language-php"><br />&lt;?php
-
-
-namespace App\Context\User\Events;
-
+<pre><code class="language-php">namespace App\Context\User\Events;
 
 use Spatie\EventSourcing\ShouldBeStored;
 
-
 class UserCreated implements ShouldBeStored
-
 {
-/**
- * @var string
- */
-public string $name;
+  /**
+  * @var string
+  */
+  public string $name;
 
-/**
- * @var string
- */
-public string $email;
+  /**
+  * @var string
+  */
+  public string $email;
 
-/**
- * @var string
- */
-public string $password;
+  /**
+  * @var string
+  */
+  public string $password;
 
-/**
- * User Created Constructor
- * 
- * @param string $name
- * @param string $email
- * @param string $password
- * 
- * @return void
- */
-public function __construct(
-string $name,
-string $email,
-string $password
-) {
-$this-&gt;name = $name;
-$this-&gt;email = $email;
-$this-&gt;password = $password;
+  /**
+  * User Created Constructor
+  * 
+  * @param string $name
+  * @param string $email
+  * @param string $password
+  * 
+  * @return void
+  */
+  public function __construct(
+    string $name,
+    string $email,
+    string $password
+  ) {
+    $this-&gt;name = $name;
+    $this-&gt;email = $email;
+    $this-&gt;password = $password;
+  }
 }
-}
-
 </code></pre>
 
 <p>What we are doing here is simple creating the event class with the attributes we would use to create a user normally, nothing out of the ordinary! So we have an event we can use, what we would typically do here is tie this into an <a href="https://martinfowler.com/bliki/DDD_Aggregate.html">Aggregate</a>. So let us create an aggregate in <code>app/Context/User/Aggregates/UserAggregate.php</code> that should look something like the below:</p>
 
-<pre><code class="language-php"><br />&lt;?php
-
-
-namespace App\Context\User\Aggregates;
-
+<pre><code class="language-php">namespace App\Context\User\Aggregates;
 
 use Spatie\EventSourcing\AggregateRoot;
-
 use App\Context\User\Events\UserCreated;
 
-
 class UserAggregate extends AggregateRoot
-
 {
+  public function createUser(
+    string $name,
+    string $email,
+    string $password
+  ) {
+    $this-&gt;recordThat(new UserCreated($name, $email, $password));
 
-public function createUser(
-string $name,
-string $email,
-string $password
-) {
-$this-&gt;recordThat(new UserCreated($name, $email, $password));
-
-return $this;
+    return $this;
+  }
 }
-}
-
 </code></pre>
 
 <p>What this Aggregate will do is record the fact that an event was triggered - the event sourcing part. For our user to actually be persisted into the database however we need to create a Projection - the part that will write data into a database. All we have at the moment is an event being fired and an aggregate that will store an event saying this event was triggered with the attatched properties.</p>
 
 <p>The next part we need to do is not only create a projection, but also we are going to want to have reactors so that we can react when events happen. Let's start with our projection which wil be stored at <code>app/Context/User/Projectors/UserProjector.php</code> and look something like this:</p>
 
-<pre><code class="language-php"><br />&lt;?php
-
-
-namespace App\Context\User\Projectors;
-
+<pre><code class="language-php">namespace App\Context\User\Projectors;
 
 use App\Context\User\Models\User;
-
 use App\Context\User\Events\UserCreated;
-
 use Spatie\EventSourcing\Projectors\Projector;
-
 use Spatie\EventSourcing\Projectors\ProjectsEvents;
 
-
 class UserProjector implements Projector
-
 {
-use ProjectsEvents;
+  use ProjectsEvents;
 
-/**
- * Creates a new user
- * 
- * @param UserCreated $event
- * @param string $aggregateUuid
- * 
- * @return void
- */
-public function onUserCreated(UserCreated $event, string $aggregateUuid)
-{
-User::create([
-    'uuid' =&gt; $aggregateUuid,
-    'name' =&gt; $event-&gt;name,
-    'email' =&gt; $event-&gt;email,
-    'password' =&gt; $event-&gt;password
-]);
+  /**
+  * Creates a new user
+  * 
+  * @param UserCreated $event
+  * @param string $aggregateUuid
+  * 
+  * @return void
+  */
+  public function onUserCreated(UserCreated $event, string $aggregateUuid)
+  {
+    User::create([
+      'uuid' =&gt; $aggregateUuid,
+      'name' =&gt; $event-&gt;name,
+      'email' =&gt; $event-&gt;email,
+      'password' =&gt; $event-&gt;password
+    ]);
+  }
 }
-}
-
 </code></pre>
 
 <p>What this Projector is doing as you can probably see, is using an Eloquent model writing our user into the database, using the attributes that we attached onto our UserCreated Event. Simple right? We ask our aggreate to send an event with some data, this data is then projected into the database while we store the fact that we just did something. So we have a user, we could stop here and implement the TALL stack element, but I would rather do that after we have set everything up.</p>
 
 <p>Next, our reactor. Typically when a user is created on a system we want to send them an email welcoming them or ask them to confirm their email or anything like that. In this example we are going to ask them to verify their email using a reactor, this will be stored at <code>app/Context/User/Reactors/UserCreatedReactor.php</code> and look like the below:</p>
 
-<pre><code class="language-php"><br />&lt;?php
-
-
-namespace App\Context\User\Reactors;
-
+<pre><code class="language-php">namespace App\Context\User\Reactors;
 
 use App\Context\User\Models\User;
-
 use App\Context\User\Events\UserCreated;
-
 use Spatie\EventSourcing\EventHandlers\EventHandler;
-
 use Spatie\EventSourcing\EventHandlers\HandlesEvents;
 
-
 class UserCreatedReactor implements EventHandler
-
 {
-use HandlesEvents;
+  use HandlesEvents;
 
-public function onUserCreated(UserCreated $event)
-{
-$user = User::where('email', $event-&gt;email)-&gt;first();
-
-$user-&gt;sendEmailVerificationNotification();
+  public function onUserCreated(UserCreated $event)
+  {
+    $user = User::where('email', $event-&gt;email)-&gt;first();
+    $user-&gt;sendEmailVerificationNotification();
+  }
 }
-}
-
 </code></pre>
 
 <p>Using default Laravel behaviour we can now send an email notification over to the user that was just created asking them to verify their email. We have now come full circle! We will need to create a ServiceProvider in Laravel to tell the framework to listen and how to route these events and aggregates but that is relatively simple, you could either add this to your AppServiceProvider or create a specific service provider - I lean towards the latter:</p>
 
-<pre><code class="language-php"><br />&lt;?php
-
-
-namespace App\Providers;
-
+<pre><code class="language-php">namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-
 use Spatie\EventSourcing\Projectionist;
-
 use App\Context\User\Projectors\UserProjector;
-
 use App\Context\User\Reactors\UserRegisteredReactor;
 
-
 class EventSourcingServiceProvider extends ServiceProvider
-
 {
-/**
- * Register services.
- *
- * @return void
- */
-public function register()
-{
-//
-}
+  /**
+  * Register services.
+  *
+  * @return void
+  */
+  public function register()
+  {
+    //
+  }
 
-/**
- * Bootstrap services.
- *
- * @return void
- */
-public function boot()
-{
-Projectionist::addProjector(UserProjector::class);
-Projectionist::addReactor(UserCreatedReactor::class);
+  /**
+  * Bootstrap services.
+  *
+  * @return void
+  */
+  public function boot()
+  {
+    Projectionist::addProjector(UserProjector::class);
+    Projectionist::addReactor(UserCreatedReactor::class);
+  }
 }
-}
-
 </code></pre>
 
 <p>Make sure you add this to the application config file at <code>config/app.php</code> under the providers array.</p>
@@ -458,60 +410,42 @@ Projectionist::addReactor(UserCreatedReactor::class);
 
 <p>So all of the livewire set up would have been done for you by installing and using the TALL preset, which is great, the next step to take is to change the default behaviour in this component found here <code>app/Http/Livewire/Auth/Register.php</code> and update the register method to the following code:</p>
 
-<pre><code class="language-php"><br />&lt;?php
-
-
-namespace App\Http\Livewire\Auth;
-
+<pre><code class="language-php">namespace App\Http\Livewire\Auth;
 
 use Ramsey\Uuid\Uuid;
-
 use Livewire\Component;
-
 use Illuminate\Support\Str;
-
 use App\Context\User\Models\User;
-
 use Illuminate\Support\Facades\Auth;
-
 use Illuminate\Support\Facades\Hash;
-
 use App\Providers\RouteServiceProvider;
-
 use App\Context\User\Aggregates\UserAggregate;
 
-
 class Register extends Component
-
 {
-/* .. rest of the component lives here */
+  /* .. rest of the component lives here */
+  public function register()
+  {
+    $this-&gt;validate([
+      'name' =&gt; ['required'],
+      'email' =&gt; ['required', 'email', 'unique:users'],
+      'password' =&gt; ['required', 'min:8', 'same:passwordConfirmation'],
+    ]);
 
-public function register()
-{
-$this-&gt;validate([
-    'name' =&gt; ['required'],
-    'email' =&gt; ['required', 'email', 'unique:users'],
-    'password' =&gt; ['required', 'min:8', 'same:passwordConfirmation'],
-]);
+    $uuid = Str::uuid()-&gt;toString();
 
-$uuid = Str::uuid()-&gt;toString();
-
-UserAggregate::retrieve($uuid)
+    UserAggregate::retrieve($uuid)
     -&gt;createUser(
-        $this-&gt;name,
-        $this-&gt;email,
-        Hash::make($this-&gt;password)
+      $this-&gt;name,
+      $this-&gt;email,
+      Hash::make($this-&gt;password)
     )-&gt;persist();
 
-
-$user = User::uuid($uuid);
-
-Auth::login($user, true);
-
-redirect(route('home'));
+    $user = User::uuid($uuid);
+    Auth::login($user, true);
+    redirect(route('home'));
+  }
 }
-}
-
 </code></pre>
 
 <p>So what we are doing here, when we ask the LiveWire component to register through our front end it will send a request to our back end using the native <code>fetch()</code> API, the library will take care of routing this request to the right place. Our first step of course is to validate the "request" as if it were a typical HTTP request (unfortunately no FormRequets here, which would be amazing), then we need to create a UUID for our aggregate, and we also assign this to our user (I am not sure on this part, if it is a good practice or not - I will let the community decide that one). Once we have our UUId we can tell our Aggregate to (using to UUID we just created) record the fact that we are trigger the UserCreated event we made earlier. We pass through all the data required, <strong>please note that we send over the hashed version of the password!</strong> The last thing we want to do is send over the unencrpyted password to be stored as plain text in out events - it is just as bad as storing a plain text password normally, you wuoldn't do it - so don't do it here! We then persist this aggregate to the database, so we have a rollback point, and an event to replay should we need to. We then fetch the user using their UUID, which is a static method you will remeber adding to your User model. We log this user in and redirect back to our home route.</p>
@@ -563,7 +497,7 @@ redirect(route('home'));
                             Reading Time
                         </h2>
                         <div class="space-x-2 flex flex-wrap">
-                            <p>12 min read</p>
+                            <p>11 min read</p>
                         </div>
                     </div>
                 </div>
@@ -604,12 +538,20 @@ redirect(route('home'));
     Open Source
 </a> 
                 </div>
+                            <div class="px-5 py-2 uppercase">
+                     <a
+    class="cursor-pointer text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-50" title="Subscribe to my RSS feed" href="/feed.xml"
+    title="Subscribe to my RSS feed" href="/feed.xml"
+>
+    RSS Feed
+</a> 
+                </div>
                     </nav>
         <div class="mt-8 flex justify-center space-x-6">
 
              <a
-    class="cursor-pointer text-gray-400 hover:text-linkedin" title="Visit me on LinkedIn" href="https://www.linkedin.com/in/steve-mcdougall/"
-    title="Visit me on LinkedIn" href="https://www.linkedin.com/in/steve-mcdougall/" class="hover:text-linkedin"
+    class="cursor-pointer text-gray-400 hover:text-linkedin" title="Visit me on LinkedIn" href="https://www.linkedin.com/in/steve-mcdougall/" onclick="window.fathom.trackGoal('C6E6URYJ', 0);"
+    title="Visit me on LinkedIn" href="https://www.linkedin.com/in/steve-mcdougall/" class="hover:text-linkedin" onclick="window.fathom.trackGoal('C6E6URYJ', 0);"
     target="__blank"
     rel="noopener nofollow"
 >
@@ -620,8 +562,8 @@ redirect(route('home'));
 </a> 
 
              <a
-    class="cursor-pointer text-gray-400 hover:text-twitter" title="Visit me on twitter" href="https://twitter.com/JustSteveKing"
-    title="Visit me on twitter" href="https://twitter.com/JustSteveKing" class="hover:text-twitter"
+    class="cursor-pointer text-gray-400 hover:text-twitter" title="Visit me on twitter" href="https://twitter.com/JustSteveKing" onclick="window.fathom.trackGoal('CZEGD7I0', 0);"
+    title="Visit me on twitter" href="https://twitter.com/JustSteveKing" class="hover:text-twitter" onclick="window.fathom.trackGoal('CZEGD7I0', 0);"
     target="__blank"
     rel="noopener nofollow"
 >
@@ -632,8 +574,8 @@ redirect(route('home'));
 </a> 
 
              <a
-    class="cursor-pointer text-gray-400 hover:text-github dark:hover:text-white" title="Visit me on GitHub" href="https://github.com/JustSteveKing"
-    title="Visit me on GitHub" href="https://github.com/JustSteveKing" class="hover:text-github dark:hover:text-white"
+    class="cursor-pointer text-gray-400 hover:text-github dark:hover:text-white" title="Visit me on GitHub" href="https://github.com/JustSteveKing" onclick="window.fathom.trackGoal('Q0HFSPVT', 0);"
+    title="Visit me on GitHub" href="https://github.com/JustSteveKing" class="hover:text-github dark:hover:text-white" onclick="window.fathom.trackGoal('Q0HFSPVT', 0);"
     target="__blank"
     rel="noopener nofollow"
 >
@@ -644,8 +586,8 @@ redirect(route('home'));
 </a> 
 
              <a
-    class="cursor-pointer text-gray-400 hover:text-discord" title="Visit me on Discord" href="https://discordapp.com/users/533726823201243137"
-    title="Visit me on Discord" href="https://discordapp.com/users/533726823201243137" class="hover:text-discord"
+    class="cursor-pointer text-gray-400 hover:text-discord" title="Visit me on Discord" href="https://discordapp.com/users/533726823201243137" onclick="window.fathom.trackGoal('6TDA1OH6', 0);"
+    title="Visit me on Discord" href="https://discordapp.com/users/533726823201243137" class="hover:text-discord" onclick="window.fathom.trackGoal('6TDA1OH6', 0);"
     target="__blank"
     rel="noopener nofollow"
 >
@@ -656,8 +598,8 @@ redirect(route('home'));
 </a> 
 
              <a
-    class="cursor-pointer text-gray-400 hover:text-telegram" title="Visit me on telegram" href="https://t.me/JustSteveKing"
-    title="Visit me on telegram" href="https://t.me/JustSteveKing" class="hover:text-telegram"
+    class="cursor-pointer text-gray-400 hover:text-telegram" title="Visit me on telegram" href="https://t.me/JustSteveKing" onclick="window.fathom.trackGoal('O0QXMHGN', 0);"
+    title="Visit me on telegram" href="https://t.me/JustSteveKing" class="hover:text-telegram" onclick="window.fathom.trackGoal('O0QXMHGN', 0);"
     target="__blank"
     rel="noopener nofollow"
 >
@@ -673,5 +615,6 @@ redirect(route('home'));
         </p>
     </div>
 </footer> 
+
     </body>
 </html>

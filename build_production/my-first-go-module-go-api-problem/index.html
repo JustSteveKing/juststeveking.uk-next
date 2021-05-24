@@ -13,7 +13,7 @@
 
         <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,300i,400,400i,700,700i,800,800i,900,900i" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,700,700i,800,800i,900,900i" rel="stylesheet">
-        <link rel="stylesheet" href="/assets/build/css/main.css?id=1a1396f4c022d69a6250">
+        <link rel="stylesheet" href="/assets/build/css/main.css?id=97d16da7b8a7104e6fd6">
 
         <meta name="description" content="Recently I have been playing with GoLang quite a lot, so I decided to try my hand at publishing my first Go Module to handle errors nicely in an API.">
 
@@ -23,7 +23,7 @@
         <meta property="og:image:alt" content="JustSteveKing - Consultant CTO, Freelance Software Engineer, Community Advocate">
         <meta property="og:locale" content="en_GB">
         <meta property="og:type" content="article">
-        <meta proporty="og:url" content="/my-first-go-module-go-api-problem">
+        <meta proporty="og:url" content="https://www.juststeveking.uk/my-first-go-module-go-api-problem">
 
         <meta name="twitter:widgets:new-embed-design" content="on">
         <meta name="twitter:card" content="summary_large_image">
@@ -34,7 +34,11 @@
         <meta name="twitter:image" content="/assets/images/uploads/romson-preechawit-vy2chqm0mcs-unsplash.jpg">
         <meta name="twitter:image:alt" content="JustSteveKing - Consultant CTO, Freelance Software Engineer, Community Advocate">
 
-        <link rel="canonical" href="/my-first-go-module-go-api-problem">
+        <link rel="canonical" href="https://www.juststeveking.uk/my-first-go-module-go-api-problem">
+        <link rel="alternate" type="application/rss+xml" title="My First Go Module - go api problem" href="https://www.juststeveking.uk//feed.xml" />
+
+        <!-- PHPOnline Domain Verification -->
+        <meta name="phponline:verification" content="phponline:e1wmN0TcK4gr" />
 
         <link rel="icon" href="/assets/favicon.ico">
         <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
@@ -42,7 +46,7 @@
         <link rel="manifest" href="/assets/site.webmanifest">
         <meta name="theme-color" content="#ffffff">
         
-        <script src="/assets/build/js/main.js?id=718247a870e5977545e7" defer></script>
+        <script src="/assets/build/js/main.js?id=3adf2f0e4ec657222174" defer></script>
         
         <script type="application/ld+json">
         {
@@ -105,6 +109,14 @@
     Open Source
 </a> 
             </li>
+                    <li>
+                 <a
+    class="cursor-pointer text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-50" title="Subscribe to my RSS feed" href="/feed.xml"
+    title="Subscribe to my RSS feed" href="/feed.xml"
+>
+    RSS Feed
+</a> 
+            </li>
             </ul>
 </nav> 
         
@@ -161,7 +173,7 @@
                 </dd>
             </dl>
             <div class="divide-y divide-gray-200 xl:pb-0 xl:col-span-3 xl:row-span-2">
-                <div class="max-w-3xl leading-8 text-lg space-y-3 text-gray-800 dark:text-gray-50 pt-10 pb-8 px-3">
+                <div class="prose prose-indigo prose-lg text-gray-800 dark:text-gray-50 pt-10 pb-8 px-3">
                     <img src="/assets/images/uploads/romson-preechawit-vy2chqm0mcs-unsplash.jpg"
                         alt="My First Go Module - go api problem"
                         class="rounded shadow-md"
@@ -178,69 +190,63 @@ distributed warehouse system. This was the moment I was waiting for.</p>
 <p>The basis of the module was quite simple, unlike PHP - there are no classes or objects, so all I really needed was a way to build an API problem message and return this as a response from the API. The things that were going to be useful here were:</p>
 
 <ul>
-<li><p>Title: A short human readable error to explain what went wrong</p></li>
-<li><p>Detail: A longer form explanation of the error</p></li>
-<li><p>Status: The HTTP Status Code for the error</p></li>
-<li><p>Code: An internal reference Code that we could document and track through API logs to understand failure points.</p></li>
-<li><p>Meta: A simple key value map that could help further explain the problems going on.</p></li>
+<li>Title: A short human readable error to explain what went wrong</li>
+<li>Detail: A longer form explanation of the error</li>
+<li>Status: The HTTP Status Code for the error</li>
+<li>Code: An internal reference Code that we could document and track through API logs to understand failure points.</li>
+<li>Meta: A simple key value map that could help further explain the problems going on.</li>
 </ul>
 
 <p>So this didn't need to be complicated, but I needed to build something as all of my services would need this functionality if they were public facing APIs.</p>
 
-<pre><code class="language-go"><br />type APIProblem struct {
-Title string `json:"title,omitempty"`
-Detail string `json:"detail,omitempty"`
-Status string `json:"status,omitempty"`
-Code string `json:"code,omitempty"`
-Meta *map[string]interface{} `json:"meta,omitempty"`
+<pre><code class="language-go">type APIProblem struct {
+  Title string `json:"title,omitempty"`
+  Detail string `json:"detail,omitempty"`
+  Status string `json:"status,omitempty"`
+  Code string `json:"code,omitempty"`
+  Meta *map[string]interface{} `json:"meta,omitempty"`
 }
-
 </code></pre>
 
 <p>In essence there was nothing more to do! I had a struct I could build when my API hit an error, and all I needed to do was marshal this into JSON and return response to any client interfaces.</p>
 
 <p>Using this struct was as simple to use as it was to write:</p>
 
-<pre><code class="language-go"><br />type server struct{}
-
+<pre><code class="language-go">type server struct{}
 
 func main() {
-s := &amp;server{}
-http.Handle("/", func(rw http.ResponseWriter, r *http.Request) {
-if dbc := db.Where("email = ?", "user@email.com").First(&amp;user); dbc.Error != nil {
-    respondWithJSON(
+  s := &amp;server{}
+  http.Handle("/", func(rw http.ResponseWriter, r *http.Request) {
+    if dbc := db.Where("email = ?", "user@email.com").First(&amp;user); dbc.Error != nil {
+      respondWithJSON(
         rw,
         http.StatusBadRequest,
         &amp;APIProblem{
-            Title:  "Invalid Credentials",
-            Detail: "Unable to verify user credentials",
-            Status: strconv.Itoa(http.StatusBadRequest),
-            Code:   "USER-001-001",
+          Title:  "Invalid Credentials",
+          Detail: "Unable to verify user credentials",
+          Status: strconv.Itoa(http.StatusBadRequest),
+          Code:   "USER-001-001",
         },
         "application/problem+json",
-    )
+      )
+      return
+    }
+  })
 
-    return
+  log.Fatal(http.ListenAndServe(":8080", nil))
 }
-})
-
-log.Fatal(http.ListenAndServe(":8080", nil))
-}
-
 
 func respondWithJSON(rw http.ResponseWriter, code int, payload interface{}, contentType string) {
-response, _ := json.Marshal(payload)
-
-rw.Header().Set("Content-Type", contentType)
-rw.WriteHeader(code)
-rw.Write(response)
+  response, _ := json.Marshal(payload)
+  rw.Header().Set("Content-Type", contentType)
+  rw.WriteHeader(code)
+  rw.Write(response)
 }
-
 </code></pre>
 
 <p>A quick note on APIProblem Codes, these are built in a nice and searchable way:</p>
 
-<p><img src="/images/uploads/image.svg" alt="" /></p>
+<p><img src="/assets/images/uploads/image.svg" alt="" /></p>
 
 <p>So for my first Go Module, it was pretty simple - but it solved a problem I knew I was going to face! Feel free to check out the source code and install instructions on the <a href="https://github.com/JustSteveKing/go-api-problem">GitHub Repository</a></p>
                 </div>
@@ -320,12 +326,20 @@ rw.Write(response)
     Open Source
 </a> 
                 </div>
+                            <div class="px-5 py-2 uppercase">
+                     <a
+    class="cursor-pointer text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-50" title="Subscribe to my RSS feed" href="/feed.xml"
+    title="Subscribe to my RSS feed" href="/feed.xml"
+>
+    RSS Feed
+</a> 
+                </div>
                     </nav>
         <div class="mt-8 flex justify-center space-x-6">
 
              <a
-    class="cursor-pointer text-gray-400 hover:text-linkedin" title="Visit me on LinkedIn" href="https://www.linkedin.com/in/steve-mcdougall/"
-    title="Visit me on LinkedIn" href="https://www.linkedin.com/in/steve-mcdougall/" class="hover:text-linkedin"
+    class="cursor-pointer text-gray-400 hover:text-linkedin" title="Visit me on LinkedIn" href="https://www.linkedin.com/in/steve-mcdougall/" onclick="window.fathom.trackGoal('C6E6URYJ', 0);"
+    title="Visit me on LinkedIn" href="https://www.linkedin.com/in/steve-mcdougall/" class="hover:text-linkedin" onclick="window.fathom.trackGoal('C6E6URYJ', 0);"
     target="__blank"
     rel="noopener nofollow"
 >
@@ -336,8 +350,8 @@ rw.Write(response)
 </a> 
 
              <a
-    class="cursor-pointer text-gray-400 hover:text-twitter" title="Visit me on twitter" href="https://twitter.com/JustSteveKing"
-    title="Visit me on twitter" href="https://twitter.com/JustSteveKing" class="hover:text-twitter"
+    class="cursor-pointer text-gray-400 hover:text-twitter" title="Visit me on twitter" href="https://twitter.com/JustSteveKing" onclick="window.fathom.trackGoal('CZEGD7I0', 0);"
+    title="Visit me on twitter" href="https://twitter.com/JustSteveKing" class="hover:text-twitter" onclick="window.fathom.trackGoal('CZEGD7I0', 0);"
     target="__blank"
     rel="noopener nofollow"
 >
@@ -348,8 +362,8 @@ rw.Write(response)
 </a> 
 
              <a
-    class="cursor-pointer text-gray-400 hover:text-github dark:hover:text-white" title="Visit me on GitHub" href="https://github.com/JustSteveKing"
-    title="Visit me on GitHub" href="https://github.com/JustSteveKing" class="hover:text-github dark:hover:text-white"
+    class="cursor-pointer text-gray-400 hover:text-github dark:hover:text-white" title="Visit me on GitHub" href="https://github.com/JustSteveKing" onclick="window.fathom.trackGoal('Q0HFSPVT', 0);"
+    title="Visit me on GitHub" href="https://github.com/JustSteveKing" class="hover:text-github dark:hover:text-white" onclick="window.fathom.trackGoal('Q0HFSPVT', 0);"
     target="__blank"
     rel="noopener nofollow"
 >
@@ -360,8 +374,8 @@ rw.Write(response)
 </a> 
 
              <a
-    class="cursor-pointer text-gray-400 hover:text-discord" title="Visit me on Discord" href="https://discordapp.com/users/533726823201243137"
-    title="Visit me on Discord" href="https://discordapp.com/users/533726823201243137" class="hover:text-discord"
+    class="cursor-pointer text-gray-400 hover:text-discord" title="Visit me on Discord" href="https://discordapp.com/users/533726823201243137" onclick="window.fathom.trackGoal('6TDA1OH6', 0);"
+    title="Visit me on Discord" href="https://discordapp.com/users/533726823201243137" class="hover:text-discord" onclick="window.fathom.trackGoal('6TDA1OH6', 0);"
     target="__blank"
     rel="noopener nofollow"
 >
@@ -372,8 +386,8 @@ rw.Write(response)
 </a> 
 
              <a
-    class="cursor-pointer text-gray-400 hover:text-telegram" title="Visit me on telegram" href="https://t.me/JustSteveKing"
-    title="Visit me on telegram" href="https://t.me/JustSteveKing" class="hover:text-telegram"
+    class="cursor-pointer text-gray-400 hover:text-telegram" title="Visit me on telegram" href="https://t.me/JustSteveKing" onclick="window.fathom.trackGoal('O0QXMHGN', 0);"
+    title="Visit me on telegram" href="https://t.me/JustSteveKing" class="hover:text-telegram" onclick="window.fathom.trackGoal('O0QXMHGN', 0);"
     target="__blank"
     rel="noopener nofollow"
 >
@@ -389,5 +403,6 @@ rw.Write(response)
         </p>
     </div>
 </footer> 
+
     </body>
 </html>

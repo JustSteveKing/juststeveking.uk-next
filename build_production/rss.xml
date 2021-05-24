@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:media="http://search.yahoo.com/mrss/">
+    <channel>
+        <title>JustSteveKing</title>
+        <link>https://www.juststeveking.uk/</link>
+        <description><![CDATA[Steve is an experienced CTO with scaling products and development teams. He is a massive advocate for the PHP language, community organiser, open source enthusiast and conference organiser.]]></description>
+        <atom:link href="https://www.juststeveking.uk/rss.xml" rel="self" type="application/rss+xml" />
+        <language></language>
+        <lastBuildDate>Fri, 30 Apr 2021 11:13:54 +0000</lastBuildDate>
+
+        
+Warning: Undefined variable $artiles in /Users/steve/code/sites/juststeveking/cache/7d8642f0c684cdb5057d551dd86afd890275edfe.php on line 12
+
+Warning: foreach() argument must be of type array|object, null given in /Users/steve/code/sites/juststeveking/cache/7d8642f0c684cdb5057d551dd86afd890275edfe.php on line 12
+    </channel>
+</rss>

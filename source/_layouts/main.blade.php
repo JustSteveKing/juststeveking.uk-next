@@ -19,7 +19,7 @@
 
         <meta property="og:title" content="{{ $page->title }}">
         <meta property="og:description" content="{{ $page->description }}">
-        <meta property="og:image" content="{{ $page->social_image }}">
+        <meta property="og:image" content="{{ {{ $page->baseUrl . $page->social_image }}">
         <meta property="og:image:alt" content="{{ $page->social_image_alt }}">
         <meta property="og:locale" content="en_GB">
         <meta property="og:type" content="{{ $page->type ?? 'website' }}">
@@ -31,11 +31,11 @@
         <meta name="twitter:description" content="{{ $page->description }}">
         <meta name="twitter:site" content="{{ $page->twitter }}">
         <meta name="twitter:creator" content="{{ $page->twitter }}">
-        <meta name="twitter:image" content="{{ $page->social_image }}">
+        <meta name="twitter:image" content="{{ {{ $page->baseUrl . $page->social_image }}">
         <meta name="twitter:image:alt" content="{{ $page->social_image_alt }}">
 
         <link rel="canonical" href="{{ $page->getUrl() }}">
-        <link rel="alternate" type="application/rss+xml" title="{{ $page->title }}" href="{{ $page->baseUrl.'/feed.xml' }}" />
+        <link rel="alternate" type="application/rss+xml" title="{{ $page->title }}" href="{{ $page->baseUrl.'feed.xml' }}" />
 
         <!-- PHPOnline Domain Verification -->
         <meta name="phponline:verification" content="phponline:e1wmN0TcK4gr" />
