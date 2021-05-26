@@ -12,7 +12,7 @@ pagination:
     <div class="divide-y divide-gray-200">
         <x-page-heading
             heading="Open Source Packages"
-            sub-heading="I published Open Source packages and library semi-reguarly, feel free to explore them below"
+            sub-heading="I published Open Source packages and libraries semi-reguarly, feel free to explore them below"
         />
         <ul class="divide-y divide-gray-200">
             @foreach ($pagination->items as $package)

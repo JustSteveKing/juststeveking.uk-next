@@ -28,5 +28,16 @@
                 @endif
             </item>
         @endforeach
+
+        @foreach ($packages as $package)
+            <item>
+                <title><![CDATA[{!! $package->title !!}]]></title>
+                <link>{{ 'https://packagist.org/packages/' . $package->title }}</link>
+                <guid isPermaLink="true">{{ 'https://packagist.org/packages/' . $package->title }}</guid>
+                <description><![CDATA[{!! $package->description !!}]]></description>
+                <dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">JustSteveKing</dc:creator>
+                <pubDate>{{ $package->getPublished()->format(DateTime::RSS) }}</pubDate>
+            </item>
+        @endforeach
     </channel>
 </rss>

@@ -28,7 +28,7 @@
                     target="__blank"
                     onclick="window.fathom.trackGoal('8YXQNRIR', 0);"
                     rel="noopener nofollow"
-                    class="text-indigo-500 hover:text-indigo-600"
+                    class="text-md font-semibold text-transparent bg-clip-text bg-gradient-to-tr from-indigo-500 to-pink-600"
                 >
                     Check out this package →
                 </a>

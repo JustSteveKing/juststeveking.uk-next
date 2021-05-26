@@ -20,7 +20,7 @@
             </div>
             <div class="text-base leading-6 font-medium">
                 <a
-                    class="text-indigo-500 hover:text-indigo-600"
+                    class="text-md font-semibold text-transparent bg-clip-text bg-gradient-to-tr from-indigo-500 to-pink-600"
                     aria-label="Read &quot;{{ $article->title }}&quot;"
                     title="Read &quot;{{ $article->title }}&quot;"
                     href="{{ $article->getUrl() }}"

@@ -11,8 +11,9 @@ title: Hardware and Software I use | juststeveking.uk
             sub-heading="Below is a list of hardware and software that I use on a regular basis, only one of which is an affiliate link which means I get paid or rewarded in some way if you use it to purchase, but rest assured these are all tools and services I actually use, and you can see me using them on stream."
         />
 
-        
         <div class="py-12 space-y-10 text-grey-800 dark:text-gray-50">
+            
+            <!-- Workstation -->
             <div>
                 <h2 class="text-xl text-black dark:text-white font-bold">
                     Workstation
@@ -58,7 +59,7 @@ title: Hardware and Software I use | juststeveking.uk
                                 href="https://upstandesk.co.uk/product/white-top-electric-standing-desk/"
                                 target="__blank"
                                 rel="noopener nofollow"
-                                class="underline cursor-pointer"
+                                class="text-md font-semibold text-transparent bg-clip-text bg-gradient-to-tr from-indigo-500 to-pink-600"
                             >
                                 White Top Electric Height Adjustable Desk - 1600mm x 700mm
                             </a>
@@ -73,7 +74,7 @@ title: Hardware and Software I use | juststeveking.uk
                                 href="https://www.aosom.co.uk/item/vinsetto-massage-130-reclining-chair-130-reclining-chair-heating-relax-head~921-171V70GY.html"
                                 target="__blank"
                                 rel="noopener nofollow"
-                                class="underline cursor-pointer"
+                                class="text-md font-semibold text-transparent bg-clip-text bg-gradient-to-tr from-indigo-500 to-pink-600"
                             >
                                 Vinsetto Burlap 7 - Point Massage Office Chair Recliner Chair 130°Relax Head - Grey
                             </a>
@@ -84,6 +85,8 @@ title: Hardware and Software I use | juststeveking.uk
                     </li>
                 </ul>
             </div>
+
+            <!-- Software -->
             <div>
                 <h2 class="text-xl text-black dark:text-white font-bold">
                     Software
@@ -112,7 +115,7 @@ title: Hardware and Software I use | juststeveking.uk
                                 href="https://tableplus.com"
                                 target="__blank"
                                 rel="noopener nofollow"
-                                class="underline cursor-pointer"
+                                class="text-md font-semibold text-transparent bg-clip-text bg-gradient-to-tr from-indigo-500 to-pink-600"
                             >
                                 TablePlus database browser
                             </a>
@@ -128,7 +131,7 @@ title: Hardware and Software I use | juststeveking.uk
                                 href="https://starship.rs"
                                 target="__blank"
                                 rel="noopener nofollow"
-                                class="underline cursor-pointer"
+                                class="text-md font-semibold text-transparent bg-clip-text bg-gradient-to-tr from-indigo-500 to-pink-600"
                             >
                                 Starship + ohmyzsh + Terminal
                             </a>
@@ -143,7 +146,7 @@ title: Hardware and Software I use | juststeveking.uk
                                 href="https://tinkerwell.app"
                                 target="__blank"
                                 rel="noopener nofollow"
-                                class="underline cursor-pointer"
+                                class="text-md font-semibold text-transparent bg-clip-text bg-gradient-to-tr from-indigo-500 to-pink-600"
                             >
                                 Tinkerwell
                             </a>
@@ -158,7 +161,7 @@ title: Hardware and Software I use | juststeveking.uk
                                 href="https://invoker.dev"
                                 target="__blank"
                                 rel="noopener nofollow"
-                                class="underline cursor-pointer"
+                                class="text-md font-semibold text-transparent bg-clip-text bg-gradient-to-tr from-indigo-500 to-pink-600"
                             >
                                 Invoker
                             </a>
@@ -173,7 +176,7 @@ title: Hardware and Software I use | juststeveking.uk
                                 href="https://spatie.be/products/ray"
                                 target="__blank"
                                 rel="noopener nofollow"
-                                class="underline cursor-pointer"
+                                class="text-md font-semibold text-transparent bg-clip-text bg-gradient-to-tr from-indigo-500 to-pink-600"
                             >
                                 Ray
                             </a>
@@ -185,6 +188,7 @@ title: Hardware and Software I use | juststeveking.uk
                 </ul>
             </div>
 
+            <!-- Services -->
             <div>
                 <h2 class="text-xl text-black dark:text-white font-bold">
                     Services
@@ -196,7 +200,7 @@ title: Hardware and Software I use | juststeveking.uk
                                 href="https://codecourse.com"
                                 target="__blank"
                                 rel="noopener nofollow"
-                                class="underline cursor-pointer"
+                                class="text-md font-semibold text-transparent bg-clip-text bg-gradient-to-tr from-indigo-500 to-pink-600"
                                 onclick="window.fathom.trackGoal('VHHQE0WM', 0);"
                             >
                                 Codecourse
@@ -212,7 +216,7 @@ title: Hardware and Software I use | juststeveking.uk
                                 href="https://usefathom.com/ref/IB4OTH"
                                 target="__blank"
                                 rel="noopener nofollow"
-                                class="underline cursor-pointer"
+                                class="text-md font-semibold text-transparent bg-clip-text bg-gradient-to-tr from-indigo-500 to-pink-600"
                                 onclick="window.fathom.trackGoal('CN5HRKMX', 0);"
                             >
                                 Fathom analytics (affiliate link)

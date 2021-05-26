@@ -1,7 +1,7 @@
-<footer class="max-w-4xl mx-auto space-y-4 md:space-y-8 px-8 md:px-32 py-4 md:py-12">
-    <nav class="-mx-5 -my-2 flex flex-wrap justify-center" aria-label="Footer">
+<footer class="max-w-8xl py-12 px-12 md:px-24 lg:px-32">
+    <nav class="flex flex-wrap space-x-5" aria-label="Footer">
         @foreach ($page->footerNavigation as $item)
-            <div class="px-5 py-2 uppercase">
+            <div class="py-2 uppercase">
                 <x-link
                     :title="$item->title"
                     :href="$item->link"
@@ -11,7 +11,7 @@
             </div>
         @endforeach
     </nav>
-    <div class="mt-8 flex justify-center space-x-6">
+    <div class="mt-8 flex items-center justify-start space-x-6">
 
         <x-social-link
             title="Visit me on LinkedIn"
@@ -74,7 +74,7 @@
         </x-social-link>
 
     </div>
-    <p class="mt-8 text-center text-base text-gray-400">
+    <p class="mt-8 text-left text-md">
         &copy; {{ \Carbon\Carbon::now()->format('Y') }} Steve McDougall. All rights reserved.
     </p>
 </footer>

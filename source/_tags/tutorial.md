@@ -1,7 +1,5 @@
 ---
-extends: _layouts.main
+extends: _layouts.tag
 title: Tutorial
 description: A collection of Articles that have been classed as Tutorials
 ---
-
-These articles are all tutorials.

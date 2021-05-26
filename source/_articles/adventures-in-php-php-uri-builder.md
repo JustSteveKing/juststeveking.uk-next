@@ -10,7 +10,6 @@ tags:
   - php
   - package
   - http
-  - uri builder
 social_image: /assets/images/uploads/uri-builder.png
 ---
 

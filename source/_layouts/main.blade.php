@@ -84,13 +84,13 @@
             <!-- / Fathom -->
         @endif
     </head>
-    <body class="antialiased bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-50">
+    <body class="antialiased min-h-screen min-w-screen bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-50">
         
         <x-navigation
             :page="$page"
         />
         
-        <main class="flex-1 max-w-3xl mx-auto">
+        <main class="flex-1 max-w-8xl px-12 md:px-24 lg:px-32">
             @yield('body')
         </main>
         

@@ -21,11 +21,6 @@ pagination:
                 />
             @endforeach
         </ul>
-        
-        {{-- <x-pagination
-            :pagination="$pagination"
-            :page="$page"
-        /> --}}
 
     </div>
 @endsection

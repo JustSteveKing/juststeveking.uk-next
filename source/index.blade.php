@@ -13,7 +13,7 @@ title: JustSteveKing - Consultant CTO, Software Engineer, Community Advocate | j
                     target="_blank"
                     onclick="window.fathom.trackGoal('CZEGD7I0', 0);"
                     rel="noopener nofollow"
-                    class="font-semibold underline text-gray-800 dark:text-gray-100 hover:text-gray-600 dark:hover:text-white"
+                    class="text-md font-semibold text-transparent bg-clip-text bg-gradient-to-tr from-indigo-500 to-pink-600"
                 >
                     @JustSteveKing
                 </a>. I currently live in the Welsh Valleys, about 40 minutes outside of Cardiff.
@@ -24,7 +24,7 @@ title: JustSteveKing - Consultant CTO, Software Engineer, Community Advocate | j
                     href="https://sqft.capital"
                     target="_blank"
                     rel="noopener nofollow"
-                    class="font-semibold hover:underline text-gray-800 dark:text-gray-50"
+                    class="text-md font-semibold text-transparent bg-clip-text bg-gradient-to-tr from-indigo-500 to-pink-600"
                 >
                     sqft.capital
                 </a> a property development finance company based in the UK, where I spend most of my time 
