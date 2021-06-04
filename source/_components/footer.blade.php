@@ -74,7 +74,7 @@
         </x-social-link>
 
     </div>
-    <p class="mt-8 text-left text-md">
+    <p class="mt-8 text-left text-md text-gray-600 dark:text-gray-200">
         &copy; {{ \Carbon\Carbon::now()->format('Y') }} Steve McDougall. All rights reserved.
     </p>
 </footer>
