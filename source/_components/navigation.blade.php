@@ -1,4 +1,4 @@
-<header class="max-w-8xl py-12 px-12 md:px-24 lg:px-32">
+<header class="max-w-8xl py-12 px-6 md:px-24 lg:px-32">
     <div class="w-full flex items-center justify-start space-x-6 md:space-x-12">
         <a href="/" title="Return to the home page">
             <x-avatar class="h-14 w-14 md:h-20 md:w-20 lg:h-24 lg:w-24 cursor-pointer" />

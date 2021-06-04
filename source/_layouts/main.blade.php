@@ -90,7 +90,7 @@
             :page="$page"
         />
         
-        <main class="flex-1 max-w-8xl px-12 md:px-24 lg:px-32">
+        <main class="flex-1 max-w-8xl px-6 md:px-24 lg:px-32">
             @yield('body')
         </main>
         

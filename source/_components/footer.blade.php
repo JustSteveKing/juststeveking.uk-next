@@ -1,4 +1,4 @@
-<footer class="max-w-8xl py-12 px-12 md:px-24 lg:px-32">
+<footer class="max-w-8xl py-12 px-6 md:px-24 lg:px-32">
     <nav class="flex flex-wrap space-x-5" aria-label="Footer">
         @foreach ($page->footerNavigation as $item)
             <div class="py-2 uppercase">
