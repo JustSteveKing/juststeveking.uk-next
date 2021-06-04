@@ -1,3 +1,3 @@
-<div class="container mx-auto py-12">
+<div class="container py-12">
     {{ $slot }}
 </div>
