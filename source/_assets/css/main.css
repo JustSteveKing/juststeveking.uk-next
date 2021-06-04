@@ -15,7 +15,7 @@
 }
 
 code {
-  @apply bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-white px-2 py-1;
+  @apply bg-gray-200 dark:bg-gray-700 text-red-500 px-2 py-1;
 }
 
 code.hljs {
