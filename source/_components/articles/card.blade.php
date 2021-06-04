@@ -1,4 +1,4 @@
-<li class="py-6">
+<li class="py-6" itemscope itemtype="https://schema.org/Article">
     <article class="space-y-2 xl:grid xl:grid-cols-4 xl:space-y-0 xl:items-baseline">
         <div class="space-y-5 xl:col-span-3">
             <div class="space-y-6">
@@ -8,6 +8,7 @@
                         aria-label="Read &quot;{{ $article->title }}&quot;"
                         title="Read &quot;{{ $article->title }}&quot;"
                         href="{{ $article->getUrl() }}"
+                        itemprop="name"
                     >
                         {{ $article->title }}
                     </a>
@@ -33,7 +34,11 @@
         <dl class="text-right">
             <dt class="sr-only">Published on</dt>
             <dd class="text-base leading-6 font-medium">
-                <time datetime="{{ $article->getDate()->toDateString() }}">
+                <time
+                    itemProp="datePublished"
+                    content="{{ $article->getDate()->toDateString() }}"
+                    datetime="{{ $article->getDate()->toDateString() }}"
+                >
                     {{ $article->getDate()->format('jS F Y') }}
                 </time>
             </dd>
