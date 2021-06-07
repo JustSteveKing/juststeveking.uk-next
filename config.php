@@ -21,6 +21,11 @@ return [
             'sort' => '-date',
             'path' => '/{filename}'
         ],
+        'streams' => [
+            'author' => 'Steve McDougall',
+            'sort' => '-date',
+            'path' => '/youtube/{filename}'
+        ],
         'tags' => [
             'path' => '/blog/tags/{filename}',
             'articles' => function ($page, $allArticles) {
@@ -111,6 +116,11 @@ return [
             'text' => 'Articles',
             'title' => 'Recent Articles',
         ],
+        [
+            'link' => '/youtube',
+            'text' => 'YouTube',
+            'title' => 'My Latest YouTube Videos',
+        ],
         // [
         //     'link' => '/projects',
         //     'text' => 'Projects',
@@ -124,19 +134,24 @@ return [
     ],
     'footerNavigation' => [
         [
+            'link' => '/uses',
+            'text' => 'Uses',
+            'title' => 'Technology I use',
+        ],
+        [
             'link' => '/blog',
             'text' => 'Articles',
             'title' => 'Recent Articles',
         ],
         [
+            'link' => '/youtube',
+            'text' => 'YouTube',
+            'title' => 'My Latest YouTube Videos',
+        ],
+        [
             'link' => '/open-source',
             'text' => 'Packages',
             'title' => 'Open Source packages I have made',
-        ],
-        [
-            'link' => '/uses',
-            'text' => 'Uses',
-            'title' => 'Technology I use',
         ],
         // [
         //     'link' => '/projects',
