@@ -8,7 +8,7 @@
         <language>{{ $page->siteLanguage }}</language>
         <lastBuildDate>{{ $articles->first()->getDate()->format(DateTime::RSS) }}</lastBuildDate>
 
-        @foreach($artiles as $article)
+        @foreach($articles as $article)
             <item>
                 <title><![CDATA[{!! $article->title !!}]]></title>
                 <link>{{ $article->getUrl() }}</link>
