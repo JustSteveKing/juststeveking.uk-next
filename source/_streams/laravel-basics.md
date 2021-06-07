@@ -5,6 +5,7 @@ title: Laravel Basics
 date: 2021-05-17T21:00:00.513Z
 description: In this stream I'm going to be covering more general Laravel stuff; database migrations, eloquent models, database factories and seeders, and as much as I can squeeze in
 link: https://youtu.be/yo3Q3iSJuME
+video_id: yo3Q3iSJuME
 ---
 In this stream I'm going to be covering more general Laravel stuff; database migrations, eloquent models, database factories and seeders, and as much as I can squeeze in
 

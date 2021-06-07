@@ -4,7 +4,8 @@ section: content
 title: Stream::begin()
 date: 2021-05-05T21:00:00.513Z
 description: My very first livestream, where I tested the experience and polished how I can present. I also refactored parts of the PHPOnline platform.
-link: https://www.youtube.com/watch?v=2fuqWv_i3DM&t=1s
+link: https://youtu.be/2fuqWv_i3DM
+video_id: 2fuqWv_i3DM
 ---
 My first live stream where I am testing the experience and polishing how I can present. The quality isn't fantastic, as I needed to test lighting sound and camera to make sure future streams go smoothly.
 

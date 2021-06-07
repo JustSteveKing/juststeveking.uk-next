@@ -5,6 +5,7 @@ title: Laravel Blade Components - with Jake Bennett
 date: 2021-05-14T21:00:00.513Z
 description: Join Jake and I as we do a practical guide on using Laravel Blade components, the how and why we use them.
 link: https://youtu.be/_R0XtdvX7bk
+video_id: _R0XtdvX7bk
 ---
 Join Jake and I as we do a practical guide on using Laravel Blade components, the how and why we use them.
 

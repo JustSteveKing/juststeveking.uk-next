@@ -64,7 +64,6 @@
                 </dl>
 
                 <div class="xl:pb-0 xl:col-span-3 xl:row-span-2">
-
                     <div class="max-w-full prose prose-indigo prose-lg text-gray-800 dark:text-gray-50 pb-8 px-3">
                         <div itemprop="articleBody" class="mt-16 whitespace-normal">
                             @yield('content')

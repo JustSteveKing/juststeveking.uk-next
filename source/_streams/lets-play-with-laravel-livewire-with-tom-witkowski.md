@@ -5,6 +5,7 @@ title: Let's play with Laravel LiveWire - with Tom Witkowski
 date: 2021-05-20T21:00:00.513Z
 description: In this stream I will be inviting Tom Witkowski (@devgummibear) to join me as I build some things in LiveWire, asking some questions and seeing what we can build.
 link: https://youtu.be/cQT37gxGr6g
+video_id: cQT37gxGr6g
 ---
 In this stream I will be inviting Tom Witkowski (@devgummibear) to join me as I build some things in LiveWire, asking some questions and seeing what we can build.
 
