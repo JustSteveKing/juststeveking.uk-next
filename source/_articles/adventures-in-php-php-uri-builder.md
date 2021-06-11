@@ -10,7 +10,7 @@ tags:
   - php
   - package
   - http
-social_image: /assets/images/uploads/uri-builder.png
+social_image: /assets/images/uploads/uri-builder.webp
 ---
 
 I would like to announce my latest package \*uri-builder\* which is a fluent

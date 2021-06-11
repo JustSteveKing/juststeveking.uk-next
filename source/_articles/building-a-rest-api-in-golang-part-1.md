@@ -12,7 +12,7 @@ tags:
   - api
   - rest
   - tutorial
-social_image: /assets/images/uploads/go-lang.png
+social_image: /assets/images/uploads/go-lang.webp
 ---
 
 I have been building APIs for production environments for many years now,

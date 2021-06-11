@@ -11,7 +11,7 @@ tags:
   - tutorial
   - laravel
   - apis
-social_image: /assets/images/uploads/screenshot-2021-04-30-at-12.13.48.png
+social_image: /assets/images/uploads/screenshot-2021-04-30-at-12.13.48.webp
 ---
 
 I have been working with 3rd party APIs for longer than I care to admit, over
@@ -547,6 +547,6 @@ As you can see, we get the response from our API. Then if it wasn't successful w
 
 The result of all of the above is a simple to use, and easy to extend API integration, which returns specific Objects - which you later extend to make requests yourself. During my time writing this article I was writing the code as I went along and testing in [TinkerwellApp](https://tinkerwell.app/) which I have found to be super useful for this sort of work. Below is a screenshot of the final working code and output:
 
-![Tinkerwell Output](/assets/images/uploads/screenshot-2021-04-30-at-14.30.22.png "Tinkerwell showing the final working code")
+![Tinkerwell Output](/assets/images/uploads/screenshot-2021-04-30-at-14.30.22.webp "Tinkerwell showing the final working code")
 
 If you enjoyed this article, why not let me know on twitter [@JustSteveKing](https://twitter.com/JustSteveKing) or checkout the repo for this tutorial on [GitHub](https://github.com/JustSteveKing/laravel-api-service-tutorial)

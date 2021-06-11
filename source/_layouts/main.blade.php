@@ -11,8 +11,16 @@
             document.documentElement.classList.add('js');
         </script>
 
+        <!-- Preconnect to external DNS -->
+        <link rel="preconnect" href="https://fonts.googleapis.com/">
+        @if ($page->production)
+            <link rel="preconnect" href="https://cdn.usefathom.com/">
+        @endif
+
+        <!-- Google Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,300i,400,400i,700,700i,800,800i,900,900i" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,700,700i,800,800i,900,900i" rel="stylesheet">
+        
+        <!-- Styles -->
         <link rel="stylesheet" href="{{ mix('css/main.css', 'assets/build') }}">
 
         <meta name="description" content="{{ $page->description }}">
@@ -54,7 +62,7 @@
             "@type": "Person",
             "name": "Steve McDougall",
             "url": "https://www.juststeveking.uk/",
-            "image": "https://www.juststeveking.uk/images/avatar.png",
+            "image": "https://www.juststeveking.uk/images/avatar.webp",
             "sameAs": [
                 "https://github.com/JustSteveKing",
                 "https://twitter.com/JustSteveKing",

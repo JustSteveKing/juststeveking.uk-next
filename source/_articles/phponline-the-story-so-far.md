@@ -10,7 +10,7 @@ tags:
     - community
     - project
     - phponline
-social_image: /assets/images/uploads/phponline.png
+social_image: /assets/images/uploads/phponline.webp
 ---
 
 PHP Online started as an idea, an inspiration, a way to give back. For years now I have been involved in the community: contributing to open source, mentoring others, starting user groups, organising conferences, speaking at events. All of these things are extremely rewarding, and I would recommend it to anybody looking to get involved more in the community.

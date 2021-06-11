@@ -12,7 +12,7 @@ tags:
   - open source
   - package
   - psr
-social_image: /assets/images/uploads/christian-fregnan-tavkurx-xlw-unsplash.jpg
+social_image: /assets/images/uploads/christian-fregnan-tavkurx-xlw-unsplash.webp
 ---
 
 Recently I have been scratching my head over PSR-18. As a new PSR there isn't

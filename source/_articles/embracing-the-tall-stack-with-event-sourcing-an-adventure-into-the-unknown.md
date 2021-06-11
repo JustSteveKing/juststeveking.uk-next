@@ -13,7 +13,7 @@ tags:
   - laravel
   - tall stack
   - event sourcing
-social_image: /assets/images/uploads/terry-vlisidis-wsebnsnkbue-unsplash.jpg
+social_image: /assets/images/uploads/terry-vlisidis-wsebnsnkbue-unsplash.webp
 ---
 
 TALL stack is growing in popularity in the Laravel community, and rightly so.

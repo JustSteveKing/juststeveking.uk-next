@@ -9,7 +9,7 @@ description: As a PHP developer I use Laravel quite heavily, but I have been a
 tags:
   - php
   - slim framework
-social_image: /assets/images/uploads/dallas-reedy-nejfas1okho-unsplash.jpg
+social_image: /assets/images/uploads/dallas-reedy-nejfas1okho-unsplash.webp
 ---
 
 My first introduction into frameworks in the PHP world started with the [Slim

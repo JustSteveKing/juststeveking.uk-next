@@ -11,7 +11,7 @@ tags:
   - neo4j
   - package
   - open source
-social_image: /assets/images/uploads/leone-venter-mtkxssscrzw-unsplash.jpg
+social_image: /assets/images/uploads/leone-venter-mtkxssscrzw-unsplash.webp
 ---
 
 From code to node, was the idea I wanted to accomplish when I first started
@@ -35,4 +35,4 @@ The completed packages combine, or don't, to create a simple way to work with th
 
 Please see below for a complete working version of how these packages all work in tandem:
 
-![please see the http adapter README, which has a full example](/assets/images/uploads/neo4j-querying.png "All the packages!")
+![please see the http adapter README, which has a full example](/assets/images/uploads/neo4j-querying.webp "All the packages!")

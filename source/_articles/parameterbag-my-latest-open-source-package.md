@@ -9,7 +9,7 @@ tags:
   - php
   - open source
   - package
-social_image: /assets/images/uploads/jed-owen-ppzbe1hwegi-unsplash.jpg
+social_image: /assets/images/uploads/jed-owen-ppzbe1hwegi-unsplash.webp
 ---
 
 Every now and then you find youself writing the same bit of code in many
