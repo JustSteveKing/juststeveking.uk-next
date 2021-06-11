@@ -91,13 +91,6 @@
             ></script>
             <!-- / Fathom -->
         @endif
-        <script>
-            if('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('/assets/sw.js', {
-                    scope: '/'
-                });
-            }
-        </script>
     </head>
     <body class="antialiased min-h-screen min-w-screen bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-50">
         
