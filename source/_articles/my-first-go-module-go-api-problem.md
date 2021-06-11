@@ -10,7 +10,7 @@ tags:
   - open source
   - package
   - golang
-social_image: /assets/images/uploads/romson-preechawit-vy2chqm0mcs-unsplash.jpg
+social_image: /assets/images/uploads/romson-preechawit-vy2chqm0mcs-unsplash.webp
 ---
 
 I have been playing with GoLang on and off now for around 3 years, but never

@@ -11,7 +11,7 @@ tags:
   - package
   - http
   - sdk
-social_image: /assets/images/uploads/photo-1517373116369-9bdb8cdc9f62.jpg
+social_image: /assets/images/uploads/photo-1517373116369-9bdb8cdc9f62.webp
 ---
 
 I have been working with 3rd party APIs for a very long time. Each time I
