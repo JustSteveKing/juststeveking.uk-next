@@ -5,12 +5,12 @@
         </a>
         <div class="space-y-1 md:space-y-5">
             <a href="/" title="Return to the home page">
-                <h1 class="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white cursor-pointer">
+                <h1 class="text-xl leading-10 md:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white cursor-pointer">
                     Steve McDougall
                 </h1>
             </a>
-            <nav class="overflow-x-scroll">
-                <ul class="flex items-center justify-start space-x-3 md:space-x-6 uppercase">
+            <nav class="overflow-x-scroll md:overflow-hidden">
+                <ul class="flex items-center justify-start space-x-4 md:space-x-6 uppercase">
                     @foreach ($page->navigation as $item)
                         <li>
                             <x-link
