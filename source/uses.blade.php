@@ -19,6 +19,7 @@ title: Hardware and Software I use | juststeveking.uk
                     Workstation
                 </h2>
                 <ul class="mt-4 space-y-6 pl-5">
+                    <!-- Computer -->
                     <li class="space-y-2">
                         <p class="font-bold leading-normal text-black dark:text-white">
                             Mac mini M1, 16GB of RAM (2020)
@@ -28,6 +29,7 @@ title: Hardware and Software I use | juststeveking.uk
                             It also has the added benefit of mac OS development experience which I believe is second to none.
                         </p>
                     </li>
+                    <!-- Monitors -->
                     <li class="space-y-2">
                         <p class="font-bold leading-normal text-black dark:text-white">
                             2 x Samsung C24F390 24" Curved LED Monitor
@@ -37,14 +39,41 @@ title: Hardware and Software I use | juststeveking.uk
                             although I won't lie and say I am not tempted by a larger single screen ...
                         </p>
                     </li>
+                    <!-- Headset -->
                     <li class="space-y-2">
                         <p class="font-bold leading-normal text-black dark:text-white">
-                            EG Carbon Mk II Tournament Edition Keyboard - Blue Switch
+                            <a
+                                href="https://www.corsair.com/uk/en/Categories/Products/Gaming-Headsets/Wireless-Headsets/VOID-RGB-ELITE-Wireless-Premium-Gaming-Headset-with-7-1-Surround-Sound/p/CA-9011202-EU?ref=juststeveking"
+                                target="__blank"
+                                rel="noopener nofollow"
+                                class="text-md font-semibold text-transparent bg-clip-text bg-gradient-to-tr from-indigo-500 to-pink-600"
+                                onclick="window.fathom.trackGoal('K4FPPDV4', 0);"
+                            >
+                                Corsair VOID RGB Elite Premium Gaming Headset
+                            </a>
                         </p>
                         <p class="leading-normal">
-                            If you have ever watched one of my streams, you know this is a mechanical keyboard. I appologise for the noise! But this keyboard is not only super easy to use and type code fast, but it also looks pretty darn good!
+                            I have recently upgraded my headset after using my Google Pixel Buds for quite some time. I loved using my Pixel Buds, but the battery life often was not enough for an entire stream, even after a full charge. So I have recently upgraded to a gaming headset which has a 16 hour charge - which should be much better. It also features directional sound microphone so hopefully it mutes out some noise from the keyboard too.
                         </p>
                     </li>
+                    <!-- Keyboard -->
+                    <li class="space-y-2">
+                        <p class="font-bold leading-normal text-black dark:text-white">
+                            <a
+                                href="https://www.keychron.com/products/keychron-k2-wireless-mechanical-keyboard?variant=31063869587545?ref=juststeveking"
+                                target="__blank"
+                                rel="noopener nofollow"
+                                class="text-md font-semibold text-transparent bg-clip-text bg-gradient-to-tr from-indigo-500 to-pink-600"
+                                onclick="window.fathom.trackGoal('VTWHFIQD', 0);"
+                            >
+                                Keychron K2 - Blue Switches white backlight
+                            </a>
+                        </p>
+                        <p class="leading-normal">
+                            I have recently upgraded to the keychron k2 after getting loads of advice on these keyboards. It is a little more compact than I am used to, but I will adjust soon enough. I am currently using the blue switches, which are the loadest that keychron have, but am testing them out before I move to a different set - I have been advised to use Red switches as they are quieter.
+                        </p>
+                    </li>
+                    <!-- Mouse Mat -->
                     <li class="space-y-2">
                         <p class="font-bold leading-normal text-black dark:text-white">
                             Corsair Gaming MM200 Cloth Gaming Mouse Mat Extended
@@ -53,10 +82,11 @@ title: Hardware and Software I use | juststeveking.uk
                             I absolutely love having a huge house mat on my desk, it means I never get that frustrating wrist jiggle when you realise you are at the end of your mouse pad!
                         </p>
                     </li>
+                    <!-- Desk -->
                     <li class="space-y-2">
                         <p class="font-bold leading-normal text-black dark:text-white">
                             <a
-                                href="https://upstandesk.co.uk/product/white-top-electric-standing-desk/"
+                                href="https://upstandesk.co.uk/product/white-top-electric-standing-desk?ref=juststeveking"
                                 target="__blank"
                                 rel="noopener nofollow"
                                 class="text-md font-semibold text-transparent bg-clip-text bg-gradient-to-tr from-indigo-500 to-pink-600"
@@ -68,10 +98,11 @@ title: Hardware and Software I use | juststeveking.uk
                             This stand up desk is absolutely fantastic, it has memory functions which allow you to preset highs you want to commonly use - and it doesn't cost the earth!
                         </p>
                     </li>
+                    <!-- Desk Chair -->
                     <li class="space-y-2">
                         <p class="font-bold leading-normal text-black dark:text-white">
                             <a
-                                href="https://www.aosom.co.uk/item/vinsetto-massage-130-reclining-chair-130-reclining-chair-heating-relax-head~921-171V70GY.html"
+                                href="https://www.aosom.co.uk/item/vinsetto-massage-130-reclining-chair-130-reclining-chair-heating-relax-head~921-171V70GY.html?ref=juststeveking"
                                 target="__blank"
                                 rel="noopener nofollow"
                                 class="text-md font-semibold text-transparent bg-clip-text bg-gradient-to-tr from-indigo-500 to-pink-600"
@@ -112,7 +143,7 @@ title: Hardware and Software I use | juststeveking.uk
                     <li class="space-y-2">
                         <p class="font-bold leading-normal text-black dark:text-white">
                             <a
-                                href="https://tableplus.com"
+                                href="https://tableplus.com?ref=juststeveking"
                                 target="__blank"
                                 rel="noopener nofollow"
                                 class="text-md font-semibold text-transparent bg-clip-text bg-gradient-to-tr from-indigo-500 to-pink-600"
@@ -128,7 +159,7 @@ title: Hardware and Software I use | juststeveking.uk
                     <li class="space-y-2">
                         <p class="font-bold leading-normal text-black dark:text-white">
                             <a
-                                href="https://starship.rs"
+                                href="https://starship.rs?ref=juststeveking"
                                 target="__blank"
                                 rel="noopener nofollow"
                                 class="text-md font-semibold text-transparent bg-clip-text bg-gradient-to-tr from-indigo-500 to-pink-600"
@@ -143,7 +174,7 @@ title: Hardware and Software I use | juststeveking.uk
                     <li class="space-y-2">
                         <p class="font-bold leading-normal text-black dark:text-white">
                             <a
-                                href="https://tinkerwell.app"
+                                href="https://tinkerwell.app?ref=juststeveking"
                                 target="__blank"
                                 rel="noopener nofollow"
                                 class="text-md font-semibold text-transparent bg-clip-text bg-gradient-to-tr from-indigo-500 to-pink-600"
@@ -158,7 +189,7 @@ title: Hardware and Software I use | juststeveking.uk
                     <li class="space-y-2">
                         <p class="font-bold leading-normal text-black dark:text-white">
                             <a
-                                href="https://invoker.dev"
+                                href="https://invoker.dev?ref=juststeveking"
                                 target="__blank"
                                 rel="noopener nofollow"
                                 class="text-md font-semibold text-transparent bg-clip-text bg-gradient-to-tr from-indigo-500 to-pink-600"
@@ -173,7 +204,7 @@ title: Hardware and Software I use | juststeveking.uk
                     <li class="space-y-2">
                         <p class="font-bold leading-normal text-black dark:text-white">
                             <a
-                                href="https://spatie.be/products/ray"
+                                href="https://spatie.be/products/ray?ref=juststeveking"
                                 target="__blank"
                                 rel="noopener nofollow"
                                 class="text-md font-semibold text-transparent bg-clip-text bg-gradient-to-tr from-indigo-500 to-pink-600"
@@ -197,7 +228,7 @@ title: Hardware and Software I use | juststeveking.uk
                     <li class="space-y-2">
                         <p class="font-bold leading-normal text-black dark:text-white">
                             <a
-                                href="https://codecourse.com"
+                                href="https://codecourse.com?ref=juststeveking"
                                 target="__blank"
                                 rel="noopener nofollow"
                                 class="text-md font-semibold text-transparent bg-clip-text bg-gradient-to-tr from-indigo-500 to-pink-600"
