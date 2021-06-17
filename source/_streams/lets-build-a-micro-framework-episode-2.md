@@ -1,8 +1,8 @@
 ---
 extends: _layouts.stream
 section: content
-title: Let's build a micro-framework - Episode 1
-date: 2021-06-10T21:00:00.513Z
+title: Let's build a micro-framework - Episode 2
+date: 2021-06-15T21:00:00.513Z
 description: In this stream we are going to start looking at how we can process routes and integrate a router into our framework. We will also cover writing commands for minicli, so that we can have a structured workflow for development.
 link: https://youtu.be/hBdW7ckqv_o
 video_id: 4fFBynnohP8
