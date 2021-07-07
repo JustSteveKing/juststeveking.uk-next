@@ -18,68 +18,54 @@ code {
   @apply bg-gray-200 dark:bg-gray-700 text-red-500 px-2 py-1;
 }
 
-code.hljs {
-  @apply bg-transparent p-0;
+pre {
+  border-radius: 0.25rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  overflow-x: scroll;
+}
+pre code.torchlight {
+  display: block;
+  min-width: -webkit-max-content;
+  min-width: -moz-max-content;
+  min-width: max-content;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+pre code.torchlight .line {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+pre code.torchlight .line-number,
+pre code.torchlight .summary-caret {
+  margin-right: 1rem;
 }
 
-.hljs-comment,
-.hljs-quote {
-  color: #B6B18B;
+.torchlight summary:focus {
+  outline: none;
 }
-
-/* Darth Vader */
-.hljs-variable,
-.hljs-template-variable,
-.hljs-tag,
-.hljs-name,
-.hljs-selector-id,
-.hljs-selector-class,
-.hljs-regexp,
-.hljs-deletion {
-  color: #EB3C54;
+.torchlight details .summary-caret::after {
+  pointer-events: none;
 }
-
-/* Threepio */
-.hljs-number,
-.hljs-built_in,
-.hljs-builtin-name,
-.hljs-literal,
-.hljs-type,
-.hljs-params,
-.hljs-meta,
-.hljs-link {
-  color: #E7CE56;
+/* Add spaces to keep everything aligned */
+.torchlight .summary-caret-empty::after,
+.torchlight details .summary-caret-middle::after,
+.torchlight details .summary-caret-end::after {
+  content: " ";
 }
-
-/* Luke Skywalker */
-.hljs-attribute {
-  color: #EE7C2B;
+/* Show a minus sign when the block is open. */
+.torchlight details[open] .summary-caret-start::after {
+  content: "-";
 }
-
-/* Obi Wan Kenobi */
-.hljs-string,
-.hljs-symbol,
-.hljs-bullet,
-.hljs-addition {
-  color: #4FB4D7;
+/* And a plus sign when the block is closed. */
+.torchlight details:not([open]) .summary-caret-start::after {
+  content: "+";
 }
-
-/* Yoda */
-.hljs-title,
-.hljs-section {
-  color: #78BB65;
+/* Hide the ... indicator when open. */
+.torchlight details[open] .summary-hide-when-open {
+  display: none;
 }
-
-/* Mace Windu */
-.hljs-keyword,
-.hljs-selector-tag {
-  color: #B45EA4;
-}
-
-.hljs-emphasis {
-  font-style: italic;
-}
-
-.hljs-strong {
-  font-weight: bold;
+/* Show the ... indicator when closed. */
+.torchlight details:not([open]) .summary-hide-when-open {
+  display: initial;
 }

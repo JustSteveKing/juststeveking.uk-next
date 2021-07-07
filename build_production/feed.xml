@@ -7,8 +7,8 @@
     <atom:link xmlns:atom="http://www.w3.org/2005/Atom" href="https://www.juststeveking.uk/feed.xml" type="application/rss+xml" rel="self"/>
     <language>en-GB</language>
     <copyright>Copyright © JustSteveKing 2021</copyright>
-    <pubDate>Wed, 07 Jul 2021 12:12:52 +0000</pubDate>
-    <lastBuildDate>Wed, 07 Jul 2021 12:12:52 +0000</lastBuildDate>
+    <pubDate>Wed, 07 Jul 2021 12:28:13 +0000</pubDate>
+    <lastBuildDate>Wed, 07 Jul 2021 12:28:13 +0000</lastBuildDate>
     <item>
       <title><![CDATA[Introducing - Laravel Transporter]]></title>
       <link>https://www.juststeveking.uk/introducing-laravel-transporter</link>
@@ -2124,15 +2124,107 @@ quite constrained in what I can write about.</p>
       <title><![CDATA[JustSteveKing]]></title>
       <link/>
       <description><![CDATA[Steve is an experienced CTO with scaling products and development teams. He is a massive advocate for the PHP language, community organiser, open source enthusiast and conference organiser.]]></description>
-      <pubDate>Wed, 07 Jul 2021 12:12:52 +0000</pubDate>
+      <pubDate>Wed, 07 Jul 2021 12:28:13 +0000</pubDate>
       <author>JustSteveKing</author>
     </item>
     <item>
       <title><![CDATA[JustSteveKing]]></title>
       <link/>
       <description><![CDATA[Steve is an experienced CTO with scaling products and development teams. He is a massive advocate for the PHP language, community organiser, open source enthusiast and conference organiser.]]></description>
-      <pubDate>Wed, 07 Jul 2021 12:12:52 +0000</pubDate>
+      <pubDate>Wed, 07 Jul 2021 12:28:13 +0000</pubDate>
       <author>JustSteveKing</author>
+    </item>
+    <item>
+      <title><![CDATA[Working with 3rd party APIs in Laravel]]></title>
+      <link>https://www.juststeveking.uk/youtube/working-with-3rd-party-apis-in-laravel</link>
+      <description><![CDATA[In this stream we are going to work through a process of how I like to work with 3rd party APIs.]]></description>
+      <content:encoded><![CDATA[<p>In this stream we are going to work through a process of how I like to work with 3rd party APIs.</p>
+
+<p>We will first look at how we can integrate with an API that only accepts GET requests, a 3rd party data service. Then we will look at an API that is more of a deeper integration - and see what the differences in how we integrate with it are.</p>
+
+<p>This stream is a video representation of the article I wrote on the topic, but also an extention as something do not translate to words as well as they do code:</p>
+
+<p>Article: <a href="https://www.juststeveking.uk/working-with-third-party-services-in-laravel/">https://www.juststeveking.uk/working-with-third-party-services-in-laravel/</a>.</p>
+
+<div class="aspect-w-16 aspect-h-9">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/UmCH7AhTyXE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+]]></content:encoded>
+      <guid>https://www.juststeveking.uk/youtube/working-with-3rd-party-apis-in-laravel</guid>
+      <pubDate>Tue, 06 Jul 2021 21:00:00 +0000</pubDate>
+      <author>Steve McDougall</author>
+    </item>
+    <item>
+      <title><![CDATA[Trimming the fat - let's take Slim Framework v4 for a spin - Episode 2]]></title>
+      <link>https://www.juststeveking.uk/youtube/trimming-the-fat-lets-take-slim-framework-v4-for-a-spin-episode-2</link>
+      <description><![CDATA[In our last stream we talked about what is SlimPHP, how we can use it, what options there are for getting started with it - and then we started building our own way to work with SlimPHP.]]></description>
+      <content:encoded><![CDATA[<p>In our last stream we talked about what is SlimPHP, how we can use it, what options there are for getting started with it - and then we started building our own way to work with SlimPHP.</p>
+
+<p>In this episode we are going to carry on working on our skeleton package, so that we can start building awesome APIs using SlimPHP!</p>
+
+<p>Repository: <a href="https://github.com/JustSteveKing/micro">https://github.com/JustSteveKing/micro</a>.</p>
+
+<div class="aspect-w-16 aspect-h-9">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/kwE2eiYMGcQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+]]></content:encoded>
+      <guid>https://www.juststeveking.uk/youtube/trimming-the-fat-lets-take-slim-framework-v4-for-a-spin-episode-2</guid>
+      <pubDate>Thu, 01 Jul 2021 21:00:00 +0000</pubDate>
+      <author>Steve McDougall</author>
+    </item>
+    <item>
+      <title><![CDATA[Trimming the fat - let's take Slim Framework v4 for a spin.]]></title>
+      <link>https://www.juststeveking.uk/youtube/trimming-the-fat-lets-take-slim-framework-v4-for-a-spin</link>
+      <description><![CDATA[In this stream we are going to look at Slim v4 and build a project skeleton so we can quickly bootstrap Slim PHP projects quickly.]]></description>
+      <content:encoded><![CDATA[<p>In this stream we are going to look at Slim v4 and build a project skeleton so we can quickly bootstrap Slim PHP projects quickly.</p>
+
+<p>We will be covering things like setting up a CLI to make the development experience easier, adding in database Migrations, setting up our DI Container.</p>
+
+<p>By the end of this stream we should have a boilerplate almost ready to start building lightweight APIs using Slim PHP.</p>
+
+<p>Repository: <a href="https://github.com/JustSteveKing/micro">https://github.com/JustSteveKing/micro</a>.</p>
+
+<div class="aspect-w-16 aspect-h-9">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/TMWEkNaARpE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+]]></content:encoded>
+      <guid>https://www.juststeveking.uk/youtube/trimming-the-fat-lets-take-slim-framework-v4-for-a-spin</guid>
+      <pubDate>Tue, 29 Jun 2021 21:00:00 +0000</pubDate>
+      <author>Steve McDougall</author>
+    </item>
+    <item>
+      <title><![CDATA[Let's build an API version of Laravel - Episode 1]]></title>
+      <link>https://www.juststeveking.uk/youtube/lets-build-an-api-version-of-laravel</link>
+      <description><![CDATA[In this stream we are going to start building a new Laravel template, that is aimed at APIs first. Think Lumen without the hassle.]]></description>
+      <content:encoded><![CDATA[<p>In this stream we are going to start building a new Laravel template, that is aimed at APIs first. Think Lumen without the hassle.</p>
+
+<p>We will deep dive into the laravel/laravel template project and start building up what we want to work. We may have to override certain parts of it, and create our own custom connectors.</p>
+
+<p>Repository: <a href="https://github.com/JustSteveKing/lapi">https://github.com/JustSteveKing/lapi</a>.</p>
+
+<div class="aspect-w-16 aspect-h-9">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/yyk7eL5r748" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+]]></content:encoded>
+      <guid>https://www.juststeveking.uk/youtube/lets-build-an-api-version-of-laravel</guid>
+      <pubDate>Thu, 24 Jun 2021 21:00:00 +0000</pubDate>
+      <author>Steve McDougall</author>
+    </item>
+    <item>
+      <title><![CDATA[Let's Build a PHP Package]]></title>
+      <link>https://www.juststeveking.uk/youtube/lets-build-a-php-package</link>
+      <description><![CDATA[In this stream we are going to build a new PHP package from scratch, write some tests for it using pestPHP, make sure we pass static analysis, push this code to GitHub and ensure our tests work on GitHub Actions, then publish the package to packagist.]]></description>
+      <content:encoded><![CDATA[<p>In this stream we are going to build a new PHP package from scratch, write some tests for it using pestPHP, make sure we pass static analysis, push this code to GitHub and ensure our tests work on GitHub Actions, then publish the package to packagist.</p>
+
+<p>I've been building open source packages in PHP for quite a few years, and currently actively maintain over 20. Join me as I walk through my process, and feel free to ask questions.</p>
+
+<div class="aspect-w-16 aspect-h-9">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/pxcwRtHWnAc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+]]></content:encoded>
+      <guid>https://www.juststeveking.uk/youtube/lets-build-a-php-package</guid>
+      <pubDate>Tue, 22 Jun 2021 21:00:00 +0000</pubDate>
+      <author>Steve McDougall</author>
     </item>
     <item>
       <title><![CDATA[Let's build a micro-framework - Episode 2]]></title>
