@@ -19,3 +19,5 @@ $events->afterBuild(GenerateSitemap::class);
 
 // Generate RSS Feed
 $events->afterBuild(GenerateFeed::class);
+
+Torchlight\Jigsaw\TorchlightExtension::make($container, $events)->boot();
