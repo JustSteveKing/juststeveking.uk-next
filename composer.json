@@ -15,7 +15,7 @@
         "samdark/sitemap": "^2.2",
         "spatie/packagist-api": "^2.0",
         "suin/php-rss-writer": "^1.6",
-        "torchlight/torchlight-jigsaw": "^0.1.1"
+        "torchlight/torchlight-jigsaw": "^0.2"
     },
     "autoload": {
         "psr-4": {

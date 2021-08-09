@@ -2,312 +2,357 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
  <url>
   <loc>https://www.juststeveking.uk</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/2</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/3</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/4</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/5</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/blog</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/projects</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/my-first-go-module-go-api-problem</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/working-with-third-party-services-in-laravel</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/building-a-rest-api-in-golang-part-1</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/embracing-the-tall-stack-with-event-sourcing-an-adventure-into-the-unknown</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/an-adventure-with-graph-databases</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/new-blog</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/parameterbag-my-latest-open-source-package</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/adventures-in-php-php-uri-builder</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/embracing-psrs-to-build-an-interoperable-http-client</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/introducing-laravel-transporter</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/slim4-a-lightweight-breath-of-fresh-air</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/adventures-in-php-php-sdk-builder</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/phponline-the-story-so-far</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/youtube</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/uses</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/blog/tags/http</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/blog/tags/slim-framework</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/blog/tags/golang</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/blog/tags/api</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/blog/tags/event-sourcing</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/blog/tags/community</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/blog/tags/content</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/blog/tags/psr</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/blog/tags/project</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/blog/tags/php</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/blog/tags/laravel</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/blog/tags/sdk</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/blog/tags/tutorial</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/blog/tags/package</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/blog/tags/tall-stack</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/blog/tags/microservice</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/blog/tags/neo4j</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/blog/tags/open-source</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/blog/tags/phponline</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/blog/tags/rest</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/rss.xml</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/youtube/lets-build-a-micro-framework-episode-1</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
+  <changefreq>daily</changefreq>
+ </url>
+ <url>
+  <loc>https://www.juststeveking.uk/youtube/lets-build-a-startup-in-the-open-episode-2</loc>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/youtube/working-with-3rd-party-apis-in-laravel</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/youtube/stream-begin</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/youtube/laravel-blade-components-with-jake-bennett</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/youtube/lets-add-some-features-to-phponline</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
+  <changefreq>daily</changefreq>
+ </url>
+ <url>
+  <loc>https://www.juststeveking.uk/youtube/lets-build-a-crm-erp-system-in-laravel-episode-1</loc>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/youtube/lets-build-a-startup-episode-2</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
+  <changefreq>daily</changefreq>
+ </url>
+ <url>
+  <loc>https://www.juststeveking.uk/youtube/lets-build-a-golang-api</loc>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/youtube/lets-build-an-api-version-of-laravel</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/youtube/lets-build-a-startup-episode-3</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/youtube/lets-build-a-php-package</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
+  <changefreq>daily</changefreq>
+ </url>
+ <url>
+  <loc>https://www.juststeveking.uk/youtube/lets-build-a-crm-erp-system-in-laravel-episode-4</loc>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
+  <changefreq>daily</changefreq>
+ </url>
+ <url>
+  <loc>https://www.juststeveking.uk/youtube/lets-build-a-crm-erp-system-in-laravel-episode-3</loc>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/youtube/trimming-the-fat-lets-take-slim-framework-v4-for-a-spin-episode-2</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
+  <changefreq>daily</changefreq>
+ </url>
+ <url>
+  <loc>https://www.juststeveking.uk/youtube/lets-refactor-some-php-packages</loc>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/youtube/lets-build-a-startup-episode-4</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/youtube/lets-build-a-startup-episode-1</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
+  <changefreq>daily</changefreq>
+ </url>
+ <url>
+  <loc>https://www.juststeveking.uk/youtube/lets-build-a-crm-erp-system-in-laravel-episode-2</loc>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/youtube/laravel-basics</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/youtube/lets-play-with-laravel-livewire-with-tom-witkowski</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/youtube/building-a-laravel-package-with-zuzana-kunckova</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/youtube/lets-build-a-micro-framework-episode-2</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/youtube/trimming-the-fat-lets-take-slim-framework-v4-for-a-spin</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
+  <changefreq>daily</changefreq>
+ </url>
+ <url>
+  <loc>https://www.juststeveking.uk/youtube/special-edition-lets-work-with-the-fathom-api</loc>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
+  <changefreq>daily</changefreq>
+ </url>
+ <url>
+  <loc>https://www.juststeveking.uk/youtube/lets-build-a-startup-in-the-open-episode-1</loc>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/offline</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
  <url>
   <loc>https://www.juststeveking.uk/open-source</loc>
-  <lastmod>2021-07-07T12:33:22+00:00</lastmod>
+  <lastmod>2021-08-09T08:17:34+00:00</lastmod>
   <changefreq>daily</changefreq>
  </url>
 </urlset>
