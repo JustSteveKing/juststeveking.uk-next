@@ -7,8 +7,8 @@
     <atom:link xmlns:atom="http://www.w3.org/2005/Atom" href="https://www.juststeveking.uk/feed.xml" type="application/rss+xml" rel="self"/>
     <language>en-GB</language>
     <copyright>Copyright © JustSteveKing 2021</copyright>
-    <pubDate>Mon, 09 Aug 2021 08:17:34 +0000</pubDate>
-    <lastBuildDate>Mon, 09 Aug 2021 08:17:34 +0000</lastBuildDate>
+    <pubDate>Wed, 11 Aug 2021 10:22:05 +0000</pubDate>
+    <lastBuildDate>Wed, 11 Aug 2021 10:22:05 +0000</lastBuildDate>
     <item>
       <title><![CDATA[Introducing - Laravel Transporter]]></title>
       <link>https://www.juststeveking.uk/introducing-laravel-transporter</link>
@@ -955,15 +955,31 @@ quite constrained in what I can write about.</p>
       <title><![CDATA[JustSteveKing]]></title>
       <link/>
       <description><![CDATA[Steve is an experienced CTO with scaling products and development teams. He is a massive advocate for the PHP language, community organiser, open source enthusiast and conference organiser.]]></description>
-      <pubDate>Mon, 09 Aug 2021 08:17:34 +0000</pubDate>
+      <pubDate>Wed, 11 Aug 2021 10:22:05 +0000</pubDate>
       <author>JustSteveKing</author>
     </item>
     <item>
       <title><![CDATA[JustSteveKing]]></title>
       <link/>
       <description><![CDATA[Steve is an experienced CTO with scaling products and development teams. He is a massive advocate for the PHP language, community organiser, open source enthusiast and conference organiser.]]></description>
-      <pubDate>Mon, 09 Aug 2021 08:17:34 +0000</pubDate>
+      <pubDate>Wed, 11 Aug 2021 10:22:05 +0000</pubDate>
       <author>JustSteveKing</author>
+    </item>
+    <item>
+      <title><![CDATA[It's SDK time - Let's play with the Fathom API]]></title>
+      <link>https://www.juststeveking.uk/youtube/its-sdk-time-lets-play-with-the-fathom-api</link>
+      <description><![CDATA[In this stream we get super early access to the usefathom.com API with special thanks to Jack Ellis!]]></description>
+      <content:encoded><![CDATA[<p>In this stream we get super early access to the usefathom.com API with special thanks to Jack Ellis!</p>
+
+<p>Join me as we build out an unofficial SDK for the Fathom API for our Laravel projects!</p>
+
+<div class="aspect-w-16 aspect-h-9">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/ueokSQqJkD4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+]]></content:encoded>
+      <guid>https://www.juststeveking.uk/youtube/its-sdk-time-lets-play-with-the-fathom-api</guid>
+      <pubDate>Thu, 12 Aug 2021 21:00:00 +0000</pubDate>
+      <author>Steve McDougall</author>
     </item>
     <item>
       <title><![CDATA[Special Edition - Let's work with the Fathom API]]></title>
