@@ -3,8 +3,8 @@
     "short_name": "JustSteveKing",
     "start_url": "/",
     "display": "standalone",
-    "theme_color": "#ffffff",
-    "background_color": "#ffffff",
+    "theme_color": "#312E81",
+    "background_color": "#312E81",
     "description": "Steve is an experienced CTO with scaling products and development teams. He is a massive advocate for the PHP language, community organiser, open source enthusiast and conference organiser.",
     "icons": [
         {
