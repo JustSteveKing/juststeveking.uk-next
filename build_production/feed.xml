@@ -7,8 +7,8 @@
     <atom:link xmlns:atom="http://www.w3.org/2005/Atom" href="https://www.juststeveking.uk/feed.xml" type="application/rss+xml" rel="self"/>
     <language>en-GB</language>
     <copyright>Copyright © JustSteveKing 2021</copyright>
-    <pubDate>Tue, 24 Aug 2021 10:15:05 +0000</pubDate>
-    <lastBuildDate>Tue, 24 Aug 2021 10:15:05 +0000</lastBuildDate>
+    <pubDate>Thu, 02 Sep 2021 07:42:31 +0000</pubDate>
+    <lastBuildDate>Thu, 02 Sep 2021 07:42:31 +0000</lastBuildDate>
     <item>
       <title><![CDATA[Introducing - Laravel Transporter]]></title>
       <link>https://www.juststeveking.uk/introducing-laravel-transporter</link>
@@ -955,15 +955,79 @@ quite constrained in what I can write about.</p>
       <title><![CDATA[JustSteveKing]]></title>
       <link/>
       <description><![CDATA[Steve is an experienced CTO with scaling products and development teams. He is a massive advocate for the PHP language, community organiser, open source enthusiast and conference organiser.]]></description>
-      <pubDate>Tue, 24 Aug 2021 10:15:05 +0000</pubDate>
+      <pubDate>Thu, 02 Sep 2021 07:42:31 +0000</pubDate>
       <author>JustSteveKing</author>
     </item>
     <item>
       <title><![CDATA[JustSteveKing]]></title>
       <link/>
       <description><![CDATA[Steve is an experienced CTO with scaling products and development teams. He is a massive advocate for the PHP language, community organiser, open source enthusiast and conference organiser.]]></description>
-      <pubDate>Tue, 24 Aug 2021 10:15:05 +0000</pubDate>
+      <pubDate>Thu, 02 Sep 2021 07:42:31 +0000</pubDate>
       <author>JustSteveKing</author>
+    </item>
+    <item>
+      <title><![CDATA[Laravel Transporter - Let's play with Laravel Forge]]></title>
+      <link>https://www.juststeveking.uk/youtube/laravel-transporter-lets-play-with-laravel-forge</link>
+      <description><![CDATA[In this stream we are going to look at how I use Laravel Transporter by building a custom Laravel Forge dashboard.]]></description>
+      <content:encoded><![CDATA[<p>In this stream we are going to look at how I use Laravel Transporter by building a custom Laravel Forge dashboard.</p>
+
+<p>A lot of people are unsure about why or how to use Laravel Transporter - in this stream I will be showing you exactly how I as the author use this library</p>
+
+<div class="aspect-w-16 aspect-h-9">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/7Vs3roHgL_c" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+]]></content:encoded>
+      <guid>https://www.juststeveking.uk/youtube/laravel-transporter-lets-play-with-laravel-forge</guid>
+      <pubDate>Thu, 02 Sep 2021 21:00:00 +0000</pubDate>
+      <author>Steve McDougall</author>
+    </item>
+    <item>
+      <title><![CDATA[Laravel Clean Architecture - testing with pestPHP]]></title>
+      <link>https://www.juststeveking.uk/youtube/laravel-clean-architecture-testing-with-pest-php</link>
+      <description><![CDATA[In this stream we will be carrying on with our multi blogging platform in Laravel, attempting to find the balance between "best practice" and developer experience.]]></description>
+      <content:encoded><![CDATA[<p>In this stream we will be carrying on with our multi blogging platform in Laravel, attempting to find the balance between "best practice" and developer experience.</p>
+
+<p>This time we will be focusing on testing our application, and also testing some of our domain code in isolation.</p>
+
+<div class="aspect-w-16 aspect-h-9">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/YlwyMPmArdQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+]]></content:encoded>
+      <guid>https://www.juststeveking.uk/youtube/laravel-clean-architecture-testing-with-pest-php</guid>
+      <pubDate>Tue, 31 Aug 2021 21:00:00 +0000</pubDate>
+      <author>Steve McDougall</author>
+    </item>
+    <item>
+      <title><![CDATA[Laravel Clean Architecture - Episode 2]]></title>
+      <link>https://www.juststeveking.uk/youtube/laravel-clean-architecture-episode-2</link>
+      <description><![CDATA[In this stream we are going to discuss and figure out the best way we can create a Laravel application while following some best practices - while still keeping the developer experience we all know and love.]]></description>
+      <content:encoded><![CDATA[<p>In this stream we are going to discuss and figure out the best way we can create a Laravel application while following some best practices - while still keeping the developer experience we all know and love.</p>
+
+<p>In this series we are going to build a multi blog blogging platform, think medium, in Laravel using an API first approach. Join me and let's see what we can do!</p>
+
+<div class="aspect-w-16 aspect-h-9">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/kZ93WrObSQc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+]]></content:encoded>
+      <guid>https://www.juststeveking.uk/youtube/laravel-clean-architecture-episode-2</guid>
+      <pubDate>Thu, 26 Aug 2021 21:00:00 +0000</pubDate>
+      <author>Steve McDougall</author>
+    </item>
+    <item>
+      <title><![CDATA[Laravel Clean Architecture - Episode 1]]></title>
+      <link>https://www.juststeveking.uk/youtube/laravel-clean-architecture-episode-1</link>
+      <description><![CDATA[In this stream we are going to discuss and figure out the best way we can create a Laravel application while following some best practices - while still keeping the developer experience we all know and love.]]></description>
+      <content:encoded><![CDATA[<p>In this stream we are going to discuss and figure out the best way we can create a Laravel application while following some best practices - while still keeping the developer experience we all know and love.</p>
+
+<p>In this series we are going to build a multi blog blogging platform, think medium, in Laravel using an API first approach. Join me and let's see what we can do!</p>
+
+<div class="aspect-w-16 aspect-h-9">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/THrqUvVLecM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+]]></content:encoded>
+      <guid>https://www.juststeveking.uk/youtube/laravel-clean-architecture-episode-1</guid>
+      <pubDate>Tue, 24 Aug 2021 21:00:00 +0000</pubDate>
+      <author>Steve McDougall</author>
     </item>
     <item>
       <title><![CDATA[It's SDK time - Let's play with the Fathom API]]></title>
@@ -1382,22 +1446,6 @@ quite constrained in what I can write about.</p>
 </div>
 ]]></content:encoded>
       <guid>https://www.juststeveking.uk/youtube/laravel-basics</guid>
-      <pubDate>Mon, 17 May 2021 21:00:00 +0000</pubDate>
-      <author>Steve McDougall</author>
-    </item>
-    <item>
-      <title><![CDATA[Laravel Clean Architecture - Episode 1]]></title>
-      <link>https://www.juststeveking.uk/youtube/laravel-clean-architecture-episode-1</link>
-      <description><![CDATA[In this stream we are going to discuss and figure out the best way we can create a Laravel application while following some best practices - while still keeping the developer experience we all know and love.]]></description>
-      <content:encoded><![CDATA[<p>In this stream we are going to discuss and figure out the best way we can create a Laravel application while following some best practices - while still keeping the developer experience we all know and love.</p>
-
-<p>In this series we are going to build a multi blog blogging platform, think medium, in Laravel using an API first approach. Join me and let's see what we can do!</p>
-
-<div class="aspect-w-16 aspect-h-9">
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/THrqUvVLecM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
-]]></content:encoded>
-      <guid>https://www.juststeveking.uk/youtube/laravel-clean-architecture-episode-1</guid>
       <pubDate>Mon, 17 May 2021 21:00:00 +0000</pubDate>
       <author>Steve McDougall</author>
     </item>
