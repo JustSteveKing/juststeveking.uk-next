@@ -148,11 +148,10 @@ title: Hardware and Software I use | juststeveking.uk
                 <ul class="mt-4 space-y-6 pl-5">
                     <li class="space-y-2">
                         <p class="font-bold leading-normal text-black dark:text-white">
-                            VS Code
+                            PHPStorm
                         </p>
                         <p class="leading-normal">
-                            I have been a long time user of PHPStorm, and swear by it for most things, but doing live streams and talks and user groups and conferences I find it easier to use VS Code.
-                            Since I started giving talks and doing live streams, I found using VS Code full time much easier - and quite an enjoyable experience.
+                            For quite a while I fell out of love with PHPStorm, and preferred VS Code to it. However, recently, I have completely changed my mind and fallen back in love with what PHPStorm offers.
                         </p>
                     </li>
                     <li class="space-y-2">
@@ -296,6 +295,21 @@ title: Hardware and Software I use | juststeveking.uk
                         </p>
                         <p class="leading-normal">
                             I can't say just how good fathom analytics is, because you wouldn't believe me. After years of frustration and privacy issues using Google Analytics I made the change to fathom and it has been delightful. I can easily set up and track goals, monitor site statistics, all without compromising my visitors privacy.
+                        </p>
+                    </li>
+                    <li class="space-y-2">
+                        <p class="font-bold leading-normal text-black dark:text-white">
+                            <a
+                                href="https://laravelshift.com/workbench"
+                                target="__blank"
+                                rel="noopener nofollow"
+                                class="text-md font-semibold text-transparent bg-clip-text bg-gradient-to-tr from-indigo-500 to-pink-600"
+                            >
+                                Laravel Shift - Workbench
+                            </a>
+                        </p>
+                        <p class="leading-normal">
+                            Words can hardly describe how useful this tool is, a desktop application that allows me to do bulk quality improvements to any of the applications I am working on. This is a no brainer and has saved me countless hours already.
                         </p>
                     </li>
                 </ul>
