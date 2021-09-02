@@ -197,12 +197,13 @@ title: Hardware and Software I use | juststeveking.uk
                     <li class="space-y-2">
                         <p class="font-bold leading-normal text-black dark:text-white">
                             <a
-                                href="https://tinkerwell.app?ref=juststeveking"
+                                href="https://a.paddle.com/v2/click/103161/134947?link=2106"
                                 target="__blank"
+                                title="The magical PHP tinker app for macOS, Windows and Linux"
                                 rel="noopener nofollow"
                                 class="text-md font-semibold text-transparent bg-clip-text bg-gradient-to-tr from-indigo-500 to-pink-600"
                             >
-                                Tinkerwell
+                                Tinkerwell (affiliate link)
                             </a>
                         </p>
                         <p class="leading-normal">
@@ -212,16 +213,33 @@ title: Hardware and Software I use | juststeveking.uk
                     <li class="space-y-2">
                         <p class="font-bold leading-normal text-black dark:text-white">
                             <a
-                                href="https://invoker.dev?ref=juststeveking"
+                                href="https://a.paddle.com/v2/click/103161/134947?link=3188"
+                                title="The no-bull Laravel tool"
                                 target="__blank"
                                 rel="noopener nofollow"
                                 class="text-md font-semibold text-transparent bg-clip-text bg-gradient-to-tr from-indigo-500 to-pink-600"
                             >
-                                Invoker
+                                Invoker (affiliate link)
                             </a>
                         </p>
                         <p class="leading-normal">
                             As it states on the website "The no-bull Laravel tool" and it is true. I can run artisan commands, open an interactive tinker session, run my test suites - all on local and production servers. Making aplication management super easy.
+                        </p>
+                    </li>
+                    <li class="space-y-2">
+                        <p class="font-bold leading-normal text-black dark:text-white">
+                            <a
+                                href="https://a.paddle.com/v2/click/103161/134947?link=2990"
+                                title="HELO is a desktop application for email checking"
+                                target="__blank"
+                                rel="noopener nofollow"
+                                class="text-md font-semibold text-transparent bg-clip-text bg-gradient-to-tr from-indigo-500 to-pink-600"
+                            >
+                                HELO (affiliate link)
+                            </a>
+                        </p>
+                        <p class="leading-normal">
+                            If you are building applications that send transactional emails, or emails in general HELO is a fantastic product. It acts as a local mail trap with as many mailboxes as you need for free, allowing you to catch and test email functionality.
                         </p>
                     </li>
                     <li class="space-y-2">
