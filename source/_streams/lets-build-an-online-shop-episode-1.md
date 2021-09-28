@@ -1,8 +1,8 @@
 ---
 extends: _layouts.stream
 section: content
-title: Let's Build an Online Shop
-date: 2021-05-20T21:00:00.513Z
+title: Let's Build an Online Shop - Episode 1
+date: 2021-09-14T21:00:00.513Z
 description: Join me as we start a new series building an Online Store with Laravel. We will be coving a topic at a time, making sure we deep dive into as much detail as we can do.
 link: https://youtu.be/-0C04evVV9A
 video_id: -0C04evVV9A
