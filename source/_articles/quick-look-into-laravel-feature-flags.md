@@ -2,7 +2,7 @@
 extends: _layouts.post
 section: content
 title: Quick Look into Laravel Feature Flags
-date: 2020-10-26T11:59:40.513Z
+date: 2021-09-28T11:45:40.513Z
 description: Lets have a quick look into my latest package Laravel Feature Flags.
 tags:
   - php
